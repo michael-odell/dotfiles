@@ -33,3 +33,11 @@ HISTFILE=~/.history/${HOST%%.*}
 if [[ ${USER} != "odellm" && ${USER} != "modell" && ${USER} != "michael" ]] ; then
     HISTFILE+="-${USER}"
 fi
+
+
+# On mac, use the 1Password socket rather than the one set up by launchd when you're local
+if [[ ${SSH_AUTH_SOCK} =~ ^/private/tmp/com.apple.launchd \
+    && -S "${HOME}/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock" ]] ; then
+
+    SSH_AUTH_SOCK="${HOME}/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+fi
