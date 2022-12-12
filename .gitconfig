@@ -1,0 +1,45 @@
+[user]
+	name = Michael Odell
+	email = michael@theodells.us
+[color]
+	ui = auto
+[grep]
+	patternType = perl
+	lineNumber = true
+[log]
+	decorate = auto
+[fetch]
+	prune = true
+	tags = true
+[alias]
+	glog = log --graph --oneline
+
+# https://medium.com/@porteneuve/fix-conflicts-only-once-with-git-rerere-7d116b2cec67
+[rerere]
+    enabled = true
+
+[diff "blackbox"]
+    textconv = gpg --use-agent -q --batch --decrypt
+
+[diff "sops"]
+    textconv = sops -d
+
+[push]
+	default = matching
+
+[merge]
+	conflictStyle = diff3
+
+[includeIf "gitdir:~/mw/**"]
+    path = ~/.gitconfig.mw
+
+[filter "lfs"]
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+
+[pull]
+	ff = only
+[init]
+	defaultBranch = main
