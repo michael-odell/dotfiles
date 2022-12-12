@@ -1,0 +1,3 @@
+call ForceMyFormatOptions()
+
+setlocal noexpandtab

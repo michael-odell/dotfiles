@@ -1,0 +1,10 @@
+
+zdharma-continuum/fast-syntax-highlighting
+zsh-users/zsh-completions
+romkatv/powerlevel10k
+
+belak/zsh-utils path:completion
+belak/zsh-utils path:editor
+belak/zsh-utils path:utility
+
+mroth/evalcache
