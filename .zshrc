@@ -1,4 +1,4 @@
-[[ -f .zsh-debug ]] && echo "--- .zshrc" >&2
+[[ -f ~/.zsh/debug ]] && echo "--- .zshrc" >&2
 
 if [[ ! -d ~/.zsh/antidote ]] ; then
     git clone https://github.com/mattmc3/antidote.git .zsh/antidote
@@ -6,19 +6,7 @@ fi
 source .zsh/antidote/antidote.zsh
 antidote load
 
-if [[ ! -f ~/.zcomet/bin/zcomet.zsh ]]; then
-  git clone https://github.com/agkozak/zcomet.git ~/.zcomet/bin
-fi
-
-#source ~/.zcomet/bin/zcomet.zsh
-#
-#zcomet load zdharma-continuum/fast-syntax-highlighting
-#zcomet load zsh-users/zsh-completions
-#zcomet load romkatv/powerlevel10k powerlevel10k
-#
-#zcomet compinit
-
-alias "ls=ls -F"
+alias "ls=ls -F --color=auto"
 alias "ll=ls -ltr"
 alias "la=ls -ltra"
 
@@ -33,3 +21,15 @@ if [[ -x /opt/homebrew/bin/brew ]] ; then
 fi
 
 alias dotfiles="GIT_DIR=$HOME/.dotfiles.git GIT_WORK_TREE=$HOME git"
+
+if which nvim &>/dev/null ; then
+    alias vi=nvim
+    alias vim=nvim
+fi
+
+HISTSIZE=11000
+SAVEHIST=10000
+HISTFILE=~/.history/${HOST%%.*}
+if [[ ${USER} != "odellm" && ${USER} != "modell" && ${USER} != "michael" ]] ; then
+    HISTFILE+="-${USER}"
+fi
