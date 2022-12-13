@@ -13,6 +13,8 @@
 	tags = true
 [alias]
 	glog = log --graph --oneline
+    manifest = ls-tree -r --name-only --full-tree HEAD
+    root = rev-parse --show-toplevel
 
 # https://medium.com/@porteneuve/fix-conflicts-only-once-with-git-rerere-7d116b2cec67
 [rerere]
