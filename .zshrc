@@ -1,10 +1,33 @@
 [[ -f ~/.zsh/debug ]] && echo "--- .zshrc" >&2
 
-if [[ ! -d ~/.zsh/antidote ]] ; then
-    git clone https://github.com/mattmc3/antidote.git .zsh/antidote
+ZGEN_RESET_ON_CHANGE=(${HOME}/.zshrc)
+if [[ ! -r ~/.zsh/zgenom ]] ; then
+    git clone https://github.com/jandamm/zgenom.git ~/.zsh/zgenom
 fi
-source .zsh/antidote/antidote.zsh
-antidote load
+source ~/.zsh/zgenom/zgenom.zsh
+
+ZGEN_DIR=${HOME}/.zsh/plugins
+mkdir -p "${ZGEN_DIR}"
+
+zgenom autoupdate
+if ! zgenom saved ; then
+    zgenom load zdharma-continuum/fast-syntax-highlighting
+    zgenom load zsh-users/zsh-completions
+    zgenom load romkatv/powerlevel10k powerlevel10k
+
+    zgenom load belak/zsh-utils completion
+    zgenom load belak/zsh-utils editor
+
+    #zgenom load jandamm/zgenom-ext-eval
+    #if [[ -r /opt/homebrew/bin/brew ]] ; then
+    #    zgenom eval --name brew-shellenv /opt/homebrew/bin/brew shellenv
+    #fi
+
+    zgenom load mroth/evalcache
+
+    zgenom save
+fi
+
 
 alias "ls=ls -F --color=auto"
 alias "ll=ls -ltr"
