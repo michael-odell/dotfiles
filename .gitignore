@@ -1,11 +1,13 @@
 **/.DS_Store
 **/*.(zwc|tmp|swp)
+**/*~
 
 
 # The .config directory is a mix of saved and not
 /.config/nvim/autoload
 /.config/nvim/plugged
 /.config/htop
+/.config/iterm2
 
 # .zsh has all things zsh -- most should be version controlled, but ones that
 # are generated should not.

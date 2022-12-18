@@ -1,6 +1,11 @@
 [[ -f ~/.zsh/debug ]] && echo "--- .zshrc" >&2
 
+# Load all my functions and completions
+fpath+=(~/.zsh/functions)
+autoload ~/.zsh/functions/*
+
 ZGEN_RESET_ON_CHANGE=(${HOME}/.zshrc)
+ZGENOM_AUTOLOAD_COMPINIT=1
 if [[ ! -r ~/.zsh/zgenom ]] ; then
     git clone https://github.com/jandamm/zgenom.git ~/.zsh/zgenom
 fi
@@ -12,11 +17,11 @@ mkdir -p "${ZGEN_DIR}" "${ZSH_EVALCACHE_DIR}"
 
 zgenom autoupdate
 if ! zgenom saved ; then
-    zgenom load zdharma-continuum/fast-syntax-highlighting
     zgenom load zsh-users/zsh-completions
+    zgenom load zdharma-continuum/fast-syntax-highlighting
     zgenom load romkatv/powerlevel10k powerlevel10k
 
-    zgenom load belak/zsh-utils completion
+    #zgenom load belak/zsh-utils completion
     zgenom load belak/zsh-utils editor
 
     zgenom load mroth/evalcache
@@ -29,11 +34,14 @@ if ! zgenom saved ; then
     # because of the zgenom autoupdate, I know it'll run periodically so
     # I tie clearing of the cache to the process
     rm ~/.zsh/evalcache/*
+
 fi
 
+
+zstyle ':completion:*' use-cache on
 setopt interactive_comments no_beep
 
-alias "ls=ls -F --color=auto"
+alias "ls=ls -F"
 alias "ll=ls -ltr"
 alias "la=ls -ltra"
 
@@ -46,7 +54,7 @@ if [[ -z "${HOMEBREW_PREFIX}" && -x /opt/homebrew/bin/brew ]] ; then
     _evalcache /opt/homebrew/bin/brew shellenv
 fi
 
-alias dotfiles="GIT_DIR=$HOME/.dotfiles.git GIT_WORK_TREE=$HOME git"
+alias dotfiles="git --git-dir=$HOME/.dotfiles.git --work-tree=$HOME"
 
 if which nvim &>/dev/null ; then
     alias vi=nvim
@@ -60,8 +68,43 @@ if [[ ${SSH_AUTH_SOCK} =~ ^/private/tmp/com.apple.launchd \
     SSH_AUTH_SOCK="${HOME}/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
 fi
 
+typeset -xUT PRJPATH prjpath
+prjpath=(~/src ~/contrib ~/src/learn ~/mw)
+
 
 GITHUB=git@github.com:michael-odell
 GITHUB_HTTPS=https://github.com/michael-odell
 MW_GITHUB=git@github.com:maplewell
 MW_GITHUB_HTTPS=https://github.com/maplewell
+
+which gdircolors &>/dev/null && _evalcache gdircolors
+
+#zstyle ':completion:*' completer _complete _approximate
+#zstyle ':completion:*' group-name ''
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+
+
+for cmd in kubectl helm ; do
+    if which $cmd &>/dev/null ; then
+        _evalcache $cmd completion zsh
+    fi
+done
+
+# The following lines were added by compinstall
+#
+#zstyle ':completion:*' completer _expand _complete _ignored _correct
+#zstyle ':completion:*' expand prefix suffix
+#zstyle ':completion:*' format '-- %d --'
+#zstyle ':completion:*' group-name ''
+#zstyle ':completion:*' list-colors ''
+#zstyle ':completion:*' max-errors 2
+#zstyle ':completion:*' menu select=long
+#zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
+#zstyle ':completion:*' squeeze-slashes true
+zstyle ':completion:*' use-compctl true
+zstyle ':completion:*' verbose true
+#zstyle :compinstall filename '/Users/michael/.zshrc'
+#
+#autoload -Uz compinit
+#compinit
+# End of lines added by compinstall

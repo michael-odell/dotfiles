@@ -4,3 +4,6 @@ export PAGER="less"
 export LESS="-RM~gIJFXQ -x4"
 export LESSHISTFILE="${HOME}/.history/less.${HOST%%.*}"
 export SYSTEMD_LESS="$LESS"
+
+# Turn on color for BSD versions of tools like ls
+export CLICOLOR=true

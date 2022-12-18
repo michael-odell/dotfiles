@@ -1,0 +1,13 @@
+cs() {
+    # With no parameters, change to the root of the current project (which means we must already be
+    # in a git directory
+    if (( $# == 0 )) ; then
+        cd "$(git rev-parse --show-toplevel)"
+
+    # Otherwise, change to the project specified
+    else
+        # Errors are still output -- just hide the name of the directory we're changing to.
+        CDPATH=${PRJPATH} cd "${@}" >/dev/null
+
+    fi
+}

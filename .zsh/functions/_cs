@@ -1,0 +1,4 @@
+#compdef cs
+
+_alternative \
+    "dirs:dir:_files -/ -W prjpath"
