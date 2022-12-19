@@ -15,6 +15,13 @@ ZGEN_DIR=${HOME}/.zsh/plugins
 ZSH_EVALCACHE_DIR=${HOME}/.zsh/evalcache
 mkdir -p "${ZGEN_DIR}" "${ZSH_EVALCACHE_DIR}"
 
+# On mac, use the 1Password socket rather than the one set up by launchd when you're local
+if [[ ${SSH_AUTH_SOCK} =~ ^/private/tmp/com.apple.launchd \
+    && -S "${HOME}/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock" ]] ; then
+
+    SSH_AUTH_SOCK="${HOME}/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+fi
+
 zgenom autoupdate
 if ! zgenom saved ; then
     zgenom load zsh-users/zsh-completions
@@ -54,18 +61,15 @@ if [[ -z "${HOMEBREW_PREFIX}" && -x /opt/homebrew/bin/brew ]] ; then
     _evalcache /opt/homebrew/bin/brew shellenv
 fi
 
+zgenom load git@github.com:michael-odell/temp-envselect
+alias es=envselect
+alias k8s=envselect
+
 alias dotfiles="git --git-dir=$HOME/.dotfiles.git --work-tree=$HOME"
 
 if which nvim &>/dev/null ; then
     alias vi=nvim
     alias vim=nvim
-fi
-
-# On mac, use the 1Password socket rather than the one set up by launchd when you're local
-if [[ ${SSH_AUTH_SOCK} =~ ^/private/tmp/com.apple.launchd \
-    && -S "${HOME}/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock" ]] ; then
-
-    SSH_AUTH_SOCK="${HOME}/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
 fi
 
 typeset -xUT PRJPATH prjpath
