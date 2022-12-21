@@ -8,6 +8,10 @@
 /.config/nvim/plugged
 /.config/htop
 /.config/iterm2
+/.config/configstore/
+/.config/gh/
+/.config/op/
+
 
 # .zsh has all things zsh -- most should be version controlled, but ones that
 # are generated should not.
@@ -25,11 +29,14 @@
 /.ssh
 /.history
 /.gnupg*
+/.aws
+/.docker
 
 # Caches shouldn't be stored
 /.cache
 /tmp
 /.viminfo
+/.ansible
 
 # Locations I manage via git that shoudln't be stored in this repo
 /.dotfiles.git

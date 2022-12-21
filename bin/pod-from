@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+kubectl get pods -oname | grep -E "^pod/$1" | tail -n 1 | sed 's#^.*/##'
