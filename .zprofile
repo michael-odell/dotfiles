@@ -9,3 +9,5 @@ export PATH="${HOME}/bin:$PATH"
 
 # Turn on color for BSD versions of tools like ls
 export CLICOLOR=true
+
+export PATH=${HOME}/bin:${PATH}

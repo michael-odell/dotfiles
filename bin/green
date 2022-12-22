@@ -1,0 +1,14 @@
+#!/usr/bin/env zsh -f
+
+# Send all output to stderr
+exec - >&2
+
+# 2 is green
+tput setaf 2
+
+echo -n "${@}"
+
+# Color off
+tput sgr0
+
+echo
