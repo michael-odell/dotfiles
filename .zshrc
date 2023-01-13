@@ -4,7 +4,7 @@
 fpath+=(~/.zsh/functions)
 autoload ~/.zsh/functions/*
 
-ZGEN_RESET_ON_CHANGE=(${HOME}/.zshrc)
+ZGEN_RESET_ON_CHANGE=(${HOME}/.zshrc ${HOME}/.zprofile ${HOME}/.p10k.zsh ${HOME}/.zsh/functions/*)
 ZGENOM_AUTOLOAD_COMPINIT=1
 if [[ ! -r ~/.zsh/zgenom ]] ; then
     git clone https://github.com/jandamm/zgenom.git ~/.zsh/zgenom
@@ -62,10 +62,16 @@ alias k8s=envselect
 
 alias dotfiles="git --git-dir=$HOME/.dotfiles.git --work-tree=$HOME"
 
+
+export EDITOR=vi
 if which nvim &>/dev/null ; then
     alias vi=nvim
     alias vim=nvim
+    export EDITOR=nvim
 fi
+
+# Explicitly use emacs bindings even though I have EDITOR set to vi
+bindkey -e
 
 typeset -xUT PRJPATH prjpath
 prjpath=(~/src ~/contrib ~/src/learn ~/mw)
