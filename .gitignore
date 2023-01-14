@@ -15,10 +15,8 @@
 
 # .zsh has all things zsh -- most should be version controlled, but ones that
 # are generated should not.
-/.zsh/evalcache
 /.zsh/debug
-/.zsh/zgenom
-/.zsh/plugins
+/.zsh/znap
 
 # I don't know what to do with .local yet -- treating it as a mix for the moment
 /.local/share
