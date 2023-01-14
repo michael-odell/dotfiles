@@ -73,8 +73,10 @@ fi
 # Explicitly use emacs bindings even though I have EDITOR set to vi
 bindkey -e
 
+# NOTE: The (N) in the list "nulls" the item if the directory doesn't
+# exist
 typeset -xUT PRJPATH prjpath
-prjpath=(~/src ~/contrib ~/src/learn ~/mw)
+prjpath=(~/src(N) ~/contrib(N) ~/src/learn(N) ~/mw(N))
 
 
 GITHUB=git@github.com:michael-odell
