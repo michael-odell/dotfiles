@@ -1,0 +1,48 @@
+#!/usr/bin/env zsh
+
+autoload -Uz colors && colors
+
+delay=0.5
+
+while (( $# )) ; do
+    echo "processing $1" >&2
+    case "$1" in
+        -d|--delay)
+            delay=$2
+            shift
+            ;;
+        --)
+            # Explicitly leave command after the -- to follow unix pattern
+            shift
+            break
+            ;;
+        *)
+            # Any unrecognized options or arguments immediately begin the command
+            break
+            ;;
+    esac
+    shift
+done
+
+times=0
+passes=0
+failures=0
+
+while true ; do
+    (( times += 1 ))
+
+    "${@}"
+    resp=$?
+
+    echo -n "${times}: "
+    if [[ ${resp} -eq 0 ]] ; then
+        (( passes += 1 ))
+        echo -n "${fg[green]}pass"
+    else
+        (( failures += 1 ))
+        echo -n "${fg[red]}fail"
+    fi
+
+    echo " (${passes} pass, ${failures} fail = $(( passes * 100 / times ))%)${reset_color}"
+    sleep "${delay}"
+done

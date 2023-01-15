@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+
+autoload -Uz colors && colors
+
+(( times=0 ))
+
+while [[ $? -ne 0 ]]  ; do
+    (( times += 1 ))
+    echo "${fg[blue]}Running attempt ${times}.${reset_color}"
+    "${@}"
+done

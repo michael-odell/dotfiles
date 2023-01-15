@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+# If the first parameter is a number, it will be interpreted as the chance of
+# success.
+success_chance=50
+if [[ $1 =~ ^[0-9]+$ ]] ; then
+   success_chance=$1
+   shift
+fi
+
+((rand = $RANDOM % 100))
+
+if (( success_chance > rand )) ; then
+   exec "${@}"
+else
+   echo "[sometimes faked failure.]" >&2
+   exit 243
+fi
