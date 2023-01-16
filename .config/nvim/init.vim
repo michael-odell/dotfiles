@@ -197,6 +197,8 @@ else
 
 endif
 
+highlight Comment cterm=italic
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 """ Indentation
 

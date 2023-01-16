@@ -4,11 +4,12 @@
 exec - >&2
 
 # 2 is green
-tput setaf 2
+echoti setaf 2
+echoti bold
 
 echo -n "${@}"
 
 # Color off
-tput sgr0
+echoti sgr0
 
 echo

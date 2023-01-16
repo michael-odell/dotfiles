@@ -36,6 +36,8 @@
 /tmp
 /.viminfo
 /.ansible
+# .terminfo woudln't _have_ to be a cache, but that's how I've set it up for now
+/.terminfo
 
 # Locations I manage via git that shoudln't be stored in this repo
 /.dotfiles.git

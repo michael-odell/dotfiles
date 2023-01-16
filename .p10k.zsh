@@ -151,7 +151,7 @@
   # segment is always an anchor.
   typeset -g POWERLEVEL9K_DIR_ANCHOR_FOREGROUND=4
   # Display anchor directory segments in bold.
-  typeset -g POWERLEVEL9K_DIR_ANCHOR_BOLD=true
+  typeset -g POWERLEVEL9K_DIR_ANCHOR_BOLD=false
   # Don't shorten directories that contain any of these files. They are anchors.
   local anchor_files=(
     .bzr
@@ -942,7 +942,7 @@
   typeset -g POWERLEVEL9K_MY_KUBE_KOPS_SRE_FOREGROUND=5
   typeset -g POWERLEVEL9K_MY_KUBE_KOPS_PROD_FOREGROUND=1
   function prompt_my_kube_kops {
-    local cluster=${ODELL_KUBE_CONTEXT:-}
+    local cluster=${ENVSELECT_KUBE_CONTEXT:-}
 
     # If there's no cluster detected, kubectl probably isn't installed.
     [[ -n "${cluster}" ]] || return 0
@@ -959,7 +959,7 @@
         ;;
     esac
 
-    local namespace=${ODELL_KUBE_NAMESPACE:-default}
+    local namespace=${ENVSELECT_KUBE_NAMESPACE:-default}
 
     local info="${cluster}"
     if [[ -n ${namespace} && ${namespace} != "default" ]] ; then
