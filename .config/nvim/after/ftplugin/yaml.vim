@@ -8,4 +8,5 @@ setlocal expandtab
 setlocal textwidth=120
 
 setlocal fo-=t
+setlocal fo+=o
 
