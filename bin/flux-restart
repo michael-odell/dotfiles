@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+NAMESPACE=default
+declare -a HELMRELEASES
+while [[ $# -gt 0 ]] ; do
+
+    case "$1" in
+        --namespace|-n)
+            NAMESPACE=$2
+            shift
+            ;;
+        *)
+            HELMRELEASES+=($1)
+            ;;
+    esac
+
+    shift
+done
+
+for release in "${HELMRELEASES[@]}" ; do
+
+    flux suspend -n "${NAMESPACE}" helmrelease "${release}"
+    flux resume -n "${NAMESPACE}" helmrelease "${release}"
+
+done
