@@ -207,7 +207,7 @@ set scrolloff=3
 set backspace=indent,eol,start
 set autoindent
 set shiftround
-set textwidth=100
+set textwidth=105
 
 " 2019-10-25: The vim wiki suggests that you should basically only turn cident or smartindent on for specific filetypes
 " where you find you need it.  I'm turning them off for now globally. (autoindent just copies previous indent and is

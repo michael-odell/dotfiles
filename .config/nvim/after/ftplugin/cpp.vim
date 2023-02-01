@@ -6,4 +6,4 @@ setlocal tabstop=4
 setlocal smarttab
 setlocal noexpandtab
 setlocal cindent
-setlocal textwidth=120
+setlocal textwidth=105

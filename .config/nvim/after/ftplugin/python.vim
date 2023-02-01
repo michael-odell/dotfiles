@@ -11,4 +11,4 @@ setlocal fileformat=unix
 "setlocal textwidth=79
 
 " But I can't stand the 79 characters from PEP8
-setlocal textwidth=120
+setlocal textwidth=105
