@@ -1,5 +1,8 @@
 [[ -f ~/.zsh/debug ]] && echo "--- .zshrc" >&2
 
+# Allow Ctrl-S as hotkey rather than terminal stop
+stty -ixon
+
 # Turn on powerlevel10k "instant prompt" per its docs.
 #   - https://github.com/romkatv/powerlevel10k#how-do-i-configure-instant-prompt
 # WARNING: no console input allowed from any commands after this.
