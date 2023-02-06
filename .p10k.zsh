@@ -48,15 +48,15 @@
   typeset -g POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(
     # =========================[ Line #1 ]=========================
     command_execution_time  # duration of the last command
-    asdf                    # asdf version manager (https://github.com/asdf-vm/asdf)
+    #asdf                    # asdf version manager (https://github.com/asdf-vm/asdf)
     #kubecontext             # current kubernetes context (https://kubernetes.io/)
     terraform               # terraform workspace (https://www.terraform.io)
-    my_kube_kops
+    envselect
     #aws                     # aws profile (https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html)
-    aws_eb_env              # aws elastic beanstalk environment (https://aws.amazon.com/elasticbeanstalk/)
-    azure                   # azure account name (https://docs.microsoft.com/en-us/cli/azure)
-    gcloud                  # google cloud cli account and project (https://cloud.google.com/)
-    google_app_cred         # google application credentials (https://cloud.google.com/docs/authentication/production)
+    #aws_eb_env              # aws elastic beanstalk environment (https://aws.amazon.com/elasticbeanstalk/)
+    #azure                   # azure account name (https://docs.microsoft.com/en-us/cli/azure)
+    #gcloud                  # google cloud cli account and project (https://cloud.google.com/)
+    #google_app_cred         # google application credentials (https://cloud.google.com/docs/authentication/production)
     context                 # user@hostname
     time                    # current time
     # =========================[ Line #2 ]=========================
@@ -905,7 +905,7 @@
   # Format for the current time: 09:51:02. See `man 3 strftime`.
   typeset -g POWERLEVEL9K_TIME_FORMAT='%D{%-I:%M:%S}'
   # If set to true, time will update when you hit enter. This way prompts for the past
-  # commands will contain the start times of t    heir commands as opposed to the default
+  # commands will contain the start times of their commands as opposed to the default
   # behavior where they contain the end times of their preceding commands.
   typeset -g POWERLEVEL9K_TIME_UPDATE_ON_COMMAND=true
   # Custom icon.
@@ -933,45 +933,11 @@
     p10k segment -t '%B%(!.%F{magenta}#.%F{6}>)%b%f'
   }
 
-  #typeset -g POWERLEVEL9K_MY_KUBE_KOPS_VISUAL_IDENTIFIER_EXPANSION=$'\u2388 '
-  #typeset -g POWERLEVEL9K_MY_KUBE_KOPS_BACKGROUND=14
-  #typeset -g POWERLEVEL9K_MY_KUBE_KOPS_FOREGROUND=5
-  typeset -g POWERLEVEL9K_MY_KUBE_KOPS_OTHER_FOREGROUND=11
-  typeset -g POWERLEVEL9K_MY_KUBE_KOPS_DEV_FOREGROUND=6
-  typeset -g POWERLEVEL9K_MY_KUBE_KOPS_STG_FOREGROUND=3
-  typeset -g POWERLEVEL9K_MY_KUBE_KOPS_SRE_FOREGROUND=5
-  typeset -g POWERLEVEL9K_MY_KUBE_KOPS_PROD_FOREGROUND=1
-  function prompt_my_kube_kops {
-    local cluster=${ENVSELECT_KUBE_CONTEXT:-}
-
-    # If there's no cluster detected, kubectl probably isn't installed.
-    [[ -n "${cluster}" ]] || return 0
-
-    local cluster_type=OTHER
-    local color=11 # grey
-    case "${cluster}" in
-      homelab)
-        cluster_type=STG
-        # Another option is PROD
-        ;;
-      docker-desktop)
-        cluster=local
-        ;;
-    esac
-
-    local namespace=${ENVSELECT_KUBE_NAMESPACE:-default}
-
-    local info="${cluster}"
-    if [[ -n ${namespace} && ${namespace} != "default" ]] ; then
-      info+="/${namespace}"
-    fi
-
-    p10k segment -s ${cluster_type} -t "[k8s:${info}]"
-  }
-
   # User-defined prompt segments can be customized the same way as built-in segments.
   # typeset -g POWERLEVEL9K_EXAMPLE_FOREGROUND=3
   # typeset -g POWERLEVEL9K_EXAMPLE_VISUAL_IDENTIFIER_EXPANSION='⭐'
+
+  typeset -g POWERLEVEL9K_ENVSELECT_FOREGROUND=green
 
   # Transient prompt works similarly to the builtin transient_rprompt option. It trims down prompt
   # when accepting a command line. Supported values:
@@ -992,7 +958,7 @@
   #   - verbose: Enable instant prompt and print a warning when detecting console output during
   #              zsh initialization. Choose this if you've never tried instant prompt, haven't
   #              seen the warning, or if you are unsure what this all means.
-  typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
+  typeset -g POWERLEVEL9K_INSTANT_PROMPT=verbose
 
   # Hot reload allows you to change POWERLEVEL9K options after Powerlevel10k has been initialized.
   # For example, you can type POWERLEVEL9K_BACKGROUND=red and see your prompt turn red. Hot reload

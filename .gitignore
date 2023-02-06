@@ -18,9 +18,14 @@
 /.zsh/debug
 /.zsh/znap
 
+
+# Packager-related directories
+/.gem
+
 # I don't know what to do with .local yet -- treating it as a mix for the moment
 /.local/share
 /.local/state
+
 
 # Potentially sensitive things shouldn't be stored
 /.kube
@@ -31,6 +36,7 @@
 /.docker
 /.terraform.d
 
+
 # Caches shouldn't be stored
 /.cache
 /tmp
@@ -38,6 +44,7 @@
 /.ansible
 # .terminfo woudln't _have_ to be a cache, but that's how I've set it up for now
 /.terminfo
+
 
 # Locations I manage via git that shoudln't be stored in this repo
 /.dotfiles.git
