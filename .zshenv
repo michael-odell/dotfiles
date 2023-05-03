@@ -5,3 +5,7 @@
 typeset -xUT MANPATH manpath
 typeset -xUT INFOPATH infopath
 typeset -xUT PATH path
+
+if [[ -r ~/.zshenv.mw ]] ; then
+    source ~/.zshenv.mw
+fi

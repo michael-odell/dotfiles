@@ -63,6 +63,7 @@ noremap <A-o> <esc>:A<CR>
 map <leader>o <esc>:A<CR>
 
 Plug 'martinda/Jenkinsfile-vim-syntax'
+Plug 'jjo/vim-cue'
 
 " Turn off lsp diagnostics
 "let g:lsp_diagnostics_enabled = 0

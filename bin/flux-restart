@@ -2,7 +2,8 @@
 
 set -euo pipefail
 
-NAMESPACE=default
+NAMESPACE=flux-system
+FLUXTYPE=helmrelease
 declare -a HELMRELEASES
 while [[ $# -gt 0 ]] ; do
 
@@ -11,6 +12,11 @@ while [[ $# -gt 0 ]] ; do
             NAMESPACE=$2
             shift
             ;;
+
+        --kustomization|-k)
+            FLUXTYPE=kustomization
+            ;;
+
         *)
             HELMRELEASES+=($1)
             ;;
@@ -21,7 +27,7 @@ done
 
 for release in "${HELMRELEASES[@]}" ; do
 
-    flux suspend -n "${NAMESPACE}" helmrelease "${release}"
-    flux resume -n "${NAMESPACE}" helmrelease "${release}"
+    flux suspend -n "${NAMESPACE}" "${FLUXTYPE}" "${release}"
+    flux resume -n "${NAMESPACE}" "${FLUXTYPE}" "${release}"
 
 done
