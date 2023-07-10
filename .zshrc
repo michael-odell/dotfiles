@@ -34,6 +34,7 @@ if [[ ${SSH_AUTH_SOCK} =~ ^/private/tmp/com.apple.launchd \
     SSH_AUTH_SOCK="${HOME}/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
 fi
 
+typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 
 znap source zsh-users/zsh-completions
 znap source zdharma-continuum/fast-syntax-highlighting

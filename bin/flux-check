@@ -1,13 +1,46 @@
 #!/usr/bin/env bash
 
-flux get source git
+ONLY_FAILURES=""
+while [[ $# -gt 0 ]] ; do
+
+    case $1 in
+        --only-failures|-f)
+            # Show only things that are not in a good state
+            ONLY_FAILURES=true
+            ;;
+        *)
+            echo "Unrecognized option $1" >&2
+            exit 1
+            ;;
+    esac
+    shift
+done
+
+git_output="$(flux get source git)"
+sourceret=$?
+if [[ -n "${ONLY_FAILURES}" ]] ; then
+    git_output=$(echo "${git_output}" | awk 'NR == 1 || $4 != "True"')
+fi
+echo "${git_output}"
+
 sourceret=$?
 echo
-flux get kustomization -A
+
+kustomization_output=$(flux get kustomization -A)
 kustomizationret=$?
+if [[ -n "${ONLY_FAILURES}" ]] ; then
+    kustomization_output=$(echo "${kustomization_output}" | awk 'NR == 1 || $5 != "True"')
+fi
+echo "${kustomization_output}"
 echo
-flux get helmrelease -A
+
+helm_output=$(flux get helmrelease -A)
 helmret=$?
+if [[ -n "${ONLY_FAILURES}" ]] ; then
+    helm_output=$(echo "${helm_output}" | awk 'NR == 1 || $5 != "True"')
+fi
+echo "${helm_output}"
+
 
 if [[ ${sourceret} == 0 && ${kustomizationret} == 0 && ${helmret} == 0 ]] ; then
     exit 0
