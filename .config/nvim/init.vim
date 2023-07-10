@@ -79,6 +79,8 @@ let g:lsp_signs_enabled = 1
 Plug 'prabirshrestha/asyncomplete.vim'
 "Plug 'prabirshrestha/asyncomplete-lsp.vim'
 
+Plug 'jjo/vim-cue'
+
 " Initialize plugin system
 call plug#end()
 

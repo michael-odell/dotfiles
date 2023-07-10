@@ -3,10 +3,7 @@
 module.exports = {
     defaultBrowser: "Safari",
     options: {
-        hideIcon: false,
-
-        // Change to true to see what URLs are flowing through finicky
-        logRequests: false
+        hideIcon: false
     },
     handlers: [
         {
@@ -26,6 +23,13 @@ module.exports = {
             //      "insperity.com"
             //])
             browser: "Google Chrome"
+        },
+
+        // Zoom join links open zoom directly, rather than first opening
+        // a safari tab
+        {
+            match: /zoom\.us\/j\//,
+            browser: "us.zoom.xos"
         }
     ]
 };

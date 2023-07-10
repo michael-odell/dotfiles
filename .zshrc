@@ -58,7 +58,7 @@ alias k8s=envselect
 source ~/.p10k.zsh
 
 zstyle ':completion:*' use-cache on
-setopt interactive_comments no_beep
+setopt interactive_comments no_beep auto_pushd
 
 alias "ls=ls -F"
 alias "ll=ls -ltr"
