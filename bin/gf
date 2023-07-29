@@ -1,0 +1,43 @@
+#!/usr/bin/env zsh
+
+# Chosen grep tool -- gnu grep
+grep=grep
+if which ggrep 2>/dev/null ; then
+    grep=ggrep
+fi
+
+# Note that file extension is added later -- it is determined by value of listonly
+logfile=~/tmp/gf_$(timestamp)
+
+# Default arugments, used on every execution of the script
+grepArgs="-nP"
+
+# All but the final argument will be passed to grep
+while [[ -n "$2" ]] ; do
+   if [[ $1 == "-l" || $1 == "-L" || $1 == "--files-without-match" || $1 == "--files-with-matches" ]] ; then
+      listonly="true"
+      grepArgs=($grepArgs $1)
+
+   else
+
+      # Add the argument to the list to be passed to grep
+      grepArgs=($grepArgs $1)
+   fi
+
+   shift
+done
+
+regex=$1
+
+if [[ -n "$listonly" ]] ; then
+   # Note: grep out /dev/null because it'll show up if you're listing files
+   # that do NOT contain the desired match
+   xargs -n 40 $grep ${=grepArgs} $regex /dev/null \
+      | egrep -v "^/dev/null$" \
+      | tee $logfile.files
+
+else
+   #echo "running $grep ${=grepArgs} $regex
+   xargs -n 40 $grep ${=grepArgs} $regex /dev/null | tee $logfile.grep | gc
+fi
+
