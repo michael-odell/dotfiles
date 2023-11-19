@@ -11,3 +11,4 @@ cs() {
 
     fi
 }
+# vim: set ft=zsh:

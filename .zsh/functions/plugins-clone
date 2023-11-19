@@ -1,0 +1,13 @@
+local p
+for p in "${ZSH_PLUGINS[@]}" ; do
+
+    if ! plugin-is-cloned "$p" ; then
+        mkdir -p "${ZSH_PLUGIN_DIR[$p]}"
+        git \
+            -C ~/.zsh/plugins \
+            clone "${ZSH_PLUGIN_REPO[$p]}"
+    fi
+
+done
+
+# vim: set ft=zsh:

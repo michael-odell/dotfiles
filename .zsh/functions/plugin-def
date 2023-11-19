@@ -1,0 +1,12 @@
+typeset -Uga ZSH_PLUGINS
+typeset -gA ZSH_PLUGIN_REPO ZSH_PLUGIN_DIR
+# typeset -gA ZSH_PLUGIN_COMMIT_ISH
+
+local plugin_repo=$1
+local plugin_name=${plugin_repo##*/}
+
+ZSH_PLUGINS+=(${plugin_name})
+ZSH_PLUGIN_REPO[${plugin_name}]=${plugin_repo}
+ZSH_PLUGIN_DIR[${plugin_name}]=~/.zsh/plugins/${plugin_name}
+
+# vim: set ft=zsh:

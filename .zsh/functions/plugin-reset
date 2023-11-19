@@ -1,0 +1,8 @@
+echo "Resetting plugins..." >&2
+rm -rf ~/tmp/plugin-reset
+if [[ -d ~/.zsh/plugins ]] ; then
+    mv ~/.zsh/plugins ~/tmp/
+fi
+mkdir -p ~/.zsh/plugins
+
+# vim: set ft=zsh:

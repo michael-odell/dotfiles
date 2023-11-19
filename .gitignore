@@ -16,7 +16,7 @@
 # .zsh has all things zsh -- most should be version controlled, but ones that
 # are generated should not.
 /.zsh/debug
-/.zsh/znap
+/.zsh/plugins
 
 
 # Packager-related directories

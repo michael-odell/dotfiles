@@ -7,7 +7,7 @@ if which ggrep 2>/dev/null ; then
 fi
 
 # Note that file extension is added later -- it is determined by value of listonly
-logfile=~/tmp/gf_$(timestamp)
+logfile=~/tmp/gf_$(date '+%Y%m%d_%H%M%S')
 
 # Default arugments, used on every execution of the script
 grepArgs="-nP"

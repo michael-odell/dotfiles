@@ -1,0 +1,26 @@
+# Adatpted from zsh_unplugged: https://github.com/mattmc3/zsh_unplugged/tree/main
+
+local p
+for p in "${ZSH_PLUGINS[@]}" ; do
+
+    local initfile=${ZSH_PLUGIN_DIR[$p]}/${p}.plugin.zsh
+
+    # Check alternate initfile paths
+    if [[ ! -e "$initfile" ]]; then
+        initfiles=(${ZSH_PLUGIN_DIR[$p]}/*.{plugin.zsh,zsh-theme,zsh,sh}(N))
+        if (( ! $#initfiles )) ; then
+            echo "No init file found for plugin ${p}." >&2
+            continue
+        fi
+
+        # And symlink them to our default name so we only have to do
+        # that search once
+        ln -sf $initfiles[1] $initfile
+    fi
+
+    # Load the plugin
+    fpath+=${ZSH_PLUGIN_DIR[$p]}
+    source "$initfile"
+done
+
+# vim: set ft=zsh:

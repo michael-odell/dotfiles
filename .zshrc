@@ -3,6 +3,21 @@
 # Allow Ctrl-S as hotkey rather than terminal stop
 stty -ixon
 
+fpath+=(~/.zsh/functions)
+autoload ~/.zsh/functions/*
+
+# Other people's plugins that I fork for change management purposes
+plugin-def git@github.com:michael-odell/zsh-completions
+plugin-def git@github.com:michael-odell/fast-syntax-highlighting
+plugin-def git@github.com:michael-odell/powerlevel10k
+
+# My own zsh configurations
+plugin-def git@github.com:michael-odell/zsh-history
+plugin-def git@github.com:michael-odell/zsh-homebrew
+plugin-def git@github.com:michael-odell/temp-envselect
+
+plugins-clone
+
 # Turn on powerlevel10k "instant prompt" per its docs.
 #   - https://github.com/romkatv/powerlevel10k#how-do-i-configure-instant-prompt
 # WARNING: no console input allowed from any commands after this.
@@ -10,22 +25,10 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# Load all my functions and completions
-fpath+=(~/.zsh/functions)
-autoload ~/.zsh/functions/*
+autoload -Uz compinit
+compinit -d ~/.cache/zcompdump
 
-ZNAP_DIR=${HOME}/.zsh/znap/znap
-if [[ ! -f ${ZNAP_DIR}/znap.zsh ]] ; then
-    mkdir -p ${ZNAP_DIR}
-    git clone https://github.com/marlonrichert/zsh-snap.git ${ZNAP_DIR}
-fi
-source ${ZNAP_DIR}/znap.zsh
-
-# Znap's default repo source should be github, via ssh
-zstyle :znap:clone: default-server "git@github.com:"
-# Don't turn on git-maintenance for me because I don't want it to modify my .gitconfig
-zstyle ':znap:*:*' git-maintenance off
-
+plugins-load
 
 # On mac, use the 1Password socket rather than the one set up by launchd when you're local
 if [[ ${SSH_AUTH_SOCK} =~ ^/private/tmp/com.apple.launchd \
@@ -36,20 +39,6 @@ fi
 
 typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 
-znap source zsh-users/zsh-completions
-znap source zdharma-continuum/fast-syntax-highlighting
-znap source romkatv/powerlevel10k powerlevel10k
-
-#znap source belak/zsh-utils completion
-
-# I find this adds noticable command lag so I commented it out on 2023-01-14.  Will I notice
-# anything missing?
-#znap source belak/zsh-utils editor
-
-znap source michael-odell/zsh-history
-znap source michael-odell/zsh-homebrew
-
-znap source michael-odell/temp-envselect
 alias es=envselect
 alias ess=envsubselect
 alias k8s=envselect
@@ -90,7 +79,7 @@ GITHUB_HTTPS=https://github.com/michael-odell
 MW_GITHUB=git@github.com:maplewell
 MW_GITHUB_HTTPS=https://github.com/maplewell
 
-which gdircolors &>/dev/null && znap eval gdircolors gdircolors
+which gdircolors &>/dev/null && cached-eval gdircolors
 
 #zstyle ':completion:*' completer _complete _approximate
 #zstyle ':completion:*' group-name ''
@@ -99,11 +88,11 @@ zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 
 for cmd in kubectl helm ; do
     if which $cmd &>/dev/null ; then
-        znap eval $cmd "$cmd completion zsh"
+        cached-eval $cmd completion zsh
     fi
 done
 if which stern >&/dev/null ; then
-    znap eval stern "stern --completion zsh"
+    cached-eval stern --completion zsh
 fi
 
 # Generate terminfo files if they haven't been yet.  I do this to

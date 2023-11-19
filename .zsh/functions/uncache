@@ -1,0 +1,18 @@
+echo "Uncaching..." >&2
+
+# Destroy last backup and start a new one
+rm -fr ~/tmp/uncache
+mkdir ~/tmp/uncache
+
+local CACHE_DIRS=(
+    ~/.cache
+)
+
+for cache_dir in ${CACHE_DIRS[@]} ; do
+    if [[ -d ${cache_dir} ]] ; then
+        mv ${cache_dir} ~/tmp/uncache/
+        mkdir -p ${cache_dir}
+    fi
+done
+
+# vim: set ft=zsh:
