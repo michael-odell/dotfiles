@@ -35,6 +35,10 @@
 /.aws
 /.docker
 /.terraform.d
+/.node_repl_history
+/.ipython
+/.python_history
+/.psql_history
 
 
 # Caches shouldn't be stored
@@ -44,6 +48,9 @@
 /.ansible
 # .terminfo woudln't _have_ to be a cache, but that's how I've set it up for now
 /.terminfo
+/.wget-hsts
+/.npm
+/.fontconfig
 
 
 # Locations I manage via git that shoudln't be stored in this repo
@@ -66,9 +73,9 @@
 /.Trash
 /.cups
 
-# Dropbox
 /Dropbox
 /.dropbox
+/SynologyDrive
 
 # I don't use subversion for anything at the moment, but something keeps triggering generation of
 # configuration for it, so ignore that.

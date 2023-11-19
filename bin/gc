@@ -1,0 +1,44 @@
+#!/usr/bin/env perl
+
+################################################################################
+### gc
+###   Simple script to color and format the output of grep if your grep output
+###   includes filenames and line numbers.
+###
+###   You can coerce grep to include filenames by specifying at least two
+###   filenames as arguments to it.  (If you only need to grep one file, use
+###   /dev/null as the other one.
+###
+###   Weird things will happen if your filenames contain colon characters.
+###
+################################################################################
+
+# Set up colors -- change the values of these variables to change
+# the output colors
+use Term::ANSIColor qw(:constants);
+my ($filename_color, $linenum_color, $text_color, $nocolor);
+$filename_color = GREEN;
+$linenum_color = YELLOW;
+$text_color = RESET;
+$nocolor = RESET;
+
+my ($current_file);
+$current_file = "";
+
+while (<STDIN>) {
+   # Parse out the (1) filename, (2) separator character, (3) line number, (4) text
+   if ( m/^([^:]+)([-:])(\d+)[-:](.*)$/ ) {
+
+      # If this is a different file, print the filename
+      if ($current_file ne $1) {
+         print $filename_color, $1, "\n";
+         $current_file = $1;
+      }
+
+      # Print the line number followed by the text
+      print $linenum_color, $3, $2, $text_color, $4, $nocolor, "\n";
+   }
+   elsif ( m/^(\d+):(.*)$/ ) {
+      print $linenum_color, $1, $2, $text_color, $3, $nocolor, "\n";
+   }
+}
