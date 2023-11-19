@@ -31,10 +31,10 @@
 
 [merge]
 	conflictStyle = diff3
-
 	tool = Kaleidoscope
-[includeIf "gitdir:~/mw/**"]
-    path = ~/.gitconfig.mw
+
+[includeIf "gitdir:~/bmc/**"]
+    path = ~/.gitconfig.bmc
 
 [filter "lfs"]
 	process = git-lfs filter-process

@@ -18,9 +18,9 @@ plugin-def git@github.com:michael-odell/temp-envselect
 
 plugins-clone
 
-# Turn on powerlevel10k "instant prompt" per its docs.
-#   - https://github.com/romkatv/powerlevel10k#how-do-i-configure-instant-prompt
+# Load powerlevel10k instant prompt.  Ref: https://github.com/romkatv/powerlevel10k#how-do-i-configure-instant-prompt
 # WARNING: no console input allowed from any commands after this.
+typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
@@ -36,8 +36,6 @@ if [[ ${SSH_AUTH_SOCK} =~ ^/private/tmp/com.apple.launchd \
 
     SSH_AUTH_SOCK="${HOME}/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
 fi
-
-typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 
 alias es=envselect
 alias ess=envsubselect
@@ -71,13 +69,11 @@ bindkey -e
 # NOTE: The (N) in the list "nulls" the item if the directory doesn't
 # exist
 typeset -xUT PRJPATH prjpath
-prjpath=(~/src(N) ~/contrib(N) ~/src/learn(N) ~/mw(N))
+prjpath=(~/src(N) ~/contrib(N) ~/src/learn(N))
 
 
 GITHUB=git@github.com:michael-odell
 GITHUB_HTTPS=https://github.com/michael-odell
-MW_GITHUB=git@github.com:maplewell
-MW_GITHUB_HTTPS=https://github.com/maplewell
 
 which gdircolors &>/dev/null && cached-eval gdircolors
 
