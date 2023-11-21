@@ -3,8 +3,8 @@
 # Allow Ctrl-S as hotkey rather than terminal stop
 stty -ixon
 
-fpath+=(~/.zsh/functions)
-autoload ~/.zsh/functions/*
+fpath=(~/.zsh/functions $fpath)
+autoload ${fpath[1]}/*(:t)
 
 # Other people's plugins that I fork for change management purposes
 plugin-def git@github.com:michael-odell/zsh-completions
