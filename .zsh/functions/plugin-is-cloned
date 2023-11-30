@@ -1,4 +1,7 @@
 local plugin_name=$1
-[[ -v ZSH_PLUGIN_DIR[$plugin_name] && -d "${ZSH_PLUGIN_DIR[$plugin_name]}/.git" ]]
+
+# NOTE: -v ZSH_PLUGIN_DIR[$plugin_name] seems the more proper check
+# here, but isn't supported by zsh 5.0.2, as on chi4-mgtxjump-1
+[[ -n "${ZSH_PLUGIN_DIR[$plugin_name]}" && -d "${ZSH_PLUGIN_DIR[$plugin_name]}/.git" ]]
 
 # vim: set ft=zsh:
