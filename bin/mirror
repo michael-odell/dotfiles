@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+SOURCES=(
+    https://github.com/zsh-users/zsh-completions.git
+    https://github.com/romkatv/powerlevel10k.git
+    https://github.com/zdharma-continuum/fast-syntax-highlighting.git
+)
+
+DESTINATIONS=(
+    git@github.com:michael-odell/zsh-completions.git
+    git@github.com:michael-odell/powerlevel10k.git
+    git@github.com:michael-odell/fast-syntax-highlighting.git
+)
+
+DIR=$HOME/.cache/mirror
+mkdir -p "${DIR}"
+cd "${DIR}"
+
+
+i=0
+while (( i < ${#SOURCES[@]} )) ; do
+    source=${SOURCES[$i]}
+    dest=${DESTINATIONS[$i]}
+    repo_name=${source##*/}
+
+    if [[ ! -d ${DIR}/${repo_name} ]] ; then
+        cd "${DIR}"
+        echo git clone --bare "${source}"
+        git clone --bare "${source}"
+        cd "${DIR}/${repo_name}"
+    else
+        cd "${DIR}/${repo_name}"
+        echo git fetch origin
+        git fetch origin
+    fi
+
+    echo git push --mirror "${dest}"
+    git push --mirror "${dest}"
+
+    i=$(( $i + 1))
+done
