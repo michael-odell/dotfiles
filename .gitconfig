@@ -36,11 +36,8 @@
 [includeIf "gitdir:~/bmc/**"]
     path = ~/.gitconfig.bmc
 
-[filter "lfs"]
-	process = git-lfs filter-process
-	required = true
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
+[http "https://saascm-gogs.onbmc.com/"]
+    sslVerify = false
 
 [pull]
 	ff = only

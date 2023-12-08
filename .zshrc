@@ -8,7 +8,7 @@ print -v HOSTNAME_SHORT -P %m     # Set HOSTNAME_SHORT in OS-independent way
 fpath=(~/.zsh/functions $fpath)
 autoload ${fpath[1]}/*(:t)
 
-if [[ -f ~/.bmc ]] ; then
+if [[ -f ~/.onbmc ]] ; then
     PLUGIN_SOURCE=https://saascm-gogs.onbmc.com/modell
 else
     PLUGIN_SOURCE=git@github.com:michael-odell
