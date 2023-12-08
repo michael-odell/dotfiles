@@ -3,9 +3,13 @@ for p in "${ZSH_PLUGINS[@]}" ; do
 
     if ! plugin-is-cloned "$p" ; then
         mkdir -p "${ZSH_PLUGIN_DIR[$p]}"
-        git \
-            -C ~/.zsh/plugins \
-            clone "${ZSH_PLUGIN_REPO[$p]}"
+        (
+            # NOTE: git -C <director> is awesome, but not supported by ancient git clients such as the
+            # one on chi4-mgtxjump-1
+            cd ~/.zsh/plugins
+            git \
+                clone "${ZSH_PLUGIN_REPO[$p]}.git"
+        )
     fi
 
 done

@@ -14,13 +14,23 @@ call plug#begin('~/.config/nvim/plugged')
 Plug 'tpope/vim-fugitive'
 Plug 'vim-scripts/matchit.zip'
 
+if executable('ctags')
+    " This automatically runs ctags on projects so that they're quickly set up for vim's use.  It does
+    " cause .tags files to get generated, though.
+    let g:gutentags_ctags_tagfile='.tags'
+    Plug 'ludovicchabant/vim-gutentags'
+
+    let g:airline_section_y = '%{gutentags#statusline()}%{&et? "" : "<<TABS>>"} [%{&ft}:%{&fo}]'
+else
+    let g:airline_section_y = '%{&et? "" : "<<TABS>>"} [%{&ft}:%{&fo}]'
+endif
+
 set laststatus=2
 let g:airline#extensions#branch#enabled = 0
 let g:airline#extensions#branch#empty_message = ''
 let g:airline#extensions#syntastic#enabled = 0
 let g:airline#extensions#whitespace#enabled = 0
 " Replace the 'utf-8[unix] section with formatoptions
-let g:airline_section_y = '%{gutentags#statusline()}%{&et? "" : "<<TABS>>"} [%{&ft}:%{&fo}]'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
@@ -34,11 +44,6 @@ let g:indent_guides_color_change_percent = 3 "default is 10
 "let g:indent_guides_guide_size = 1
 let g:indent_guides_start_level = 1
 let g:indent_guides_enable_on_vim_startup = 1
-
-" This automatically runs ctags on projects so that they're quickly set up for vim's use.  It does
-" cause .tags files to get generated, though.
-let g:gutentags_ctags_tagfile='.tags'
-Plug 'ludovicchabant/vim-gutentags'
 
 let g:polyglot_disabled = ['yaml', 'bash', 'ruby']
 let g:vim_json_syntax_conceal = 0

@@ -9,7 +9,13 @@ fi
 if [[ ! -e "${filename}" ]] ; then
     echo "cached-eval: Generating cache for ${argv[*]}" >&2
     "${argv[@]}" > ${filename}
+
+    if [[ $? -ne 0 ]] ; then
+        echo "cached-eval: command failed: ${argv[*]}" >&2
+        rm -f "${filename}"
+        return 2
+    fi
 fi
-eval "$(< ${filename} )"
+source "${filename}"
 
 # vim: set ft=zsh:

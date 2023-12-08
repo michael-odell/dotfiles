@@ -3,7 +3,7 @@ typeset -gA ZSH_PLUGIN_REPO ZSH_PLUGIN_DIR
 # typeset -gA ZSH_PLUGIN_COMMIT_ISH
 
 local plugin_repo=$1
-local plugin_name=${plugin_repo##*/}
+local plugin_name=${${plugin_repo##*/}%%.git}
 
 ZSH_PLUGINS+=(${plugin_name})
 ZSH_PLUGIN_REPO[${plugin_name}]=${plugin_repo}

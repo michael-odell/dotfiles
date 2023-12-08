@@ -1,29 +1,42 @@
 [[ -f ~/.zsh/debug ]] && echo "--- .zshrc" >&2
 
-# Allow Ctrl-S as hotkey rather than terminal stop
-stty -ixon
+fpath=(~/.zsh/functions $fpath)
+autoload ${fpath[1]}/*(:t)
+
+print -v HOSTNAME_SHORT -P %m     # Set HOSTNAME_SHORT in OS-independent way
 
 fpath=(~/.zsh/functions $fpath)
 autoload ${fpath[1]}/*(:t)
 
-# Other people's plugins that I fork for change management purposes
-plugin-def git@github.com:michael-odell/zsh-completions
-plugin-def git@github.com:michael-odell/fast-syntax-highlighting
-plugin-def git@github.com:michael-odell/powerlevel10k
+if [[ -f ~/.bmc ]] ; then
+    PLUGIN_SOURCE=https://saascm-gogs.onbmc.com/modell
+else
+    PLUGIN_SOURCE=git@github.com:michael-odell
+fi
 
-# My own zsh configurations
-plugin-def git@github.com:michael-odell/zsh-history
-plugin-def git@github.com:michael-odell/zsh-homebrew
-plugin-def git@github.com:michael-odell/temp-envselect
+plugin-def ${PLUGIN_SOURCE}/zsh-completions
+plugin-def ${PLUGIN_SOURCE}/fast-syntax-highlighting
+plugin-def ${PLUGIN_SOURCE}/powerlevel10k
+
+plugin-def ${PLUGIN_SOURCE}/zsh-history
+
+if [[ ${OSTYPE} == darwin* ]] ; then
+    plugin-def ${PLUGIN_SOURCE}/zsh-homebrew
+fi
+#plugin-def ${PLUGIN_SOURCE}/temp-envselect
 
 plugins-clone
 
+
+# Allow Ctrl-S as hotkey rather than terminal stop
+stty -ixon
+
 # Load powerlevel10k instant prompt.  Ref: https://github.com/romkatv/powerlevel10k#how-do-i-configure-instant-prompt
 # WARNING: no console input allowed from any commands after this.
-typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
+typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 
 autoload -Uz compinit
 compinit -d ~/.cache/zcompdump
