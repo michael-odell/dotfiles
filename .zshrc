@@ -8,11 +8,10 @@ print -v HOSTNAME_SHORT -P %m     # Set HOSTNAME_SHORT in OS-independent way
 fpath=(~/.zsh/functions $fpath)
 autoload ${fpath[1]}/*(:t)
 
-if [[ -f ~/.onbmc ]] ; then
-    PLUGIN_SOURCE=https://saascm-gogs.onbmc.com/modell
-else
-    PLUGIN_SOURCE=git@github.com:michael-odell
-fi
+[[ -r ~/.zshrc.local ]] && source ~/.zshrc.local
+
+: ${PLUGIN_SOURCE:=git@github.com:michael-odell}
+: ${CACHE_DIR=${XDG_CACHE_HOME:-$HOME/.cache}}
 
 plugin-def ${PLUGIN_SOURCE}/zsh-completions
 plugin-def ${PLUGIN_SOURCE}/fast-syntax-highlighting
@@ -20,9 +19,9 @@ plugin-def ${PLUGIN_SOURCE}/powerlevel10k
 
 plugin-def ${PLUGIN_SOURCE}/zsh-history
 
-if [[ ${OSTYPE} == darwin* ]] ; then
-    plugin-def ${PLUGIN_SOURCE}/zsh-homebrew
-fi
+[[ ${OSTYPE} == darwin* ]] && plugin-def ${PLUGIN_SOURCE}/zsh-homebrew
+[[ -r ~/.onbmc ]] && plugin-def ${PLUGIN_SOURCE}/bmc-tools
+
 #plugin-def ${PLUGIN_SOURCE}/temp-envselect
 
 plugins-clone
@@ -33,8 +32,8 @@ stty -ixon
 
 # Load powerlevel10k instant prompt.  Ref: https://github.com/romkatv/powerlevel10k#how-do-i-configure-instant-prompt
 # WARNING: no console input allowed from any commands after this.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+if [[ -r "${CACHE_DIR}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${CACHE_DIR}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 
@@ -82,7 +81,7 @@ bindkey -e
 # NOTE: The (N) in the list "nulls" the item if the directory doesn't
 # exist
 typeset -xUT PRJPATH prjpath
-prjpath=(~/src(N) ~/contrib(N) ~/src/learn(N))
+prjpath=(~/src(N) ~/contrib(N) ~/src/learn(N) ~/bmc ~/.zsh/plugins(N))
 
 
 GITHUB=git@github.com:michael-odell

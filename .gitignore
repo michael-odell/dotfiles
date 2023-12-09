@@ -18,6 +18,9 @@
 /.zsh/debug
 /.zsh/plugins
 
+# And this is host-specific
+/.zshrc.local
+
 
 # Packager-related directories
 /.gem
@@ -58,9 +61,9 @@
 /.etc.git
 /src
 /contrib
-/mw
+/bmc
 
-# macOS directories
+# macOS stuff
 /Applications
 /Desktop
 /Documents
@@ -72,6 +75,7 @@
 /Public
 /.Trash
 /.cups
+/.CFUserTextEncoding
 
 /Dropbox
 /.dropbox
@@ -92,3 +96,7 @@
 #private/
 #src/
 
+# Miscellaneous things related to work
+/.anyconnect
+/.cisco
+/OneDrive - BMC Software, Inc
