@@ -18,16 +18,15 @@
 /.zsh/debug
 /.zsh/plugins
 
-# And this is host-specific
+
+# System-local things shouldn't generally be shared
 /.zshrc.local
+/.local
 
 
 # Packager-related directories
 /.gem
 
-# I don't know what to do with .local yet -- treating it as a mix for the moment
-/.local/share
-/.local/state
 
 
 # Potentially sensitive things shouldn't be stored
@@ -99,4 +98,5 @@
 # Miscellaneous things related to work
 /.anyconnect
 /.cisco
+/.onbmc
 /OneDrive - BMC Software, Inc
