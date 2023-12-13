@@ -11,6 +11,7 @@
 /.config/configstore/
 /.config/gh/
 /.config/op/
+/.config/gcloud/
 
 
 # .zsh has all things zsh -- most should be version controlled, but ones that
