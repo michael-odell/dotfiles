@@ -15,10 +15,7 @@ autoload ${fpath[1]}/*(:t)
 
 plugin-def ${PLUGIN_SOURCE}/zsh-completions
 plugin-def ${PLUGIN_SOURCE}/fast-syntax-highlighting
-
-typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 plugin-def ${PLUGIN_SOURCE}/powerlevel10k
-
 plugin-def ${PLUGIN_SOURCE}/zsh-history
 
 [[ ${OSTYPE} == darwin* ]] && plugin-def ${PLUGIN_SOURCE}/zsh-homebrew
