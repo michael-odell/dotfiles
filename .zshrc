@@ -15,6 +15,8 @@ autoload ${fpath[1]}/*(:t)
 
 plugin-def ${PLUGIN_SOURCE}/zsh-completions
 plugin-def ${PLUGIN_SOURCE}/fast-syntax-highlighting
+
+typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 plugin-def ${PLUGIN_SOURCE}/powerlevel10k
 
 plugin-def ${PLUGIN_SOURCE}/zsh-history
@@ -87,20 +89,20 @@ prjpath=(~/src(N) ~/contrib(N) ~/src/learn(N) ~/bmc ~/.zsh/plugins(N))
 GITHUB=git@github.com:michael-odell
 GITHUB_HTTPS=https://github.com/michael-odell
 
-which gdircolors &>/dev/null && cached-eval gdircolors
+which gdircolors &>/dev/null && cached-source gdircolors
 
 #zstyle ':completion:*' completer _complete _approximate
 #zstyle ':completion:*' group-name ''
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 
 
-for cmd in kubectl helm ; do
+for cmd in kubectl helm podman ; do
     if which $cmd &>/dev/null ; then
-        cached-eval $cmd completion zsh
+        cached-source $cmd completion zsh
     fi
 done
 if which stern >&/dev/null ; then
-    cached-eval stern --completion zsh
+    cached-source stern --completion zsh
 fi
 
 # Generate terminfo files if they haven't been yet.  I do this to

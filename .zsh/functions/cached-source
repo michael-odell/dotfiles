@@ -1,0 +1,21 @@
+mkdir -p ~/.cache/cached-source
+local filename=~/.cache/cached-source/"${argv[*]//[^-A-Za-z0-9]/_}"
+
+if (( ! ${#argv} )) ; then
+    echo "cached-source: no command supplied" >&2
+    return 1
+fi
+
+if [[ ! -e "${filename}" ]] ; then
+    echo "cached-source: Generating cache for ${argv[*]}" >&2
+    "${argv[@]}" > ${filename}
+
+    if [[ $? -ne 0 ]] ; then
+        echo "cached-source: command failed: ${argv[*]}" >&2
+        rm -f "${filename}"
+        return 2
+    fi
+fi
+source "${filename}"
+
+# vim: set ft=zsh:
