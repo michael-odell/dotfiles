@@ -6,3 +6,8 @@ if [[ ${OSTYPE} == darwin* ]] ; then
     typeset -xUT MANPATH manpath
     typeset -xUT INFOPATH infopath
 fi
+
+path+=(
+    # Multipass stores aliases here on macos
+    "$HOME/Library/Application Support/multipass/bin"(N)
+)
