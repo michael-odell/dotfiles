@@ -1,8 +1,5 @@
 [[ -f ~/.zsh/debug ]] && echo "--- .zshrc" >&2
 
-fpath=(~/.zsh/functions $fpath)
-autoload ${fpath[1]}/*(:t)
-
 print -v HOSTNAME_SHORT -P %m     # Set HOSTNAME_SHORT in OS-independent way
 
 fpath=(~/.zsh/functions $fpath)
@@ -36,10 +33,20 @@ if [[ -r "${CACHE_DIR}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
 fi
 typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 
+
+[[ -d ~/.asdf ]] && fpath=($fpath ~/.asdf/completions)
+
 autoload -Uz compinit
 compinit -d ~/.cache/zcompdump
 
 plugins-load
+
+if [[ -d ~/.asdf ]] ; then
+    export ASDF_FORCE_PREPEND=no
+    export ASDF_DATA_DIR=$HOME/.local/asdf
+    mkdir -p "${ASDF_DATA_DIR}"
+    source ~/.asdf/asdf.sh
+fi
 
 # On mac, use the 1Password socket rather than the one set up by launchd when you're local
 if [[ ${SSH_AUTH_SOCK} =~ ^/private/tmp/com.apple.launchd \
@@ -93,13 +100,17 @@ which gdircolors &>/dev/null && cached-source gdircolors
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 
 
-for cmd in kubectl helm podman ; do
+for cmd in kubectl helm podman kind ; do
     if which $cmd &>/dev/null ; then
         cached-source $cmd completion zsh
     fi
 done
 if which stern >&/dev/null ; then
     cached-source stern --completion zsh
+fi
+if which op >&/dev/null ; then
+    cached-source op completion zsh
+    compdef _op op
 fi
 
 # Generate terminfo files if they haven't been yet.  I do this to

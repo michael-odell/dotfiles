@@ -12,6 +12,7 @@
 /.config/gh/
 /.config/op/
 /.config/gcloud/
+/.config/containers
 
 
 # .zsh has all things zsh -- most should be version controlled, but ones that
@@ -62,6 +63,7 @@
 /src
 /contrib
 /bmc
+/.asdf
 
 # macOS stuff
 /Applications
