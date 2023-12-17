@@ -20,7 +20,8 @@ plugin-def ${PLUGIN_SOURCE}/zsh-history
 
 #plugin-def ${PLUGIN_SOURCE}/temp-envselect
 
-plugins-clone
+# Clone or update plugins if it has been long enough since they were last updated
+plugins-update
 
 
 # Allow Ctrl-S as hotkey rather than terminal stop
