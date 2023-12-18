@@ -13,8 +13,12 @@ for p in "${ZSH_PLUGINS[@]}" ; do
 
     if ! plugin-is-cloned "$p" ; then
         git clone "${ZSH_PLUGIN_REPO[$p]}.git" "${ZSH_PLUGIN_DIR[$p]}"
-        date "${last_update_format}" > $p.last-update
-        continue
+        if [[ $? -eq 1 ]] ; then
+            date "${last_update_format}" > $p.last-update
+            continue
+        else
+            echo "Failed to clone ${p}." >&2
+        fi
     fi
 
     # If there's no timestamp file, or if the timestamp has changed, or if --force is specified, do an
@@ -28,11 +32,15 @@ for p in "${ZSH_PLUGINS[@]}" ; do
             cd "${ZSH_PLUGIN_DIR[$p]}"
             if [[ -z "$(git status --porcelain --untracked-files=no)" ]] ; then
                 git pull --quiet --prune
+                if [[ $? -eq 0 ]] ; then
+                    date "${last_update_format}" > ~/.zsh/plugins/$p.last-update
+                else
+                    echo "Error pulling $p" >&2
+                fi
             else
                 echo "Skipping updates to "$p" because ${ZSH_PLUGIN_DIR[$p]} isn't clean." >&2
             fi
         )
-        date "${last_update_format}" > $p.last-update
     fi
 
 done
