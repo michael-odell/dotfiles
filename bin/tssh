@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+
+#
+# Quickly open a tmux pane to many different ssh servers and broadcast input to all of them.  Inspired by
+# cssh.
+#
+
+set -euo pipefail
+
+SSH_OPTS=( )
+HOSTS=( )
+SSH_CMD=( )
+
+while (( $# )) ; do
+
+    case $1 in
+        --)
+            echo "CMDSTART: $1"
+            shift
+            SSH_CMD=( "${@}" )
+            break
+            ;;
+        -*)
+            SSH_OPTS+=( "$1" )
+            ;;
+        *)
+            HOSTS+=( "$1" )
+            ;;
+    esac
+
+    shift
+done
+
+
+first_time=1
+session=""
+for host in "${HOSTS[@]}" ; do
+
+    # Build ssh command that'll be executed for this host in a single pane
+    ssh_cmd=(ssh "${SSH_OPTS[@]}" "${host}")
+    if [[ ${#SSH_CMD[@]} -gt 0 ]] ; then
+        ssh_cmd+=( -- "${SSH_CMD[@]}" )
+    fi
+
+    # The first time, we create a tmux session (detached) and remember its name
+    if [[ ${first_time} -eq 1 ]] ; then
+        session=$(tmux new-session -d -x $(tput cols) -y $(tput lines) -- "${ssh_cmd[@]}")
+        first_time=0
+
+    # After the first time, we just add splits to that
+    else
+        tmux split-window -l 1 -- "${ssh_cmd[@]}"
+        tmux select-layout tiled
+    fi
+
+done
+
+# Finally, attach and send input to all by default
+tmux set-window-option synchronize-panes on
+tmux attach -t "${session}"

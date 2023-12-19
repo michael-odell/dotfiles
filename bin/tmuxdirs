@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+first_time=1
+session=""
+
+for dir in "${@}" ; do
+
+    if [[ ${first_time} -eq 1 ]] ; then
+
+        # The first time, we must create a tmux session and remember its name
+        session=$(tmux new-session -d -c "${dir}" -x $(tput cols) -y $(tput lines))
+        first_time=0
+
+    else
+
+        # After the first time, we just add splits to that
+        tmux split-window -c "${dir}" -l 1
+        tmux select-layout tiled
+    fi
+
+done
+
+tmux set-window-option synchronize-panes on
+tmux attach -t "${session}"
