@@ -1,0 +1,3 @@
+--ignore-file=ext:backup
+--ignore-file=is:terraform.tfstate
+--ignore-file=is:terraform.tfstate.backup

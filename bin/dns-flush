@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+if [[ $(uname) != "Darwin" ]] ; then
+    echo "ERROR: This script only supports macOS." >&2
+    exit 2
+fi
+
+
+sudo dscacheutil -flushcache
+sudo killall -HUP mDNSResponder

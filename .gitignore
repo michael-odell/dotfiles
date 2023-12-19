@@ -32,17 +32,18 @@
 
 
 # Potentially sensitive things shouldn't be stored
-/.kube
-/.ssh
-/.history
-/.gnupg*
 /.aws
 /.docker
-/.terraform.d
-/.node_repl_history
+/.gnupg*
+/.history
 /.ipython
-/.python_history
+/.kube
+/.node_repl_history
+/.oci
 /.psql_history
+/.python_history
+/.ssh
+/.terraform.d
 
 
 # Caches shouldn't be stored
