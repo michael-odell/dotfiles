@@ -17,13 +17,13 @@ fi
 : ${PLUGIN_SOURCE:=git@github.com:michael-odell}
 : ${CACHE_DIR=${XDG_CACHE_HOME:-$HOME/.cache}}
 
-plugin-def ${PLUGIN_SOURCE}/zsh-completions
 plugin-def ${PLUGIN_SOURCE}/fast-syntax-highlighting
 plugin-def ${PLUGIN_SOURCE}/powerlevel10k
 plugin-def ${PLUGIN_SOURCE}/zsh-history
 
 [[ ${OSTYPE} == darwin* ]] && plugin-def ${PLUGIN_SOURCE}/zsh-homebrew
 [[ -r ~/.onbmc ]] && plugin-def ${PLUGIN_SOURCE}/bmc-tools
+plugin-def ${PLUGIN_SOURCE}/zsh-completions
 
 #plugin-def ${PLUGIN_SOURCE}/temp-envselect
 
