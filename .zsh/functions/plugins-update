@@ -5,7 +5,8 @@ fi
 
 mkdir -p ~/.zsh/plugins
 
-local last_update_format="+%Y-%m-%d"
+# Year and week number
+local last_update_format="+%Y-%U"
 
 local p
 for p in "${ZSH_PLUGINS[@]}" ; do

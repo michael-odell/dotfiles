@@ -44,6 +44,9 @@
 /.python_history
 /.ssh
 /.terraform.d
+/.colima
+/.lima
+/.rancher
 
 
 # Caches shouldn't be stored

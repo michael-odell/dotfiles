@@ -7,6 +7,13 @@ autoload ${fpath[1]}/*(:t)
 
 [[ -r ~/.zshrc.local ]] && source ~/.zshrc.local
 
+# On mac, use the 1Password socket rather than the one set up by launchd when you're local
+if [[ ${SSH_AUTH_SOCK} =~ ^/private/tmp/com.apple.launchd \
+    && -S "${HOME}/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock" ]] ; then
+
+    SSH_AUTH_SOCK="${HOME}/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+fi
+
 : ${PLUGIN_SOURCE:=git@github.com:michael-odell}
 : ${CACHE_DIR=${XDG_CACHE_HOME:-$HOME/.cache}}
 
@@ -37,23 +44,17 @@ typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 
 [[ -d ~/.asdf ]] && fpath=($fpath ~/.asdf/completions)
 
+plugins-load
+
 autoload -Uz compinit
 compinit -d ~/.cache/zcompdump
 
-plugins-load
 
 if [[ -d ~/.asdf ]] ; then
     export ASDF_FORCE_PREPEND=no
     export ASDF_DATA_DIR=$HOME/.local/asdf
     mkdir -p "${ASDF_DATA_DIR}"
     source ~/.asdf/asdf.sh
-fi
-
-# On mac, use the 1Password socket rather than the one set up by launchd when you're local
-if [[ ${SSH_AUTH_SOCK} =~ ^/private/tmp/com.apple.launchd \
-    && -S "${HOME}/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock" ]] ; then
-
-    SSH_AUTH_SOCK="${HOME}/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
 fi
 
 alias es=envselect
