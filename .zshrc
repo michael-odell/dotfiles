@@ -102,7 +102,7 @@ which gdircolors &>/dev/null && cached-source gdircolors
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 
 
-for cmd in kubectl helm podman kind ; do
+for cmd in kubectl helm podman kind nerdctl ; do
     if which $cmd &>/dev/null ; then
         cached-source $cmd completion zsh
     fi

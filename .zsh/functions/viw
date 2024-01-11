@@ -1,0 +1,13 @@
+if (( $+functions[$1] )) ; then
+    echo "Unable to edit shell function $1" >&2
+    return 1
+
+elif (( $+aliases[$1] )) ; then
+    echo "Unable to edit shell alias $1" >&2
+    return 2
+
+else
+
+    vi $(which $1)
+
+fi
