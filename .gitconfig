@@ -33,7 +33,13 @@
 	conflictStyle = diff3
 	tool = Kaleidoscope
 
-[includeIf "gitdir:~/bmc/**"]
+[includeIf "gitdir:~/bmc/"]
+    path = ~/.gitconfig.bmc
+
+[includeIf "gitdir:~/Library/CloudStorage/OneDrive-BMCSoftware,Inc/"]
+    path = ~/.gitconfig.bmc
+
+[includeIf "gitdir:~/.zsh/plugins/*bmc*/"]
     path = ~/.gitconfig.bmc
 
 [http "https://saascm-gogs.onbmc.com/"]
