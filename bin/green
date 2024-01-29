@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh -f
+#!/usr/bin/env zsh
 
 # Send all output to stderr
 exec - >&2
