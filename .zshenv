@@ -3,8 +3,10 @@
 if [[ ${OSTYPE} == darwin* ]] ; then
     # If you want the macOS path_helper to set a MANPATH, the variable must
     # exist when /etc/zprofile is loaded (ref: man path_helper)
-    typeset -xUT MANPATH manpath
-    typeset -xUT INFOPATH infopath
+    #
+    # This needs to be in .zshenv and not .zprofile in order for these to be set in non-login shells
+    typeset -xT MANPATH manpath
+    typeset -xT INFOPATH infopath
 fi
 
 path+=(

@@ -51,11 +51,14 @@ compinit -d ~/.cache/zcompdump
 
 
 if [[ -d ~/.asdf ]] ; then
-    export ASDF_FORCE_PREPEND=no
+    export ASDF_FORCE_PREPEND=yes
     export ASDF_DATA_DIR=$HOME/.local/asdf
     mkdir -p "${ASDF_DATA_DIR}"
     source ~/.asdf/asdf.sh
 fi
+
+# Drop duplicates paths
+typeset -U PATH MANPATH INFOPATH
 
 alias es=envselect
 alias ess=envsubselect
