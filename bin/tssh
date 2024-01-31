@@ -4,6 +4,11 @@
 # Quickly open a tmux pane to many different ssh servers and broadcast input to all of them.  Inspired by
 # cssh.
 #
+# Technically, you should be able to send any command to them, but if it exits quickly the pane may close
+# before you see the output.  Try something like this if you want that:
+#
+#    tssh HOST1 HOST2 -- bash -c "ls ; sleep 10"
+#
 
 set -euo pipefail
 
