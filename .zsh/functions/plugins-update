@@ -5,8 +5,7 @@ fi
 
 mkdir -p ~/.zsh/plugins
 
-# Year and week number
-local last_update_format="+%Y-%U"
+: ${PLUGIN_UPDATE_FREQUENCY:=7d}
 
 local p
 for p in "${ZSH_PLUGINS[@]}" ; do
@@ -17,7 +16,7 @@ for p in "${ZSH_PLUGINS[@]}" ; do
             cd ~/.zsh/plugins
             git clone "${ZSH_PLUGIN_REPO[$p]}.git" "${ZSH_PLUGIN_DIR[$p]}"
             if [[ $? -eq 1 ]] ; then
-                date "${last_update_format}" > "${last_update_file}"
+                touch "${last_update_file}"
                 continue
             else
                 echo "Failed to clone ${p}." >&2
@@ -25,11 +24,10 @@ for p in "${ZSH_PLUGINS[@]}" ; do
         )
     fi
 
-    # If there's no timestamp file, or if the timestamp has changed, or if --force is specified, do an
-    # update
-    if [[ ! -r "${last_update_file}" \
-            || $(date "${last_update_format}") != "$(< "${last_update_file}")" \
-            || ${1} == "--force" ]] ; then
+    # If there's no timestamp file or if --force is specified, or if the file is simply too old, update
+    # it
+    if [[ ! -r "${last_update_file}" || ${1} == "--force" ]] \
+            || older-than "${PLUGIN_UPDATE_FREQUENCY}" "${last_update_file}" ; then
 
         (
             echo "Updating plugin $p" >&2
@@ -37,7 +35,7 @@ for p in "${ZSH_PLUGINS[@]}" ; do
             if [[ -z "$(git status --porcelain --untracked-files=no)" ]] ; then
                 git pull --quiet --prune
                 if [[ $? -eq 0 ]] ; then
-                    date "${last_update_format}" > "${last_update_file}"
+                    touch "${last_update_file}"
                 else
                     echo "Error pulling $p" >&2
                 fi

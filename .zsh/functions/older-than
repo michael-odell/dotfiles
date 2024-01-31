@@ -1,0 +1,24 @@
+local age_string age
+age_string=$1
+shift
+
+time-to-seconds -v age $age_string
+local theline
+theline=$(( EPOCHSECONDS - age ))
+
+for file in $@ ; do
+
+    local fileage
+    if [[ $OSTYPE == darwin* ]] ; then
+        fileage=$(stat -f%m $file)
+    else
+        fileage=$(state -c%Y $file)
+    fi
+
+    if (( $fileage > $theline )) ; then
+        return 1
+    fi
+done
+
+return 0
+# vim: set ft=zsh:

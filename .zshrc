@@ -5,6 +5,8 @@ print -v HOSTNAME_SHORT -P %m     # Set HOSTNAME_SHORT in OS-independent way
 fpath=(~/.zsh/functions $fpath)
 autoload ${fpath[1]}/*(:t)
 
+zmodload zsh/datetime
+
 [[ -r ~/.zshrc.local ]] && source ~/.zshrc.local
 
 # On mac, use the 1Password socket rather than the one set up by launchd when you're local
@@ -27,9 +29,7 @@ plugin-def ${PLUGIN_SOURCE}/zsh-completions
 
 #plugin-def ${PLUGIN_SOURCE}/temp-envselect
 
-# Clone or update plugins if it has been long enough since they were last updated
-plugins-update
-
+PLUGIN_UPDATE_FREQUENCY=7d plugins-update
 
 # Allow Ctrl-S as hotkey rather than terminal stop
 stty -ixon
