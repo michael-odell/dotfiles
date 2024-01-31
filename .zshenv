@@ -24,3 +24,5 @@ if [[ ! -o login ]] ; then
     [[ -r /etc/zprofile ]] && source /etc/zprofile
     source ${ZDOTDIR:-$HOME}/.zprofile
 fi
+
+export TZ="America/Denver"
