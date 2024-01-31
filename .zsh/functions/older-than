@@ -12,7 +12,7 @@ for file in $@ ; do
     if [[ $OSTYPE == darwin* ]] ; then
         fileage=$(stat -f%m $file)
     else
-        fileage=$(state -c%Y $file)
+        fileage=$(stat -c%Y $file)
     fi
 
     if (( $fileage > $theline )) ; then
