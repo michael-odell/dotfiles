@@ -32,8 +32,8 @@ while (( i < ${#SOURCES[@]} )) ; do
         cd "${DIR}/${repo_name}"
     else
         cd "${DIR}/${repo_name}"
-        echo git fetch origin
-        git fetch origin
+        echo git fetch --prune origin '*:*'
+        git fetch --prune origin '*:*'
     fi
 
     echo git push --mirror "${dest}"
