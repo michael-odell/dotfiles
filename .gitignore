@@ -2,6 +2,9 @@
 **/*.(zwc|tmp|swp)
 **/*~
 
+# not _presently_ managing asdf configurations
+/.tool-versions
+
 
 # The .config directory is a mix of saved and not
 /.config/nvim/autoload
@@ -59,6 +62,13 @@
 /.wget-hsts
 /.npm
 /.fontconfig
+/.zcompcache
+/.zcompdump
+
+
+# No tracking for bash files at present
+/.bash*
+/.modell_bash_history
 
 
 # Locations I manage via git that shoudln't be stored in this repo
