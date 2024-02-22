@@ -15,7 +15,7 @@ for p in "${ZSH_PLUGINS[@]}" ; do
         (
             cd ~/.zsh/plugins
             git clone "${ZSH_PLUGIN_REPO[$p]}.git" "${ZSH_PLUGIN_DIR[$p]}"
-            if [[ $? -eq 1 ]] ; then
+            if [[ $? -eq 0 ]] ; then
                 touch "${last_update_file}"
                 continue
             else
