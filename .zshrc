@@ -1,5 +1,9 @@
 [[ -f ~/.zsh/debug ]] && echo "--- .zshrc" >&2
 
+zstyle ':completion:*' use-cache
+mkdir -p ~/.cache/zsh-completion
+zstyle ':completion:*' cache-path $HOME/.cache/zsh-completion
+
 print -v HOSTNAME_SHORT -P %m     # Set HOSTNAME_SHORT in OS-independent way
 
 fpath=(~/.zsh/functions $fpath)
@@ -68,7 +72,6 @@ alias k8s=envselect
 # configure` but I've edited it a lot since then...
 source ~/.p10k.zsh
 
-zstyle ':completion:*' use-cache on
 setopt interactive_comments no_beep auto_pushd
 
 alias "ls=ls -F"
