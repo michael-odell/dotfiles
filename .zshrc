@@ -53,6 +53,11 @@ plugins-load
 autoload -Uz compinit
 compinit -d ~/.cache/zcompdump
 
+if [[ -d ~/.venv ]] ; then
+    export VIRTUAL_ENV=~/.venv
+    path=(~/.venv/bin $path)
+fi
+
 
 if [[ -d ~/.asdf ]] ; then
     export ASDF_FORCE_PREPEND=yes
@@ -83,7 +88,7 @@ alias dotfiles="git --git-dir=$HOME/.dotfiles.git --work-tree=$HOME"
 
 
 export EDITOR=vi
-if which nvim &>/dev/null ; then
+if [[ -n ${commands[nvim]} ]] ; then
     alias vi=nvim
     alias vim=nvim
     export EDITOR=nvim
@@ -109,14 +114,14 @@ zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 
 
 for cmd in kubectl helm podman kind nerdctl ; do
-    if which $cmd &>/dev/null ; then
+    if [[ -n ${commands[$cmd]} ]] ; then
         cached-source $cmd completion zsh
     fi
 done
-if which stern >&/dev/null ; then
+if [[ -n ${commands[stern]} ]]; then
     cached-source stern --completion zsh
 fi
-if which op >&/dev/null ; then
+if [[ -n ${commands[op]} ]] ; then
     cached-source op completion zsh
     compdef _op op
 fi

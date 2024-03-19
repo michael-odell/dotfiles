@@ -31,6 +31,7 @@
 
 # Packager-related directories
 /.gem
+/.venv
 
 
 
@@ -64,7 +65,7 @@
 /.fontconfig
 /.zcompcache
 /.zcompdump
-
+/go
 
 # No tracking for bash files at present
 /.bash*
