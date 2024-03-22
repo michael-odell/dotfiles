@@ -53,11 +53,6 @@ plugins-load
 autoload -Uz compinit
 compinit -d ~/.cache/zcompdump
 
-if [[ -d ~/.venv ]] ; then
-    export VIRTUAL_ENV=~/.venv
-    path=(~/.venv/bin $path)
-fi
-
 
 if [[ -d ~/.asdf ]] ; then
     export ASDF_FORCE_PREPEND=yes
