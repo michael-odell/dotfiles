@@ -1,0 +1,26 @@
+: ${ASDF_PLUGINS_FREQUENCY:=30d}
+: ${ASDF_DATA_DIR:=$HOME/.local/asdf}
+
+for shortname version in "${@}" ; do
+
+    if [[ ! -d ${ASDF_DATA_DIR}/plugins/$shortname ]] ; then
+        green "asdf-installing ${shortname}..." >&2
+        asdf plugin add $shortname
+
+
+        # As of 2024-04-11, there's a bug somewhere that prevents these asdf plugins from working on my m2 mac.
+        # They can't find _any_ versions.  There and there only, use system versions
+        if [[ $OSTYPE == darwin* && ($shortname == helm || $shortname == stern ) ]] ; then
+            asdf global $shortname system
+            echo "Skipping install of ${shortname} because of bug, using system version..." >&2
+
+        else
+            asdf install $shortname $version
+            asdf global $shortname $version
+        fi
+
+    fi
+
+done
+
+# vim: set ft=zsh:

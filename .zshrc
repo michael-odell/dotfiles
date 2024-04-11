@@ -13,6 +13,24 @@ zmodload zsh/datetime
 
 [[ -r ~/.zshrc.local ]] && source ~/.zshrc.local
 
+if [[ ! -d ~/.asdf ]] ; then
+    git clone --branch v0.14.0 \
+        -c advice.detachedHead=false \
+        https://github.com/asdf-vm/asdf.git ~/.asdf
+fi
+
+export ASDF_FORCE_PREPEND=yes
+export ASDF_DATA_DIR=$HOME/.local/asdf
+source ~/.asdf/asdf.sh
+
+# NOTE: as of 2024-04, bug affects helm/stern version locking on arm mac -- see asdf-ensure-available
+asdf-ensure-available \
+    helm 3.14.4 \
+    kubectl 1.29.3 \
+    stern 1.28.0 \
+    terraform  1.2.9 \
+
+
 # On mac, use the 1Password socket rather than the one set up by launchd when you're local
 if [[ ${SSH_AUTH_SOCK} =~ ^/private/tmp/com.apple.launchd \
     && -S "${HOME}/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock" ]] ; then
@@ -46,7 +64,7 @@ fi
 typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 
 
-[[ -d ~/.asdf ]] && fpath=($fpath ~/.asdf/completions)
+fpath=($fpath ~/.asdf/completions)
 
 plugins-load
 
@@ -54,12 +72,6 @@ autoload -Uz compinit
 compinit -d ~/.cache/zcompdump
 
 
-if [[ -d ~/.asdf ]] ; then
-    export ASDF_FORCE_PREPEND=yes
-    export ASDF_DATA_DIR=$HOME/.local/asdf
-    mkdir -p "${ASDF_DATA_DIR}"
-    source ~/.asdf/asdf.sh
-fi
 
 # Drop duplicates paths
 typeset -U PATH MANPATH INFOPATH

@@ -39,7 +39,11 @@ done
 
 first_time=1
 session=""
+
+declare -p SSH_OPTS HOSTS SSH_CMD
+
 for host in "${HOSTS[@]}" ; do
+    green host=$host
 
     # Build ssh command that'll be executed for this host in a single pane
     ssh_cmd=(ssh "${SSH_OPTS[@]}" "${host}")
@@ -50,6 +54,7 @@ for host in "${HOSTS[@]}" ; do
     # The first time, we create a tmux session (detached) and remember its name
     if [[ ${first_time} -eq 1 ]] ; then
         session=$(tmux new-session -d -x $(tput cols) -y $(tput lines) -- "${ssh_cmd[@]}")
+        echo "Created session RC=$?: CMD=${ssh_cmd[@]}"
         first_time=0
 
     # After the first time, we just add splits to that
