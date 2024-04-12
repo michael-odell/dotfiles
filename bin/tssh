@@ -40,10 +40,7 @@ done
 first_time=1
 session=""
 
-declare -p SSH_OPTS HOSTS SSH_CMD
-
 for host in "${HOSTS[@]}" ; do
-    green host=$host
 
     # Build ssh command that'll be executed for this host in a single pane
     ssh_cmd=(ssh "${SSH_OPTS[@]}" "${host}")
