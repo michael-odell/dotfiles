@@ -36,8 +36,8 @@ while (( i < ${#SOURCES[@]} )) ; do
         git fetch --prune origin '*:*'
     fi
 
-    echo git push --mirror "${dest}"
-    git push --mirror "${dest}"
+    echo git push "${dest}"
+    git push "${dest}"
 
     i=$(( $i + 1))
 done
