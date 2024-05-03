@@ -16,6 +16,7 @@
 /.config/op/
 /.config/gcloud/
 /.config/containers
+/.config/wireshark
 
 
 # .zsh has all things zsh -- most should be version controlled, but ones that
@@ -118,5 +119,6 @@
 /.cisco
 /.onbmc
 /OneDrive - BMC Software, Inc
+/BMC Software, Inc
 /.Desktop OneDrive (1)
 /.Documents OneDrive (1)
