@@ -1,13 +1,11 @@
 [[ -f ~/.zsh/debug ]] && echo "--- .zshrc" >&2
+[[ -f ~/.zsh/debug ]] && declare -p path >&2
 
 zstyle ':completion:*' use-cache
 mkdir -p ~/.cache/zsh-completion
 zstyle ':completion:*' cache-path $HOME/.cache/zsh-completion
 
 print -v HOSTNAME_SHORT -P %m     # Set HOSTNAME_SHORT in OS-independent way
-
-fpath=(~/.zsh/functions $fpath)
-autoload ${fpath[1]}/*(:t)
 
 zmodload zsh/datetime
 
@@ -45,7 +43,6 @@ plugin-def ${PLUGIN_SOURCE}/fast-syntax-highlighting
 plugin-def ${PLUGIN_SOURCE}/powerlevel10k
 plugin-def ${PLUGIN_SOURCE}/zsh-history
 
-[[ ${OSTYPE} == darwin* ]] && plugin-def ${PLUGIN_SOURCE}/zsh-homebrew
 [[ -r ~/.onbmc ]] && plugin-def ${PLUGIN_SOURCE}/bmc-tools
 plugin-def ${PLUGIN_SOURCE}/zsh-completions
 
@@ -71,10 +68,6 @@ plugins-load
 autoload -Uz compinit
 compinit -d ~/.cache/zcompdump
 
-
-
-# Drop duplicates paths
-typeset -U PATH MANPATH INFOPATH
 
 alias es=envselect
 alias ess=envsubselect

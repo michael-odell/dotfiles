@@ -1,5 +1,8 @@
 [[ -f ~/.zsh/debug ]] && echo "--- .zshenv setopt=$(setopt | tr '\n' ' ')" >&2
 
+fpath=(~/.zsh/functions $fpath)
+autoload ${fpath[1]}/*(:t)
+
 if [[ ${OSTYPE} == darwin* ]] ; then
     # If you want the macOS path_helper to set a MANPATH, the variable must
     # exist when /etc/zprofile is loaded (ref: man path_helper)
@@ -37,5 +40,3 @@ if [[ -d ~/.venv && -z ${VIRTUAL_ENV:-} ]] ; then
     export VIRTUAL_ENV=~/.venv
     path=(~/.venv/bin $path)
 fi
-
-
