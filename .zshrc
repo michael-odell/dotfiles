@@ -27,6 +27,7 @@ asdf-ensure-available \
     kubectl 1.29.3 \
     stern 1.28.0 \
     terraform  1.2.9 \
+    oci 3.40.2
 
 
 # On mac, use the 1Password socket rather than the one set up by launchd when you're local
