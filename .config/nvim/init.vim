@@ -56,7 +56,10 @@ let g:show_spaces_that_precede_tabs=1
 let g:better_whitespace_enabled=1
 Plug 'ntpeters/vim-better-whitespace'
 
-Plug 'altercation/vim-colors-solarized'
+" This one was broken with nvim 0.10 around 2024-05-21
+"Plug 'altercation/vim-colors-solarized'
+
+Plug 'lifepillar/vim-solarized8'
 let g:solarized_termtrans = 0
 
 Plug 'mhinz/vim-signify'
@@ -193,18 +196,17 @@ set undoreload=10000        " Maximum number lines to save for undo on a buffer 
 
 if $ITERM_PROFILE == 'Solarized Dark'
     set background=dark
-    colorscheme solarized
     let g:airline_theme='solarized'
     let g:airline_solarized_bg='dark'
 
 "elseif $ITERM_PROFILE == 'Solarized Light'
 else
     set background=light
-    colorscheme solarized
     let g:airline_theme='solarized'
     let g:airline_solarized_bg='light'
 
 endif
+autocmd vimenter * ++nested colorscheme solarized8
 
 highlight Comment cterm=italic
 
