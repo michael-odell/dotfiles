@@ -9,7 +9,6 @@ for p in "${ZSH_PLUGINS[@]}" ; do
     if [[ ! -e "$initfile" ]]; then
         initfiles=(${ZSH_PLUGIN_DIR[$p]}/*.{plugin.zsh,zsh-theme,zsh,sh}(N))
         if (( ! $#initfiles )) ; then
-            echo "No init file found for plugin ${p}." >&2
             continue
         fi
 
