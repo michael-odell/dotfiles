@@ -44,12 +44,22 @@ plugin-def ${PLUGIN_SOURCE}/fast-syntax-highlighting
 plugin-def ${PLUGIN_SOURCE}/powerlevel10k
 plugin-def ${PLUGIN_SOURCE}/zsh-history
 
-[[ -r ~/.onbmc ]] && plugin-def ${PLUGIN_SOURCE}/bmc-tools
+if [[ -r ~/.onbmc ]] ; then
+    plugin-def ${PLUGIN_SOURCE}/odell-bmc
+    plugin-def https://saascm-gogs.onbmc.com/SaaS-Platform/bmc-tools.git
+fi
+
 plugin-def ${PLUGIN_SOURCE}/zsh-completions
 
 #plugin-def ${PLUGIN_SOURCE}/temp-envselect
 
 PLUGIN_UPDATE_FREQUENCY=7d plugins-update
+
+alias dotfiles="git --git-dir=$HOME/.dotfiles.git --work-tree=$HOME"
+if [[ -r ~/.dotfiles.git/FETCH_HEAD ]] && older-than 7d ~/.dotfiles.git/FETCH_HEAD ; then
+    echo "Updating local dotfiles..." >&2
+    dotfiles pull
+fi
 
 # Allow Ctrl-S as hotkey rather than terminal stop
 stty -ixon
@@ -85,7 +95,6 @@ alias "ll=ls -ltr"
 alias "la=ls -ltra"
 
 
-alias dotfiles="git --git-dir=$HOME/.dotfiles.git --work-tree=$HOME"
 
 
 export EDITOR=vi
