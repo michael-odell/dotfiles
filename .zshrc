@@ -53,10 +53,10 @@ plugin-def ${PLUGIN_SOURCE}/zsh-completions
 
 #plugin-def ${PLUGIN_SOURCE}/temp-envselect
 
-PLUGIN_UPDATE_FREQUENCY=7d plugins-update
+PLUGIN_UPDATE_FREQUENCY=30d plugins-update
 
 alias dotfiles="git --git-dir=$HOME/.dotfiles.git --work-tree=$HOME"
-if [[ -r ~/.dotfiles.git/FETCH_HEAD ]] && older-than 7d ~/.dotfiles.git/FETCH_HEAD ; then
+if [[ -r ~/.dotfiles.git/FETCH_HEAD ]] && older-than 30d ~/.dotfiles.git/FETCH_HEAD ; then
     echo "Updating local dotfiles..." >&2
     dotfiles pull
 fi
