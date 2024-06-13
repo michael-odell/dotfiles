@@ -23,6 +23,7 @@ source ~/.asdf/asdf.sh
 
 # NOTE: as of 2024-04, bug affects helm/stern version locking on arm mac -- see asdf-ensure-available
 asdf-ensure-available \
+    argocd 2.9.3 \
     helm 3.14.4 \
     kubectl 1.29.3 \
     stern 1.28.0 \
