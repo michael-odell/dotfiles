@@ -17,6 +17,13 @@ path+=(
     "$HOME/Library/Application Support/multipass/bin"(N)
 )
 
+
+# NOTE: The (N) in the list "nulls" the item if the directory doesn't
+# exist
+typeset -xUT PRJPATH prjpath
+prjpath=(~/src(N) ~/contrib(N) ~/src/learn(N) ~/.zsh/plugins(N))
+
+
 # I use this to avoid having a distinction between login and non-login shells.  This sources the two
 # files that might not normally be sourced by zsh on its own.
 #
@@ -29,6 +36,7 @@ if [[ ! -o login ]] ; then
 fi
 
 export TZ="America/Denver"
+export ANSIBLE_NOCOWS=1
 
 if [[ ! -d ~/.venv && -n ${commands[python3]} ]] ; then
     echo "Initializing personal python venv..." >&2

@@ -108,11 +108,6 @@ fi
 # Explicitly use emacs bindings even though I have EDITOR set to vi
 bindkey -e
 
-# NOTE: The (N) in the list "nulls" the item if the directory doesn't
-# exist
-typeset -xUT PRJPATH prjpath
-prjpath=(~/src(N) ~/contrib(N) ~/src/learn(N) ~/bmc ~/.zsh/plugins(N))
-
 
 GITHUB=git@github.com:michael-odell
 GITHUB_HTTPS=https://github.com/michael-odell
@@ -173,3 +168,4 @@ fi
 zstyle ':completion:*' use-compctl true
 zstyle ':completion:*' verbose true
 #zstyle :compinstall filename '/Users/michael/.zshrc'
+
