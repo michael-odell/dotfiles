@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+source ~/lib/lister.bash
+
+lister_cache_file "$HOME/.cache/maas/nodes"
+
+
+lister_fields name system_id pxe_mac status serial power_type cpus memory first_ip
+
+# ABOUT THE JSON
+#    hostname system_id boot_interface.mac_address status_name status_message hardware_info.system_serial power_type cpu_count memory
+#
+#
+#
+#    interface_set contains the nics
+#    ip_addresses is strictly a list of IPs
+
+lister_fetch() {
+    mkdir -p "$(dirname "${CACHE_FILE}")"
+    maas modell nodes read \
+	| jq -r '.[] | [.hostname, .system_id, .boot_interface.mac_address, .status_name, (.hardware_info.system_serial | gsub("\\s";"_")), .power_type, .cpu_count, .memory, .ip_addresses[0] ] | @sh' \
+	| tr -d "'" \
+	> "${CACHE_FILE}"
+}
+
+lister "${@}"

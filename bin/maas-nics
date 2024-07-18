@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+source ~/lib/lister.bash
+
+lister_cache_file "$HOME/.cache/maas/nics"
+
+lister_fields mac_address nic_id system_id name interface_speed effective_mtu
+
+lister_fetch() {
+    mkdir -p "$(dirname "${CACHE_FILE}")"
+    maas modell nodes read \
+      | jq -r '.[].interface_set[] | [.mac_address, .id, .system_id, .name, .interface_speed, .effective_mtu] | @sh' \
+      | tr -d "'" \
+      > "${CACHE_FILE}"
+}
+
+lister "${@}"
