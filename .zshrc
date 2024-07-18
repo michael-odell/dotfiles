@@ -28,8 +28,11 @@ asdf-ensure-available \
     kubectl 1.29.3 \
     stern 1.28.0 \
     terraform  1.2.9 \
-    oci 3.40.2
+    oci 3.44.3 \
 
+if [[ ${commands[tmux]} == "" || $(tmux -V) != "tmux 3.4" ]] ; then
+    asdf-ensure-available tmux 3.4
+fi
 
 # On mac, use the 1Password socket rather than the one set up by launchd when you're local
 if [[ ${SSH_AUTH_SOCK} =~ ^/private/tmp/com.apple.launchd \

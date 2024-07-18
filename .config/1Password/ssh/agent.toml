@@ -30,3 +30,7 @@
 #  https://developer.1password.com/docs/ssh/agent/config
 [[ssh-keys]]
 vault = "Private"
+
+[[ssh-keys]]
+vault = "BMC"
+item = "rancher_ssh_key"
