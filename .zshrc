@@ -30,10 +30,6 @@ asdf-ensure-available \
     terraform  1.2.9 \
     oci 3.44.3 \
 
-if [[ ${commands[tmux]} == "" || $(tmux -V) != "tmux 3.4" ]] ; then
-    asdf-ensure-available tmux 3.4
-fi
-
 # On mac, use the 1Password socket rather than the one set up by launchd when you're local
 if [[ ${SSH_AUTH_SOCK} =~ ^/private/tmp/com.apple.launchd \
     && -S "${HOME}/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock" ]] ; then
@@ -120,6 +116,9 @@ which gdircolors &>/dev/null && cached-source gdircolors
 #zstyle ':completion:*' completer _complete _approximate
 #zstyle ':completion:*' group-name ''
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+
+# Autocomplete lowercase-only into the correct case
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 
 
 for cmd in kubectl helm podman kind nerdctl ; do
