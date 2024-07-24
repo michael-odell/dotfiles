@@ -1,0 +1,25 @@
+# This file is designed to run in the .bashrc, and when appropriate will load zsh as if it were the shell
+# once bash has loaded.
+#
+# So, if you want interactive sessions to use zsh instead of bash but still require bash to be your shell
+# as far as the system knows, add this at the very end of your .bashrc
+#
+#   . ~/lib/load-zsh-for-interactive
+#
+
+if [[ $- == *i* && -t 1 && $# -eq 0 ]] ; then
+
+    if which zsh &>/dev/null ; then
+        LOGIN=()
+        if shopt -q login_shell ; then
+            LOGIN=(-l)
+        fi
+
+        if [[ -r ~/NOZSH ]] ; then
+            echo "NOZSH file detected, skipping zsh load." >&2
+        else
+            zsh -i "${LOGIN[@]}" && exit 0 || { RC=$? ; echo "zsh failed code $?.  Remaining in bash." >&2 ; }
+        fi
+    fi
+fi
+
