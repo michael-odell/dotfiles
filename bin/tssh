@@ -48,8 +48,10 @@ session=""
 
 for host in "${HOSTS[@]}" ; do
 
-    # Build ssh command that'll be executed for this host in a single pane
-    ssh_cmd=(ssh "${SSH_OPTS[@]}" "${host}")
+    # Build ssh command that'll be executed for this host in a single pane.
+    # Note: weirdness around SSH_OPTS is a workaround for array and set -u bug in
+    # bash 4.3.  See https://stackoverflow.com/a/58261136
+    ssh_cmd=(ssh ${SSH_OPTS[0]+"${SSH_OPTS[@]}"} "${host}")
     if [[ ${#SSH_CMD[@]} -gt 0 ]] ; then
         ssh_cmd+=( -- "${SSH_CMD[@]}" )
     fi
