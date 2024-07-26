@@ -171,3 +171,9 @@ zstyle ':completion:*' use-compctl true
 zstyle ':completion:*' verbose true
 #zstyle :compinstall filename '/Users/michael/.zshrc'
 
+# For new tmux windows, cd into the stored, project dir if available
+if [[ $- == *i* && -n ${TMUX_PRJDIR} ]] ; then
+    cd ${TMUX_PRJDIR}
+    # But don't do it in subshells
+    unset TMUX_PRJDIR
+fi

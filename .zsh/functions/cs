@@ -10,5 +10,13 @@ cs() {
         CDPATH=${PRJPATH} cd "${@}" >/dev/null
 
     fi
+
+    PRJDIR=${PWD}
+
+    # Under tmux, set the default directory for the session to this project, which my zshrc will
+    # automatically cd into for new windows
+    if [[ -n "${TMUX}" ]] ; then
+        tmux set-environment TMUX_PRJDIR "${PWD}"
+    fi
 }
 # vim: set ft=zsh:
