@@ -58,8 +58,10 @@ for host in "${HOSTS[@]}" ; do
 
     # The first time, we create a tmux session (detached) and remember its name
     if [[ ${first_time} -eq 1 ]] ; then
-        session=$(tmux new-session -d -x $(tput cols) -y $(tput lines) -- "${ssh_cmd[@]}")
-        echo "Created session RC=$?: CMD=${ssh_cmd[@]}"
+        #session=$(tmux new-session -d -x $(tput cols) -y $(tput lines) -- "${ssh_cmd[@]}")
+        session=$(tmux new-session -Pd -F'#{session_name}' -- "${ssh_cmd[@]}")
+        tmux set-window-option remain-on-exit failed
+        tmux set-window-option remain-on-exit-format "FAILED (#{pane_dead_status}): #{pane_current_command}"
         first_time=0
 
     # After the first time, we just add splits to that
@@ -72,4 +74,6 @@ done
 
 # Finally, attach and send input to all by default
 tmux set-window-option synchronize-panes on
+{ sleep 5 ; tmux set-window-option remain-on-exit off ; } &
 tmux attach -t "${session}"
+
