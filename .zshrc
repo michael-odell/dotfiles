@@ -11,7 +11,7 @@ zmodload zsh/datetime
 
 [[ -r ~/.zshrc.local ]] && source ~/.zshrc.local
 
-if [[ ! -d ~/.asdf ]] ; then
+if [[ ! -d ~/.asdf && ${DOTFILES_INSTALL} -eq 1 ]] ; then
     git clone --branch v0.14.0 \
         -c advice.detachedHead=false \
         https://github.com/asdf-vm/asdf.git ~/.asdf
@@ -19,16 +19,16 @@ fi
 
 export ASDF_FORCE_PREPEND=yes
 export ASDF_DATA_DIR=$HOME/.local/asdf
-source ~/.asdf/asdf.sh
+[[ -r ~/.asdf/asdf.sh ]] && source ~/.asdf/asdf.sh
 
 # NOTE: as of 2024-04, bug affects helm/stern version locking on arm mac -- see asdf-ensure-available
-asdf-ensure-available \
-    argocd 2.9.3 \
-    helm 3.14.4 \
-    kubectl 1.29.3 \
-    stern 1.28.0 \
-    terraform  1.2.9 \
-    oci 3.44.3 \
+#asdf-ensure-available \
+#    argocd 2.9.3 \
+#    helm 3.14.4 \
+#    kubectl 1.29.3 \
+#    stern 1.28.0 \
+#    terraform  1.2.9 \
+#    oci 3.44.3 \
 
 # On mac, use the 1Password socket rather than the one set up by launchd when you're local
 if [[ ${SSH_AUTH_SOCK} =~ ^/private/tmp/com.apple.launchd \
@@ -37,21 +37,21 @@ if [[ ${SSH_AUTH_SOCK} =~ ^/private/tmp/com.apple.launchd \
     SSH_AUTH_SOCK="${HOME}/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
 fi
 
-: ${PLUGIN_SOURCE:=git@github.com:michael-odell}
+: ${DOTFILES_PLUGIN_SOURCE:=git@github.com:michael-odell}
 : ${CACHE_DIR=${XDG_CACHE_HOME:-$HOME/.cache}}
 
-plugin-def ${PLUGIN_SOURCE}/fast-syntax-highlighting
-plugin-def ${PLUGIN_SOURCE}/powerlevel10k
-plugin-def ${PLUGIN_SOURCE}/zsh-history
+plugin-def ${DOTFILES_PLUGIN_SOURCE}/fast-syntax-highlighting
+plugin-def ${DOTFILES_PLUGIN_SOURCE}/powerlevel10k
+plugin-def ${DOTFILES_PLUGIN_SOURCE}/zsh-history
 
 if [[ -r ~/.onbmc ]] ; then
-    plugin-def ${PLUGIN_SOURCE}/odell-bmc
+    plugin-def ${DOTFILES_PLUGIN_SOURCE}/odell-bmc
     plugin-def https://saascm-gogs.onbmc.com/SaaS-Platform/bmc-tools.git
 fi
 
-plugin-def ${PLUGIN_SOURCE}/zsh-completions
+plugin-def ${DOTFILES_PLUGIN_SOURCE}/zsh-completions
 
-#plugin-def ${PLUGIN_SOURCE}/temp-envselect
+#plugin-def ${DOTFILES_PLUGIN_SOURCE}/temp-envselect
 
 PLUGIN_UPDATE_FREQUENCY=30d plugins-update
 
@@ -70,7 +70,6 @@ if [[ -r "${CACHE_DIR}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${CACHE_DIR}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
-
 
 fpath=($fpath ~/.asdf/completions)
 

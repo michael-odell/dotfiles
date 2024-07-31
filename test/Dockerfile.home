@@ -1,0 +1,26 @@
+FROM tssh:u2404
+
+RUN adduser michael
+RUN adduser michael sudo
+
+ADD build/upstream.git/ /dotfiles/upstream.git
+ADD build/plugins/ /dotfiles/plugins
+RUN chown -R michael:michael /dotfiles/
+
+ENV DOTFILES_INSTALL=0
+ENV DOTFILES_PLUGIN_UPDATE=1
+ENV DOTFILES_PLUGIN_SOURCE=/dotfiles/plugins
+
+USER michael
+WORKDIR /home/michael
+
+#RUN mkdir -p /home/michael/.ssh && chmod 700 /home/michael/.ssh
+#ADD known_hosts /home/michael/.ssh/known_hosts
+
+RUN git --git-dir=$HOME/.dotfiles.git --work-tree=$HOME init \
+    && git --git-dir=$HOME/.dotfiles.git --work-tree=$HOME remote add origin /dotfiles/upstream.git \
+    && git --git-dir=$HOME/.dotfiles.git --work-tree=$HOME fetch \
+    && git --git-dir=$HOME/.dotfiles.git --work-tree=$HOME/ checkout test
+
+RUN zsh -i -c cat
+CMD ["zsh", "-i", "-l"]
