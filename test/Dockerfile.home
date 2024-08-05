@@ -1,4 +1,4 @@
-FROM tssh:u2404
+FROM distro-base:u2404
 
 RUN adduser michael
 RUN adduser michael sudo

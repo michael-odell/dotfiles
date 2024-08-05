@@ -29,4 +29,5 @@ for i in ~/.zsh/plugins/*/ ; do
     clone-or-fetch "$i" "${BUILD_PLUGINS}/${plugin_name}.git"
 done
 
+docker build . -t distro-base:${DISTRO} -f Dockerfile.${DISTRO}
 docker build . -f Dockerfile.home -t dotfiles:${DISTRO}
