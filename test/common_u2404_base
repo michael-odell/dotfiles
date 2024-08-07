@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+DISTRO=u2404
+cd "$(dirname $0)"
+
+clone-or-fetch() {
+    local SOURCE=$1
+    local TARGET=$2
+
+    if [[ ! -d "${TARGET}" ]] ; then
+        git clone --bare "${SOURCE}" "${TARGET}"
+    else
+        #git --git-dir="${TARGET}" fetch "${SOURCE}" "+refs/heads/*:refs/heads/*" --prune
+        git --git-dir="${TARGET}" fetch --prune
+    fi
+
+}
+
+mkdir -p build
+clone-or-fetch ~/.dotfiles.git build/upstream.git
+
+BUILD_PLUGINS=build/plugins
+mkdir -p "${BUILD_PLUGINS}"
+
+for i in ~/.zsh/plugins/*/ ; do
+    plugin_name=$(basename $i)
+    clone-or-fetch "$i" "${BUILD_PLUGINS}/${plugin_name}.git"
+done
+
+docker build . -t distro-base:${DISTRO} -f Dockerfile.${DISTRO}

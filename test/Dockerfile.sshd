@@ -1,0 +1,11 @@
+FROM distro-base:u2404
+
+RUN mkdir -p -m 0755 /run/sshd
+RUN mkdir -p -m 0750 /home/michael/.ssh \
+    && chown michael:michael /home/michael/.ssh
+
+COPY build/files/authorized_keys /home/michael/.ssh
+COPY known_hosts /home/michael/.ssh
+RUN chown michael:michael /home/michael/.ssh/*
+RUN chmod 0640 /home/michael/.ssh/*
+RUN chsh -s /usr/bin/zsh michael

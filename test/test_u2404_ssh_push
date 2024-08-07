@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+DISTRO=u2404
+cd "$(dirname $0)"
+
+if ! docker inspect distro-base:${DISTRO} >/dev/null ; then
+    ./common_u2404_base
+fi
+
+mkdir -p build/files
+cp ~/.ssh/authorized_keys build/files/authorized_keys
+
+docker build . -f Dockerfile.sshd -t sshd:${DISTRO}
+if docker inspect test_sshd >/dev/null ; then
+    echo "Cleaning up stale test_sshd container..." >&2
+    docker stop test_sshd
+fi
+docker run --detach --name test_sshd --rm -p 2222:22 -it sshd:u2404 sshd -D
+
+set +e
+echo "Waiting for sshd"
+while ! ssh -p 2222 michael@localhost true 2>/dev/null ; do
+    sleep .5
+done
+echo "Finished waiting."
+
+dotfiles-push -A -p 2222 michael@localhost
+
+ssh -p 2222 michael@localhost dotfiles status
+
+if [[ ${DEBUG:-} == true ]] ; then
+    ssh -p 2222 michael@localhost
+fi
+
+docker stop test_sshd >/dev/null

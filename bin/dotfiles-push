@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# To be run once this file has been copied over to the target host and re-executed with a special command
+# line argument
+we_have_arrived() {
+    echo "Yup, we have arrived on $HOSTNAME." >&2
+
+    # This is a file we generated on the other host with data about where to collect git repos from.
+    source ".dotfilesrc"
+
+
+    if [[ -d .dotfiles.git ]] ; then
+        git --work-tree=$HOME --git-dir=$HOME/.dotfiles.git pull
+
+    else
+        : ${DOTFILES_DEFAULT_BRANCH:=main}
+
+        git --work-tree=$HOME --git-dir=$HOME/.dotfiles.git init . -b "${DOTFILES_DEFAULT_BRANCH}"
+        git --work-tree=$HOME --git-dir=$HOME/.dotfiles.git remote add --fetch origin "${DOTFILES_UPSTREAM:-git@github.com:michael-odell/dotfiles.git}"
+        git --work-tree=$HOME --git-dir=$HOME/.dotfiles.git branch --track "${DOTFILES_DEFAULT_BRANCH}" "origin/${DOTFILES_DEFAULT_BRANCH}"
+        git --work-tree=$HOME --git-dir=$HOME/.dotfiles.git checkout "${DOTFILES_DEFAULT_BRANCH}"
+    fi
+
+    rm -f "$0"
+}
+
+HOSTS=( )
+PORT=22
+SSH_COMMAND=(ssh)
+
+while [[ $# -gt 0 ]] ; do
+
+    case $1 in
+        --we-have-arrived)
+            we_have_arrived
+            exit $?
+            ;;
+
+        -A)
+            SSH_COMMAND+=( -A )
+            ;;
+
+        -p|--port)
+            PORT=$2
+            shift
+            ;;
+
+        *)
+            HOSTS+=($1)
+            ;;
+    esac
+    shift
+
+done
+
+for host in "${HOSTS[@]}" ; do
+    if [[ ${#HOSTS[@]} -gt 1 ]] ; then
+        echo "Pushing to ${host}..." >&2
+    fi
+
+    ARRIVAL_SCRIPT="$(basename $0)-$$.tmp"
+
+    ssh-copy-id -p "${PORT}" "${host}"
+    scp -P "${PORT}" "$0" "${host}:${ARRIVAL_SCRIPT}"
+
+    # NOTE: These normally wouldn't have to be exported if the target user's shell is zsh, but that's not
+    # always the case.
+cat<<EOF | ssh -p "${PORT}" "${host}" "cat > .dotfilesrc"
+DOTFILES_INSTALL=0
+DOTFILES_PLUGIN_UPDATE=1
+DOTFILES_PLUGIN_SOURCE=/dotfiles/plugins
+DOTFILES_UPSTREAM=/dotfiles/upstream.git
+DOTFILES_DEFAULT_BRANCH=main
+EOF
+
+    "${SSH_COMMAND[@]}" -p "${PORT}" "${host}" "./${ARRIVAL_SCRIPT} --we-have-arrived"
+
+done

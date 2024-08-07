@@ -14,3 +14,16 @@ RUN apt-get update \
         vim \
         neovim \
         zsh
+
+RUN adduser michael --disabled-password
+RUN adduser michael sudo
+
+ADD build/upstream.git/ /dotfiles/upstream.git
+ADD build/plugins/ /dotfiles/plugins
+RUN chown -R michael:michael /dotfiles/
+
+ENV DOTFILES_INSTALL=0
+ENV DOTFILES_PLUGIN_UPDATE=1
+ENV DOTFILES_PLUGIN_SOURCE=/dotfiles/plugins
+ENV DOTFILES_UPSTREAM=/dotfiles/upstream.git
+

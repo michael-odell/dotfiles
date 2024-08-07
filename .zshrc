@@ -9,6 +9,7 @@ print -v HOSTNAME_SHORT -P %m     # Set HOSTNAME_SHORT in OS-independent way
 
 zmodload zsh/datetime
 
+[[ -r ~/.dotfilesrc ]] && source ~/.dotfilesrc
 [[ -r ~/.zshrc.local ]] && source ~/.zshrc.local
 
 if [[ ! -d ~/.asdf && ${DOTFILES_INSTALL} -eq 1 ]] ; then
