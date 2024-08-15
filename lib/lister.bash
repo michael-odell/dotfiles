@@ -105,9 +105,11 @@ lister() {
     fi
 
     SELECTED_FIELDS=()
-    QUERY_EXACT=()
-    QUERY_PATTERNS=()
+    QUERY_EQ=()
+    QUERY_NE=()
+    QUERY_RE=()
     HEADERS=""
+    DID_SELECT_A_FIELD=0
     while [[ $# -gt 0 ]] ; do
         ARG=$1
 
@@ -132,6 +134,7 @@ lister() {
 
                 if _is_field $OPT ; then
                     SELECTED_FIELDS+=($OPT)
+                    DID_SELECT_A_FIELD=1
                 else
                     echo "Invalid option $1.  Possible field names are ${FIELDS[@]}" >&2
                     exit 2
@@ -143,18 +146,27 @@ lister() {
                 exit 3
                 ;;
 
-            *=~*)
-                if _is_field ${1%%=~*} ; then
-                    QUERY_PATTERNS+=( $1 )
+            *!=*)
+                if _is_field ${1%%!=*} ; then
+                    QUERY_NE+=( $1 )
                 else
-                    echo "Invalid field ${1%%=~*}. Possible field names are ${FIELDS[@]}" >&2
+                    echo "Invalid field ${1%%=*}. Possible field names are ${FIELDS[@]}" >&2
+                    exit 2
+                fi
+                ;;
+
+            *~*)
+                if _is_field ${1%%~*} ; then
+                    QUERY_RE+=( $1 )
+                else
+                    echo "Invalid field ${1%%~*}. Possible field names are ${FIELDS[@]}" >&2
                     exit 2
                 fi
                 ;;
 
             *=*)
                 if _is_field ${1%%=*} ; then
-                    QUERY_EXACT+=( $1 )
+                    QUERY_EQ+=( $1 )
                 else
                     echo "Invalid field ${1%%=*}. Possible field names are ${FIELDS[@]}" >&2
                     exit 2
@@ -162,7 +174,7 @@ lister() {
                 ;;
 
             *)
-                QUERY_EXACT+=( name=$1 )
+                QUERY_EQ+=( name=$1 )
                 ;;
         esac
         shift
@@ -173,11 +185,11 @@ lister() {
         SELECTED_FIELDS=( ${DEFAULT_FIELDS[@]} )
     fi
 
-    # Set a HEADERS value if one wasn't specified.  The default is to have headers unless a single column is
-    # selected
+    # Set a HEADERS value if one wasn't specified.  The default is to have headers unless some set of
+    # fields were specified, in which case the caller can see the order from their command line
     if [[ -z $HEADERS ]] ; then
 
-        if [[ ${#SELECTED_FIELDS[@]} -eq 1 ]] ; then
+        if [[ ${DID_SELECT_A_FIELD} == 1 ]] ; then
             HEADERS=0
         else
             HEADERS=1
@@ -196,33 +208,44 @@ lister() {
             FIRST_TIME=0
         fi
 
+
         # Print all if there's no query
-        if [[ ${#QUERY_EXACT[@]} -eq 0 && ${#QUERY_PATTERNS[@]} -eq 0 ]] ; then
+        if [[ ${#QUERY_EQ[@]} -eq 0 && ${#QUERY_RE[@]} -eq 0 && ${#QUERY_NE[@]} -eq 0 ]] ; then
             _print_values "${SELECTED_FIELDS[@]}"
 
         else
 
-            EXACT_FOUND=0
-            # Print any that have a match in the query
-            for query in "${QUERY_EXACT[@]}" ; do
+            NOMATCH=0
+
+            for query in "${QUERY_EQ[@]}" ; do
                 QUERY_FIELD=${query%%=*}
                 QUERY_VALUE=${query##*=}
-                if [[ ${!QUERY_FIELD} == ${QUERY_VALUE} ]] ; then
-                    _print_values "${SELECTED_FIELDS[@]}"
-                    EXACT_FOUND=1
+                if [[ ${!QUERY_FIELD} != ${QUERY_VALUE} ]] ; then
+                    NOMATCH=1
                     break
                 fi
             done
 
-            if [[ $EXACT_FOUND -eq 0 ]] ; then
-                for query in "${QUERY_PATTERNS[@]}" ; do
-                    QUERY_FIELD=${query%%=~*}
-                    QUERY_PATTERN=${query##*=~}
-                    if [[ ${!QUERY_FIELD} =~ ^${QUERY_PATTERN}$ ]] ; then
-                        _print_values "${SELECTED_FIELDS[@]}"
-                        break
-                    fi
-                done
+            for query in "${QUERY_NE[@]}" ; do
+                QUERY_FIELD=${query%%!=*}
+                QUERY_VALUE=${query##*!=}
+                if [[ ${!QUERY_FIELD} == ${QUERY_VALUE} ]] ; then
+                    NOMATCH=1
+                    break
+                fi
+            done
+
+            for query in "${QUERY_RE[@]}" ; do
+                QUERY_FIELD=${query%%~*}
+                QUERY_PATTERN=${query##*~}
+                if ! [[ ${!QUERY_FIELD} =~ ${QUERY_PATTERN} ]] ; then
+                    NOMATCH=1
+                    break
+                fi
+            done
+
+            if [[ ${NOMATCH} == 0 ]] ; then
+                _print_values "${SELECTED_FIELDS[@]}"
             fi
 
         fi
