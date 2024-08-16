@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+
+cd "$(dirname $0)"
+
+set -euo pipefail
+
+check() {
+    desc=$1
+    expected=$2
+    output=$3
+
+    if [[ "${expected}" == "${output}" ]] ; then
+        return 0
+    else
+        echo "FAILED: ${desc}" >&2
+        declare -p expected output | sed 's/^/  /g' >&2
+        return 1
+    fi
+}
+
+output=$(./lister --letter | wc -l)
+[[ ${output} -eq 5 ]]
+
+output=$(./lister --letter)
+expected=$'alpha\nbeta\ndelta\ngamma\nkappa'
+check "test_all_letters" "${output}" "${expected}"
+
+output=$(./lister --letter number=3)
+expected=$'delta\nkappa'
+check test_num_3 "${expected}" "${output}"
+
+output=$(./lister --letter yesno=yes)
+expected=$'alpha\ndelta'
+check test_equal_yes "${expected}" "${output}"
+
+output=$(./lister --letter letter~a)
+expected=$'alpha\nbeta\ndelta\ngamma\nkappa'
+check test_rematch "${expected}" "${output}"
+
+output=$(./lister --letter letter=alpha)
+expected="alpha"
+check test_letter_equal "${expected}" "${output}"
+
+output=$(./lister --letter number=0 color=red)
+expected=""
+check test_two_equals_no_match "${expected}" "${output}"
+
+output=$(./lister --letter number=0 color=green)
+expected="alpha"
+check test_two_equals_one_match "${expected}" "${output}"
+
+output=$(./lister --letter number!=3)
+expected=$'alpha\nbeta\ngamma'
+check test_not_equal "${expected}" "${output}"
+
+output=$(./lister --letter letter!~e)
+expected=$'alpha\ngamma\nkappa'
+check test_not_rematch "${expected}" "${output}"
+
+output=$(./lister --letter --yesno color=green)
+expected=$'alpha  yes\nbeta   no'
+check test_two_fields_and_match "${expected}" "${output}"

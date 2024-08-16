@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+cd "$(dirname $0)"
+
+set -euo pipefail
+
+
+header_re='^LETTER[[:blank:]]+COLOR[[:blank:]]+NUMBER[[:blank:]]+YESNO$'
+
+output=$(./lister | head -n 1)
+[[ ${output} =~ ${header_re} ]]
+
+output=$(./lister --no-headers | head -n 1)
+! [[ ${output} =~ ${header_re} ]]
+
+output=$(./lister --letter --color --number --yesno | head -n 1)
+! [[ ${output} =~ ${header_re} ]]
+
+

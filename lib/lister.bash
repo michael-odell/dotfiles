@@ -108,6 +108,7 @@ lister() {
     QUERY_EQ=()
     QUERY_NE=()
     QUERY_RE=()
+    QUERY_NRE=()
     HEADERS=""
     DID_SELECT_A_FIELD=0
     while [[ $# -gt 0 ]] ; do
@@ -150,7 +151,16 @@ lister() {
                 if _is_field ${1%%!=*} ; then
                     QUERY_NE+=( $1 )
                 else
-                    echo "Invalid field ${1%%=*}. Possible field names are ${FIELDS[@]}" >&2
+                    echo "Invalid field ${1%%~=*}. Possible field names are ${FIELDS[@]}" >&2
+                    exit 2
+                fi
+                ;;
+
+            *!~*)
+                if _is_field ${1%%!~*} ; then
+                    QUERY_NRE+=( $1 )
+                else
+                    echo "Invalid field ${1%%!~*}. Possible field names are ${FIELDS[@]}" >&2
                     exit 2
                 fi
                 ;;
@@ -210,7 +220,7 @@ lister() {
 
 
         # Print all if there's no query
-        if [[ ${#QUERY_EQ[@]} -eq 0 && ${#QUERY_RE[@]} -eq 0 && ${#QUERY_NE[@]} -eq 0 ]] ; then
+        if [[ ${#QUERY_EQ[@]} -eq 0 && ${#QUERY_RE[@]} -eq 0 && ${#QUERY_NRE[@]} -eq 0 && ${#QUERY_NE[@]} -eq 0 ]] ; then
             _print_values "${SELECTED_FIELDS[@]}"
 
         else
@@ -239,6 +249,15 @@ lister() {
                 QUERY_FIELD=${query%%~*}
                 QUERY_PATTERN=${query##*~}
                 if ! [[ ${!QUERY_FIELD} =~ ${QUERY_PATTERN} ]] ; then
+                    NOMATCH=1
+                    break
+                fi
+            done
+
+            for query in "${QUERY_NRE[@]}" ; do
+                QUERY_FIELD=${query%%!~*}
+                QUERY_PATTERN=${query##*!~}
+                if [[ ${!QUERY_FIELD} =~ ${QUERY_PATTERN} ]] ; then
                     NOMATCH=1
                     break
                 fi
