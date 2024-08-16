@@ -23,7 +23,7 @@ output=$(./lister --letter | wc -l)
 
 output=$(./lister --letter)
 expected=$'alpha\nbeta\ndelta\ngamma\nkappa'
-check "test_all_letters" "${output}" "${expected}"
+check "test_no_query_returns_all" "${output}" "${expected}"
 
 output=$(./lister --letter number=3)
 expected=$'delta\nkappa'
@@ -60,3 +60,7 @@ check test_not_rematch "${expected}" "${output}"
 output=$(./lister --letter --yesno color=green)
 expected=$'alpha  yes\nbeta   no'
 check test_two_fields_and_match "${expected}" "${output}"
+
+output=$(./lister --letter color=green number!=3 yesno~o letter!~=e)
+expected="beta"
+check test_all_query_types "${expected}" "${output}"
