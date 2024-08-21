@@ -641,7 +641,7 @@
       # '*test*'  TEST    # to match your needs. Customize them as needed.
       '*'       DEFAULT)
   typeset -g POWERLEVEL9K_TERRAFORM_DEFAULT_FOREGROUND=4
-  typeset -g POWERLEVEL9K_TERRAFORM_DEFAULT_BACKGROUND=0
+  typeset -g POWERLEVEL9K_TERRAFORM_DEFAULT_BACKGROUND=7
   # typeset -g POWERLEVEL9K_TERRAFORM_DEFAULT_VISUAL_IDENTIFIER_EXPANSION='⭐'
 
   #############[ kubecontext: current kubernetes context (https://kubernetes.io/) ]#############
