@@ -48,3 +48,7 @@ if [[ -d ~/.venv && -z ${VIRTUAL_ENV:-} ]] ; then
     export VIRTUAL_ENV=~/.venv
     path=(~/.venv/bin $path)
 fi
+
+if [[ -d ~/contrib/gogs-cli ]] ; then
+    path+=(~/contrib/gogs-cli)
+fi
