@@ -1,0 +1,79 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+source ~/lib/lister.bash
+
+CACHE_DIR=${HOME}/.cache/gogs
+lister_cache_file "${CACHE_DIR}/repos.${GOGS_CURRENT}"
+
+lister_fields name owner full_name private fork parent default_branch ssh_url http_url ui_url
+lister_default_fields name owner full_name private fork parent default_branch
+
+
+lister_fetch() {
+    if [[ ${GOGS_API_TOKEN} =~ ^op://.* ]] ; then
+        echo "Invalid GOGS_API_TOKEN starting with op:// -- execute with 'op run'" >&2
+        exit 3
+    fi
+
+    # This cache file is built in steps -- delete it unless we get to the finish line (where we'll turn
+    # this off)
+    #trap "rm -f '${CACHE_FILE}'" EXIT
+    # TODO modell
+
+    mkdir -p "${CACHE_DIR}"
+    : > "${CACHE_FILE}"
+
+    # THIS WORKS ON SAASCM-GOGS
+    #curl --silent --fail "${GOGS_SERVER_URL}/api/v1/user/repos?token=${GOGS_API_TOKEN}" \
+    #    | jq -r '.[] | [ .name, .owner.username, .full_name, .private, .fork, .parent, .default_branch, .ssh_url, .clone_url, .html_url ] | @sh' \
+    #    | tr -d "'" \
+    #    >> ${CACHE_FILE}
+    # THIS WORKS ON SAASCM-GOGS and returns all repos AFAICT (maybe due to api bug?)
+
+    for org in $(gogs-orgs --name) ; do
+
+        REPOS=( $(gogs list-org-repos "${org}") )
+        green "${org}: ${REPOS[@]}"
+
+        for repo in "${REPOS[@]}" ; do
+            echo " - ${repo}" >&2
+
+            gogs get-repo "${org}" "${repo}" \
+                | tee "${CACHE_FILE}.last" \
+                | jq -r '. | select(.owner.username == "'${org}'") | [ .name, .owner.username, .full_name, .private, .fork, .parent.full_name, .default_branch, .ssh_url, .clone_url, .html_url ] | @sh' \
+                | tr -d "'" \
+                >> ${CACHE_FILE} ||  {
+                    echo "ERROR: Unable to fetch ${org} ${repo}" >&2
+                    cp "${CACHE_FILE}.last" "${CACHE_FILE}.failed.${org}.${repo}"
+                }
+        done
+
+    done
+
+    for user in $(gogs-users --name) ; do
+
+        REPOS=( $(gogs list-user-repos "${user}") )
+        green "${user}: ${REPOS[@]}"
+
+        for repo in "${REPOS[@]}" ; do
+            echo " - ${repo}" >&2
+
+            gogs get-repo "${user}" "${repo}" \
+                | tee "${CACHE_FILE}.last" \
+                | jq -r '. | select(.owner.username == "'${user}'") | [ .name, .owner.username, .full_name, .private, .fork, .parent.full_name, .default_branch, .ssh_url, .clone_url, .html_url ] | @sh' \
+                | tr -d "'" \
+                >> ${CACHE_FILE} ||  {
+                    echo "ERROR: Unable to fetch ${user} ${repo}" >&2
+                    cp "${CACHE_FILE}.last" "${CACHE_FILE}.failed.${user}.${repo}"
+                }
+        done
+
+    done
+
+    # We finished generating the cache file.  Turn off the safety check that was going to delete it in
+    # case we didn't.
+    trap "" EXIT
+}
+
+lister "${@}"

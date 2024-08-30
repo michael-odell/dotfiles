@@ -42,9 +42,6 @@
 [includeIf "gitdir:~/.zsh/plugins/*bmc*/"]
     path = ~/.gitconfig.bmc
 
-[http "https://saascm-gogs.onbmc.com/"]
-    sslVerify = false
-
 [pull]
 	ff = only
 [init]

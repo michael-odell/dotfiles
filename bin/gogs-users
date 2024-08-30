@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+source ~/lib/lister.bash
+
+lister_cache_file "$HOME/.cache/gogs/users.${GOGS_CURRENT}"
+
+lister_fields name login email full_name
+
+lister_fetch() {
+    # This cache file is built in steps -- delete it unless we get to the finish line (where we'll turn
+    # this off)
+    trap "rm -f '${CACHE_FILE}'" EXIT
+
+    mkdir -p "$(dirname "${CACHE_FILE}")"
+    : > "${CACHE_FILE}"
+
+    echo -n . >&2
+    for user in $(gogs list-users) ; do
+
+        # Progress dots...
+        echo -n . >&2
+
+        # NOTE: It's important that full_name be last right now because otherwise sometimes it's empty
+        # and lister doesn't handle empty fields well except in the last position.
+        gogs get-user "${user}" \
+            | jq -r '[ .username, .login, .email, (.full_name | gsub("\\s";"_"))] | @sh' \
+            | tr -d "'" \
+            >> ${CACHE_FILE}
+
+    done
+
+    echo >&2
+
+    # We finished generating the cache file.  Turn off the safety check that was going to delete it in
+    # case we didn't.
+    trap "" EXIT
+}
+
+lister "${@}"

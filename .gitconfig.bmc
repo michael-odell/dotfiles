@@ -2,3 +2,21 @@
 	name = Michael Odell
 	email = michael_odell@bmc.com
 
+[http "https://saascm-gogs.onbmc.com/"]
+    sslVerify = false
+    version = HTTP/1.1
+    postBuffer = 10M
+    maxRequestBuffer = 10M
+
+[http "https://gogs.onbmc.com:3000/"]
+    sslVerify = false
+    version = HTTP/1.1
+    postBuffer = 10M
+    maxRequestBuffer = 10M
+
+[http "https://zwl-gogs-1.onbmc.com:3000/"]
+    sslVerify = false
+    version = HTTP/1.1
+    postBuffer = 10M
+    maxRequestBuffer = 10M
+
