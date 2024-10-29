@@ -25,6 +25,11 @@ while (( $# )) ; do
             SSH_CMD=( "${@}" )
             break
             ;;
+        -J)
+            SSH_OPTS+=(-J "$2")
+            shift
+            ;;
+
         -*)
             # ssh doesn't options with args separated by = signs, but I can parse those out and make them
             # useful

@@ -44,10 +44,15 @@ for host in "${HOSTS[@]}" ; do
         done
     fi
 
-    RUN_SSH+=( "${host}" )
+    # TODO STOP BEING RANCHER
+    RUN_SSH+=( "rancher@${host}" )
+    # TODO STOP BEING RANCHER
 
     # TODO STOP BEING RANCHER
-    op read 'op://private/modell-at-onbmc-com/public key' \
-        | sshpass -p "$(op read op://BMC/onbmc-sso/password)" "${RUN_SSH[@]}" 'bash -c "mkdir -p .ssh ; cat >> .ssh/authorized_keys ; chmod -R og-rwx .ssh"' \
+    #op read 'op://private/modell-at-onbmc-com/public key' \
+    #    | sshpass -p "$(op read op://BMC/onbmc-sso/password)" "${RUN_SSH[@]}" 'bash -c "mkdir -p .ssh ; cat >> .ssh/authorized_keys ; chmod -R og-rwx .ssh"' \
+    #    || echo "FAILED."
+    op read 'op://BMC/rancher_ssh_key/public key' \
+        | sshpass -p "$(op read op://BMC/rancher-node/password)" "${RUN_SSH[@]}" 'bash -c "mkdir -p .ssh ; cat >> .ssh/authorized_keys ; chmod -R og-rwx .ssh"' \
         || echo "FAILED."
 done

@@ -5,6 +5,7 @@ module.exports = {
     options: {
         hideIcon: false
     },
+
     handlers: [
         {
             match: [
@@ -30,6 +31,13 @@ module.exports = {
         {
             match: /zoom\.us\/j\//,
             browser: "us.zoom.xos"
+        },
+
+        // NOTE: Thanks to folks on this thread, although this is my own, simpler solution.
+        // See https://github.com/johnste/finicky/discussions/227
+        {
+            match: ({ url }) => url.host === "teams.microsoft.com",
+            browser: "Microsoft Teams"
         }
     ]
 };
