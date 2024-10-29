@@ -81,6 +81,7 @@ fpath=($fpath ~/.asdf/completions)
 plugins-load
 
 autoload -Uz compinit
+autoload -U +X bashcompinit && bashcompinit
 compinit -d ~/.cache/zcompdump
 
 
@@ -136,6 +137,10 @@ fi
 if [[ -n ${commands[op]} ]] ; then
     cached-source op completion zsh
     compdef _op op
+fi
+
+if [[ -r /snap/juju/current/bash_completions/juju ]] ; then
+    source /snap/juju/current/bash_completions/juju
 fi
 
 # Generate terminfo files if they haven't been yet.  I do this to
