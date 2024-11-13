@@ -1,0 +1,50 @@
+#!/usr/bin/env python3
+
+import sys
+import re
+
+def normalize(number, units):
+
+    if units == "Ti":
+        return number * 1024 * 1024 * 1024 * 1024
+    elif units == "Gi":
+        return number * 1024 * 1024 * 1024
+    elif units == "Mi":
+        return number * 1024 * 1024
+    elif units == "Ki":
+        return number * 1024
+
+    elif units == "T":
+        return number * 1000 * 1000 * 1000 * 1000
+    elif units == "G":
+        return number * 1000 * 1000 * 1000
+    elif units == "M":
+        return number * 1000 * 1000
+    elif units == "K":
+        return number * 1000
+
+    elif units == "m":
+        # mili-cpus
+        return number / 1000
+
+    else:
+        raise Error(f"INTERNAL ERROR: Unexpected units {units}")
+
+
+for line in sys.stdin:
+
+    last_processed = 0
+
+    for match in re.finditer(r"\b(.*?)(\d+)(Ti|Gi|Mi|Ki|T|G|M|K|m)\b", line):
+
+        # Print whatever portion of the string didn't match
+        print(match.group(1), end='')
+
+        # Then print the normalized value
+        print('%.15g' % (normalize(float(match.group(2)), match.group(3))), end='')
+
+        last_processed = match.end()
+
+    # Print whatever's left in the line, which will include a newline on its own
+    print(line[last_processed:], end='')
+

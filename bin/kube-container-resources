@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+set -eo pipefail
+
+BMCTOOLS_ROOT=$(dirname $0)/..
+source "${BMCTOOLS_ROOT}/lib/lister.bash"
+
+: ${CLUSTER_NAME:=$(basename $KUBECONFIG)}
+
+: ${CACHE_DIR:=$HOME/.cache/dotfiles/kube-container-resources}
+: ${CACHE_FILE:=${CACHE_DIR}/${CLUSTER_NAME}}
+lister_cache_file "${CACHE_FILE}"
+
+lister_fields         pod_name namespace container_name cpu_request cpu_limit mem_request mem_limit
+
+lister_fetch() {
+    mkdir -p "${CACHE_DIR}"
+    : > "${CACHE_FILE}"
+
+    kubectl get -A pods -o jsonpath="{.items[*]}" \
+        | jq --raw-output --slurp '.[] | .metadata.name as $Name | .metadata.namespace as $Namespace | .spec.containers[] | [$Name, $Namespace, .name, .resources.requests.cpu?, .resources.limits.cpu?, .resources.requests.memory?, .resources.limits.memory?] | @sh' \
+        | tr -d "'" \
+        | normalize-kube-resource-numbers \
+        > "${CACHE_FILE}"
+}
+
+lister "${@}"
