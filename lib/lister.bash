@@ -227,7 +227,8 @@ lister() {
 
             NOMATCH=0
 
-            for query in "${QUERY_EQ[@]}" ; do
+            # NOTE: Work around bash bug with arrays and set -u in bash 4.2.  See also https://stackoverflow.com/a/61551944
+            for query in ${QUERY_EQ[@]+"${QUERY_EQ[@]}"} ; do
                 QUERY_FIELD=${query%%=*}
                 QUERY_VALUE=${query##*=}
                 if [[ ${!QUERY_FIELD} != ${QUERY_VALUE} ]] ; then
@@ -236,7 +237,7 @@ lister() {
                 fi
             done
 
-            for query in "${QUERY_NE[@]}" ; do
+            for query in ${QUERY_NE[@]+"${QUERY_NE[@]}"} ; do
                 QUERY_FIELD=${query%%!=*}
                 QUERY_VALUE=${query##*!=}
                 if [[ ${!QUERY_FIELD} == ${QUERY_VALUE} ]] ; then
@@ -245,7 +246,7 @@ lister() {
                 fi
             done
 
-            for query in "${QUERY_RE[@]}" ; do
+            for query in ${QUERY_RE[@]+"${QUERY_RE[@]}"} ; do
                 QUERY_FIELD=${query%%~*}
                 QUERY_PATTERN=${query##*~}
                 if ! [[ ${!QUERY_FIELD} =~ ${QUERY_PATTERN} ]] ; then
@@ -254,7 +255,7 @@ lister() {
                 fi
             done
 
-            for query in "${QUERY_NRE[@]}" ; do
+            for query in ${QUERY_NRE[@]+"${QUERY_NRE[@]}"} ; do
                 QUERY_FIELD=${query%%!~*}
                 QUERY_PATTERN=${query##*!~}
                 if [[ ${!QUERY_FIELD} =~ ${QUERY_PATTERN} ]] ; then
