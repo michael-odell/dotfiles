@@ -18,7 +18,7 @@ lister_fetch() {
     : > "${CACHE_FILE}"
 
     kubectl get -A pods -o jsonpath="{.items[*]}" \
-        | jq --raw-output --slurp '.[] | .metadata.name as $Name | .metadata.namespace as $Namespace | .spec.containers[] | [$Name, $Namespace, .name, .resources.requests.cpu?, .resources.limits.cpu?, .resources.requests.memory?, .resources.limits.memory?] | @sh' \
+        | jq --raw-output --slurp '.[] | select(.status.phase == "Running") | .metadata.name as $Name | .metadata.namespace as $Namespace | .spec.containers[] | [$Name, $Namespace, .name, .resources.requests.cpu?, .resources.limits.cpu?, .resources.requests.memory?, .resources.limits.memory?] | @sh' \
         | tr -d "'" \
         | normalize-kube-resource-numbers \
         > "${CACHE_FILE}"
