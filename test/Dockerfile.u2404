@@ -1,6 +1,5 @@
 FROM ubuntu:24.04
 
-RUN yes | unminimize
 RUN apt-get update \
     && apt-get install -y \
         curl \
@@ -13,7 +12,10 @@ RUN apt-get update \
         tmux \
         vim \
         neovim \
+        unminimize \
         zsh
+
+RUN yes | unminimize
 
 RUN adduser michael --disabled-password
 RUN adduser michael sudo
