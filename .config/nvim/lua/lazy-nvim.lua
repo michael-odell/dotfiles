@@ -24,6 +24,9 @@ vim.g.mapleader = ","
 vim.g.maplocalleader = "\\"
 
 require("lazy").setup("plugins", {
+    install = {
+        colorscheme = { "solarized8" },
+    },
     change_detection = {
         enabled = true,
         notify = true,
