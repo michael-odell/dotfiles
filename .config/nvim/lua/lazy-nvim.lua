@@ -27,9 +27,14 @@ require("lazy").setup("plugins", {
     install = {
         colorscheme = { "solarized8" },
     },
+    checker = {
+        enabled = true,
+        notify = false,
+        frequency = 604800 -- Weekly, in seconds
+    },
     change_detection = {
         enabled = true,
-        notify = true,
+        notify = false,
     },
 })
 

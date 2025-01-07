@@ -2,96 +2,81 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 """ Set up VimPlug
 
-" Install if necessary
-if empty(glob('~/.config/nvim/autoload/plug.vim'))
-  silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-endif
+""" " Install if necessary
+""" if empty(glob('~/.config/nvim/autoload/plug.vim'))
+"""   silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
+"""     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+"""   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+""" endif
+""" 
+""" call plug#begin('~/.config/nvim/plugged')
 
-call plug#begin('~/.config/nvim/plugged')
+"""" TODO BELOW
 
-Plug 'tpope/vim-fugitive'
-Plug 'vim-scripts/matchit.zip'
+"""Plug 'tpope/vim-fugitive'
+"Plug 'vim-scripts/matchit.zip'
+"
+"if executable('ctags')
+"    " This automatically runs ctags on projects so that they're quickly set up for vim's use.  It does
+"    " cause .tags files to get generated, though.
+"    let g:gutentags_ctags_tagfile='.tags'
+"    Plug 'ludovicchabant/vim-gutentags'
+"
+"    let g:airline_section_y = '%{gutentags#statusline()}%{&et? "" : "<<TABS>>"} [%{&ft}:%{&fo}]'
+"else
+"    let g:airline_section_y = '%{&et? "" : "<<TABS>>"} [%{&ft}:%{&fo}]'
+"endif
+"
+"set laststatus=2
+"let g:airline#extensions#branch#enabled = 0
+"let g:airline#extensions#branch#empty_message = ''
+"let g:airline#extensions#syntastic#enabled = 0
+"let g:airline#extensions#whitespace#enabled = 0
+"" Replace the 'utf-8[unix] section with formatoptions
+"Plug 'vim-airline/vim-airline'
+"Plug 'vim-airline/vim-airline-themes'
 
-if executable('ctags')
-    " This automatically runs ctags on projects so that they're quickly set up for vim's use.  It does
-    " cause .tags files to get generated, though.
-    let g:gutentags_ctags_tagfile='.tags'
-    Plug 'ludovicchabant/vim-gutentags'
+"""" TODO ABOVE
 
-    let g:airline_section_y = '%{gutentags#statusline()}%{&et? "" : "<<TABS>>"} [%{&ft}:%{&fo}]'
-else
-    let g:airline_section_y = '%{&et? "" : "<<TABS>>"} [%{&ft}:%{&fo}]'
-endif
+""" let g:polyglot_disabled = ['yaml', 'bash', 'ruby']
+""" let g:csv_no_conceal = 1
+""" let g:vim_json_syntax_conceal = 0
+""" Plug 'sheerun/vim-polyglot'
+"""
+""" let g:vim_json_syntax_conceal = 0
+""" Plug 'sheerun/vim-polyglot'
+""" let g:show_spaces_that_precede_tabs=1
+""" let g:better_whitespace_enabled=1
+""" Plug 'ntpeters/vim-better-whitespace'
 
-set laststatus=2
-let g:airline#extensions#branch#enabled = 0
-let g:airline#extensions#branch#empty_message = ''
-let g:airline#extensions#syntastic#enabled = 0
-let g:airline#extensions#whitespace#enabled = 0
-" Replace the 'utf-8[unix] section with formatoptions
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+""" Plug 'mhinz/vim-signify'
+""" let g:signify_vcs_list = [ 'hg', 'git' ]
 
-Plug 'nathanaelkane/vim-indent-guides'
-let g:indent_guides_auto_colors = 1
-" The plugin claims to only have 'very basic' support for term.  But it also seems to think my
-" full-gui-color terminal uses gui colors.
-autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=grey22
-autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd guibg=grey25
-let g:indent_guides_color_change_percent = 3 "default is 10
-"let g:indent_guides_guide_size = 1
-let g:indent_guides_start_level = 1
-let g:indent_guides_enable_on_vim_startup = 1
+""" Plug 'tpope/vim-rsi'
+""" Plug 'tpope/vim-projectionist'
+""" Plug 'tpope/vim-rake'
+""" noremap <A-o> <esc>:A<CR>
+""" map <leader>o <esc>:A<CR>
 
-let g:polyglot_disabled = ['yaml', 'bash', 'ruby']
-let g:csv_no_conceal = 1
-let g:vim_json_syntax_conceal = 0
-Plug 'sheerun/vim-polyglot'
+""" Plug 'martinda/Jenkinsfile-vim-syntax'
+""" Plug 'jjo/vim-cue'
 
-let g:vim_json_syntax_conceal = 0
-Plug 'sheerun/vim-polyglot'
-let g:show_spaces_that_precede_tabs=1
-let g:better_whitespace_enabled=1
-Plug 'ntpeters/vim-better-whitespace'
+""" " Turn off lsp diagnostics
+""" "let g:lsp_diagnostics_enabled = 0
+""" let g:lsp_virtual_text_enabled = 0
+""" let g:lsp_highlight_references_enabled = 1
+""" let g:lsp_signs_enabled = 1
+""" "Plug 'prabirshrestha/async.vim'
+""" "Plug 'prabirshrestha/vim-lsp'
 
-" This one was broken with nvim 0.10 around 2024-05-21
-"Plug 'altercation/vim-colors-solarized'
-
-"Plug 'lifepillar/vim-solarized8'
-"let g:solarized_termtrans = 0
-
-Plug 'mhinz/vim-signify'
-let g:signify_vcs_list = [ 'hg', 'git' ]
-
-Plug 'tpope/vim-rsi'
-Plug 'tpope/vim-projectionist'
-Plug 'tpope/vim-rake'
-noremap <A-o> <esc>:A<CR>
-map <leader>o <esc>:A<CR>
-
-Plug 'martinda/Jenkinsfile-vim-syntax'
-Plug 'jjo/vim-cue'
-
-" Turn off lsp diagnostics
-"let g:lsp_diagnostics_enabled = 0
-let g:lsp_virtual_text_enabled = 0
-let g:lsp_highlight_references_enabled = 1
-let g:lsp_signs_enabled = 1
-"Plug 'prabirshrestha/async.vim'
-"Plug 'prabirshrestha/vim-lsp'
-
-" For many language server types, install them automatically.  Try LspInstallServer in a supported
-" language.  See :help vim-lsp-settings-plugin for more
-"Plug 'mattn/vim-lsp-settings'
-Plug 'prabirshrestha/asyncomplete.vim'
-"Plug 'prabirshrestha/asyncomplete-lsp.vim'
-
-Plug 'jjo/vim-cue'
+""" " For many language server types, install them automatically.  Try LspInstallServer in a supported
+""" " language.  See :help vim-lsp-settings-plugin for more
+""" "Plug 'mattn/vim-lsp-settings'
+""" Plug 'prabirshrestha/asyncomplete.vim'
+""" "Plug 'prabirshrestha/asyncomplete-lsp.vim'
 
 " Initialize plugin system
-call plug#end()
+""" call plug#end()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 """ Miscellaneous Settings
