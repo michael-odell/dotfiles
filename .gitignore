@@ -47,6 +47,7 @@
 /.oci
 /.psql_history
 /.python_history
+/.sqlite_history
 /.ssh
 /.terraform.d
 /.colima
@@ -118,6 +119,7 @@
 /.anyconnect
 /.cisco
 /.onbmc
+/.okta
 /OneDrive - BMC Software, Inc
 /BMC Software, Inc
 /.Desktop OneDrive (1)
