@@ -34,3 +34,7 @@ vault = "Private"
 [[ssh-keys]]
 vault = "BMC"
 item = "rancher_ssh_key"
+
+[[ssh-keys]]
+vault = "BMC"
+item = "opcuser"
