@@ -63,8 +63,8 @@ for host in "${HOSTS[@]}" ; do
 
     # The first time, we create a tmux session (detached) and remember its name
     if [[ ${first_time} -eq 1 ]] ; then
-        session=$(tmux new-session -d -x $(tput cols) -y $(tput lines) -- "${ssh_cmd[@]}")
-        echo "Created session RC=$?: CMD=${ssh_cmd[@]}"
+        session=$(tmux new-session -d -x "$(tput cols)" -y "$(tput lines)" -- "${ssh_cmd[@]}")
+        echo "Created session RC=$?: CMD=${ssh_cmd[*]}"
         first_time=0
 
     # After the first time, we just add splits to that

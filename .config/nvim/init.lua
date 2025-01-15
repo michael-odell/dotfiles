@@ -29,7 +29,12 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end,
 })
 
-require('mason').setup({})
+require('mason').setup({
+    ensure_installed = {
+        "shellcheck",
+        "shfmt"
+    }
+})
 require('mason-lspconfig').setup({
 
     ensure_installed = {
@@ -46,6 +51,14 @@ require('mason-lspconfig').setup({
         end,
     }
 })
+
+require('mason-tool-installer').setup {
+    ensure_installed = {
+        "shellcheck",
+        "shfmt",
+    },
+    auto_update = true,
+}
 
 local cmp = require('cmp')
 cmp.setup({

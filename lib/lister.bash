@@ -133,11 +133,11 @@ lister() {
                 OPT=${1#--}
                 OPT=${OPT//-/_}
 
-                if _is_field $OPT ; then
-                    SELECTED_FIELDS+=($OPT)
+                if _is_field "$OPT" ; then
+                    SELECTED_FIELDS+=("$OPT")
                     DID_SELECT_A_FIELD=1
                 else
-                    echo "Invalid option $1.  Possible field names are ${FIELDS[@]}" >&2
+                    echo "Invalid option $1.  Possible field names are ${FIELDS[*]}" >&2
                     exit 2
                 fi
                 ;;
