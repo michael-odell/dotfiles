@@ -17,6 +17,10 @@ return {
     {
         "WhoIsSethDaniel/mason-tool-installer.nvim"
     },
+    {
+        "towolf/vim-helm",
+        ft = "helm"
+    },
 }
 
 

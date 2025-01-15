@@ -29,33 +29,87 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end,
 })
 
-require('mason').setup({
-    ensure_installed = {
-        "shellcheck",
-        "shfmt"
-    }
-})
+require('mason').setup({ })
 require('mason-lspconfig').setup({
 
     ensure_installed = {
         "ansiblels",
         "bashls",
+        "helm-ls",
         "jsonls",
         "lua_ls",
+        "terraform-ls",
         "yamlls"
     },
 
-    handlers = {
-        function(server_name)
-            require('lspconfig')[server_name].setup({})
-        end,
-    }
+    --handlers = {
+    --    -- Default
+    --    function(server_name)
+    --        require('lspconfig')[server_name].setup({})
+    --    end,
+
+    --    ["yamlls"] = function()
+    --    end,
+
+    --    ["helm-ls"] = function()
+    --    end,
+    --}
 })
+
+require('lspconfig')["helm-ls"].setup {
+    settings = {
+        ['helm-ls'] = {
+            yamlls = {
+                path = "yaml-language-server",
+            }
+        }
+    },
+}
+
+    -- on_attach = function(client, bufnr)
+    --     client.server_capabilities.documentFormattingProvider = true
+    --     on_attach(client, bufnr)
+    -- end,
+
+require('lspconfig')["yamlls"].setup {
+    settings = {
+        yaml = {
+            format = {
+                enable = false
+            },
+            completion = true,
+            hover = true,
+            schemas = {
+                kubernetes = "*.yaml",
+                ["http://json.schemastore.org/github-workflow"] = ".github/workflows/*",
+                ["http://json.schemastore.org/github-action"] = ".github/action.{yml,yaml}",
+                ["http://json.schemastore.org/ansible-stable-2.9"] = "roles/tasks/*.{yml,yaml}",
+                ["http://json.schemastore.org/prettierrc"] = ".prettierrc.{yml,yaml}",
+                ["http://json.schemastore.org/kustomization"] = "kustomization.{yml,yaml}",
+                ["http://json.schemastore.org/ansible-playbook"] = "*play*.{yml,yaml}",
+                ["http://json.schemastore.org/chart"] = "Chart.{yml,yaml}",
+                ["https://json.schemastore.org/dependabot-v2"] = ".github/dependabot.{yml,yaml}",
+                ["https://json.schemastore.org/gitlab-ci"] = "*gitlab-ci*.{yml,yaml}",
+                ["https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/schemas/v3.1/schema.json"] = "*api*.{yml,yaml}",
+                ["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json"] = "*docker-compose*.{yml,yaml}",
+                ["https://raw.githubusercontent.com/argoproj/argo-workflows/master/api/jsonschema/schema.json"] = "*flow*.{yml,yaml}",
+            },
+            schemaStore = {
+                enable = true,
+                url = "https://www.schemastore.org/api/json/catalog.json",
+            },
+        }
+    }
+}
 
 require('mason-tool-installer').setup {
     ensure_installed = {
         "shellcheck",
         "shfmt",
+        "misspell",
+        "markdownlint",
+        "yamllint",
+        "tflint",
     },
     auto_update = true,
 }
