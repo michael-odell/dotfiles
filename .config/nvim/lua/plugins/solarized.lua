@@ -13,6 +13,8 @@ return {
   end,
 }
 
+-- This one looks very updated and tweakable in standard neovim ways: https://github.com/maxmx03/solarized.nvim
+
 -- return {
 --     'shaunsingh/solarized.nvim',
 --     config = function()
