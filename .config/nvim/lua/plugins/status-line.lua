@@ -5,7 +5,7 @@ return {
     opts = function()
         return {
             options = {
-                theme = "solarized_light"
+                theme = "solarized"
             }
         }
     end,

@@ -1,7 +1,7 @@
 return {
   "lifepillar/vim-solarized8",
   branch = "neovim",
-  priority = 100,
+  priority = 1000,
   lazy = false,
 
   init = function()
@@ -9,6 +9,14 @@ return {
       vim.g.solarized_extra_hi_groups = 1
   end,
   config = function()
-    vim.cmd('colorscheme solarized8')
+    vim.cmd([[colorscheme solarized8]])
   end,
 }
+
+-- return {
+--     'shaunsingh/solarized.nvim',
+--     config = function()
+--         vim.opt.background="light"
+--         require('solarized').set()
+--     end,
+-- }
