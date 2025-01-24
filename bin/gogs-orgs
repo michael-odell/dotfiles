@@ -24,7 +24,7 @@ lister_fetch() {
         gogs get-org "${org}" \
             | jq -r '[ .username, (if .full_name == "" then "none" else .full_name end | gsub("\\s";"_"))] | @sh' \
             | tr -d "'" \
-            >> ${CACHE_FILE}
+            >> "${CACHE_FILE}"
 
     done
 
