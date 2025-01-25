@@ -8,5 +8,5 @@ return {
                 terminal = false
             }
         }
-    }
+    },
 }

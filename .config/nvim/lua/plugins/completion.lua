@@ -1,26 +1,35 @@
 return {
-    {
-        "hrsh7th/cmp-nvim-lsp"
-    },
-    -- At some point, this looks like a successor to nvim-cmp: https://github.com/saghen/blink.cmp?tab=readme-ov-file
+    { "hrsh7th/cmp-nvim-lsp" },
+    { "hrsh7th/cmp-nvim-lsp-signature-help" },
+    { "hrsh7th/cmp-buffer" },
+    { "hrsh7th/cmp-path" },
+    { "hrsh7th/cmp-cmdline" },
+    { "hrsh7th/cmp-cmdline" },
+    { "hrsh7th/cmp-vsnip" },
+
     {
         "hrsh7th/nvim-cmp",
-        dependencies = {
-            "hrsh7th/cmp-nvim-lsp",
-            "hrsh7th/cmp-buffer",
 
-            -- SOME snippet tool is required, others are possible -- see snippets.lua
-            "hrsh7th/vim-vsnip"
-        },
+        event = { "InsertEnter", "CmdlineEnter" },
         config = function()
             local cmp = require('cmp')
 
             -- Based on plugin recommended config: https://github.com/hrsh7th/nvim-cmp?tab=readme-ov-file#recommended-configuration
             cmp.setup({
+                    snippet = {
+                        expand = function(args)
+                           vim.fn["vsnip#anonymous"](args.body)
+                        end,
+                    },
                     sources = {
                         {name = 'nvim_lsp'},
+                        {name = 'nvim_lsp_signature_help'},
                         {name = 'vsnip'},
                         {name = 'buffer'},
+                    },
+                    window = {
+                        -- completion = cmp.config.window.bordered(),
+                        -- documentation = cmp.config.window.bordered(),
                     },
                     mapping = cmp.mapping.preset.insert({
                             -- Navigate between completion items
@@ -36,12 +45,8 @@ return {
                             -- Scroll up and down in the completion documentation
                             ['<C-u>'] = cmp.mapping.scroll_docs(-4),
                             ['<C-d>'] = cmp.mapping.scroll_docs(4),
+
                         }),
-                    snippet = {
-                        expand = function(args)
-                            vim.fn["vsnip#anonymous"](args.body)
-                        end,
-                    },
                 })
         end,
     },

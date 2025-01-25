@@ -26,9 +26,10 @@ lister_fetch() {
         gogs get-user "${user}" \
             | jq -r '[ .username, .login, .email, (.full_name | gsub("\\s";"_"))] | @sh' \
             | tr -d "'" \
-            >> ${CACHE_FILE}
+            >> "${CACHE_FILE}"
 
     done
+
 
     echo >&2
 

@@ -34,7 +34,7 @@ lister_fetch() {
     for org in $(gogs-orgs --name) ; do
 
         REPOS=( $(gogs list-org-repos "${org}") )
-        green "${org}: ${REPOS[@]}"
+        green "${org}: ${REPOS[*]}"
 
         for repo in "${REPOS[@]}" ; do
             echo " - ${repo}" >&2
@@ -43,7 +43,7 @@ lister_fetch() {
                 | tee "${CACHE_FILE}.last" \
                 | jq -r '. | select(.owner.username == "'${org}'") | [ .name, .owner.username, .full_name, .private, .fork, .parent.full_name, .default_branch, .ssh_url, .clone_url, .html_url ] | @sh' \
                 | tr -d "'" \
-                >> ${CACHE_FILE} ||  {
+                >> "${CACHE_FILE}" ||  {
                     echo "ERROR: Unable to fetch ${org} ${repo}" >&2
                     cp "${CACHE_FILE}.last" "${CACHE_FILE}.failed.${org}.${repo}"
                 }
@@ -54,7 +54,7 @@ lister_fetch() {
     for user in $(gogs-users --name) ; do
 
         REPOS=( $(gogs list-user-repos "${user}") )
-        green "${user}: ${REPOS[@]}"
+        green "${user}: ${REPOS[*]}"
 
         for repo in "${REPOS[@]}" ; do
             echo " - ${repo}" >&2
@@ -63,7 +63,7 @@ lister_fetch() {
                 | tee "${CACHE_FILE}.last" \
                 | jq -r '. | select(.owner.username == "'${user}'") | [ .name, .owner.username, .full_name, .private, .fork, .parent.full_name, .default_branch, .ssh_url, .clone_url, .html_url ] | @sh' \
                 | tr -d "'" \
-                >> ${CACHE_FILE} ||  {
+                >> "${CACHE_FILE}" ||  {
                     echo "ERROR: Unable to fetch ${user} ${repo}" >&2
                     cp "${CACHE_FILE}.last" "${CACHE_FILE}.failed.${user}.${repo}"
                 }
