@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
-while read LINE ; do
+while read -r LINE ; do
     echo "$(date '+%H:%M:%S')  ${LINE}"
 done

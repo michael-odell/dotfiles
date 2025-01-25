@@ -18,7 +18,7 @@ while [[ $# -gt 0 ]] ; do
             ;;
 
         *)
-            HELMRELEASES+=($1)
+            HELMRELEASES+=( "$1" )
             ;;
     esac
 

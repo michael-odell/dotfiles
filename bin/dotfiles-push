@@ -12,15 +12,15 @@ we_have_arrived() {
 
 
     if [[ -d .dotfiles.git ]] ; then
-        git --work-tree=$HOME --git-dir=$HOME/.dotfiles.git pull
+        git --work-tree="$HOME" --git-dir="$HOME/.dotfiles.git" pull
 
     else
-        : ${DOTFILES_DEFAULT_BRANCH:=main}
+        : "${DOTFILES_DEFAULT_BRANCH:=main}"
 
-        git --work-tree=$HOME --git-dir=$HOME/.dotfiles.git init . -b "${DOTFILES_DEFAULT_BRANCH}"
-        git --work-tree=$HOME --git-dir=$HOME/.dotfiles.git remote add --fetch origin "${DOTFILES_UPSTREAM:-git@github.com:michael-odell/dotfiles.git}"
-        git --work-tree=$HOME --git-dir=$HOME/.dotfiles.git branch --track "${DOTFILES_DEFAULT_BRANCH}" "origin/${DOTFILES_DEFAULT_BRANCH}"
-        git --work-tree=$HOME --git-dir=$HOME/.dotfiles.git checkout "${DOTFILES_DEFAULT_BRANCH}"
+        git --work-tree="$HOME" --git-dir="$HOME/.dotfiles.git" init . -b "${DOTFILES_DEFAULT_BRANCH}"
+        git --work-tree="$HOME" --git-dir="$HOME/.dotfiles.git" remote add --fetch origin "${DOTFILES_UPSTREAM:-git@github.com:michael-odell/dotfiles.git}"
+        git --work-tree="$HOME" --git-dir="$HOME/.dotfiles.git" branch --track "${DOTFILES_DEFAULT_BRANCH}" "origin/${DOTFILES_DEFAULT_BRANCH}"
+        git --work-tree="$HOME" --git-dir="$HOME/.dotfiles.git" checkout "${DOTFILES_DEFAULT_BRANCH}"
     fi
 
     rm -f "$0"
@@ -48,7 +48,7 @@ while [[ $# -gt 0 ]] ; do
             ;;
 
         *)
-            HOSTS+=($1)
+            HOSTS+=("$1")
             ;;
     esac
     shift
@@ -60,7 +60,7 @@ for host in "${HOSTS[@]}" ; do
         echo "Pushing to ${host}..." >&2
     fi
 
-    ARRIVAL_SCRIPT="$(basename $0)-$$.tmp"
+    ARRIVAL_SCRIPT="$(basename "$0")-$$.tmp"
 
     ssh-copy-id -p "${PORT}" "${host}"
     scp -P "${PORT}" "$0" "${host}:${ARRIVAL_SCRIPT}"

@@ -10,7 +10,7 @@ tmpfile=$(mktemp /tmp/readcert-XXXXXX)
 
 #echo "tmpfile=${tmpfile} HOST=${HOST} PORT=${PORT}"
 
-echo openssl s_client -connect ${HOST}:${PORT} -servername ${SERVERNAME} || true
-openssl s_client -connect ${HOST}:${PORT} -servername ${SERVERNAME} 2>/dev/null </dev/null >${tmpfile} || true
-openssl x509 -text -noout -in ${tmpfile}
-rm -f ${tmpfile}
+echo openssl s_client -connect "${HOST}:${PORT}" -servername "${SERVERNAME}" || true
+openssl s_client -connect "${HOST}:${PORT}" -servername "${SERVERNAME}" 2>/dev/null </dev/null >"${tmpfile}" || true
+openssl x509 -text -noout -in "${tmpfile}"
+rm -f "${tmpfile}"

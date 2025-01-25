@@ -23,7 +23,6 @@ if [[ -n "${ONLY_FAILURES}" ]] ; then
 fi
 echo "${git_output}"
 
-sourceret=$?
 echo
 
 kustomization_output=$(flux get kustomization -A)

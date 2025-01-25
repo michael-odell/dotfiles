@@ -8,7 +8,7 @@ for dir in "${@}" ; do
     if [[ ${first_time} -eq 1 ]] ; then
 
         # The first time, we must create a tmux session and remember its name
-        session=$(tmux new-session -d -c "${dir}" -x $(tput cols) -y $(tput lines))
+        session=$(tmux new-session -d -c "${dir}" -x "$(tput cols)" -y "$(tput lines)")
         first_time=0
 
     else
