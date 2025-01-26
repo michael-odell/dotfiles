@@ -16,6 +16,14 @@ return {
 
             -- Based on plugin recommended config: https://github.com/hrsh7th/nvim-cmp?tab=readme-ov-file#recommended-configuration
             cmp.setup({
+                    formatting = {
+                        expandable_indicator = true,
+                        fields = {
+                            "abbr",
+                            "kind",
+                            "menu"
+                        }
+                    },
                     snippet = {
                         expand = function(args)
                            vim.fn["vsnip#anonymous"](args.body)

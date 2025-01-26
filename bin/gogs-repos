@@ -6,9 +6,9 @@ source ~/lib/lister.bash
 CACHE_DIR=${HOME}/.cache/gogs
 lister_cache_file "${CACHE_DIR}/repos.${GOGS_CURRENT}"
 
+
 lister_fields name owner full_name private fork parent default_branch ssh_url http_url ui_url
 lister_default_fields name owner full_name private fork parent default_branch
-
 
 lister_fetch() {
     if [[ ${GOGS_API_TOKEN} =~ ^op://.* ]] ; then

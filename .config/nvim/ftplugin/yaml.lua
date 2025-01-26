@@ -1,2 +1,2 @@
 vim.opt_local.foldmethod = "indent"
-vim.opt_local.foldlevel = 3
+vim.opt_local.foldlevel = 10
