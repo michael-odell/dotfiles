@@ -22,6 +22,8 @@ lister_fetch() {
     # TODO modell
 
     mkdir -p "${CACHE_DIR}"
+
+
     : > "${CACHE_FILE}"
 
     # THIS WORKS ON SAASCM-GOGS

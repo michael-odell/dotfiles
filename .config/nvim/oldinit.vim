@@ -1,21 +1,4 @@
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-""" Set up VimPlug
-
-""" " Install if necessary
-""" if empty(glob('~/.config/nvim/autoload/plug.vim'))
-"""   silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
-"""     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-"""   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-""" endif
-""" 
-""" call plug#begin('~/.config/nvim/plugged')
-
-"""" TODO BELOW
-
-"""Plug 'tpope/vim-fugitive'
-"Plug 'vim-scripts/matchit.zip'
-"
 "if executable('ctags')
 "    " This automatically runs ctags on projects so that they're quickly set up for vim's use.  It does
 "    " cause .tags files to get generated, though.
@@ -36,47 +19,6 @@
 "Plug 'vim-airline/vim-airline'
 "Plug 'vim-airline/vim-airline-themes'
 
-"""" TODO ABOVE
-
-""" let g:polyglot_disabled = ['yaml', 'bash', 'ruby']
-""" let g:csv_no_conceal = 1
-""" let g:vim_json_syntax_conceal = 0
-""" Plug 'sheerun/vim-polyglot'
-"""
-""" let g:vim_json_syntax_conceal = 0
-""" Plug 'sheerun/vim-polyglot'
-""" let g:show_spaces_that_precede_tabs=1
-""" let g:better_whitespace_enabled=1
-""" Plug 'ntpeters/vim-better-whitespace'
-
-""" Plug 'mhinz/vim-signify'
-""" let g:signify_vcs_list = [ 'hg', 'git' ]
-
-""" Plug 'tpope/vim-rsi'
-""" Plug 'tpope/vim-projectionist'
-""" Plug 'tpope/vim-rake'
-""" noremap <A-o> <esc>:A<CR>
-""" map <leader>o <esc>:A<CR>
-
-""" Plug 'martinda/Jenkinsfile-vim-syntax'
-""" Plug 'jjo/vim-cue'
-
-""" " Turn off lsp diagnostics
-""" "let g:lsp_diagnostics_enabled = 0
-""" let g:lsp_virtual_text_enabled = 0
-""" let g:lsp_highlight_references_enabled = 1
-""" let g:lsp_signs_enabled = 1
-""" "Plug 'prabirshrestha/async.vim'
-""" "Plug 'prabirshrestha/vim-lsp'
-
-""" " For many language server types, install them automatically.  Try LspInstallServer in a supported
-""" " language.  See :help vim-lsp-settings-plugin for more
-""" "Plug 'mattn/vim-lsp-settings'
-""" Plug 'prabirshrestha/asyncomplete.vim'
-""" "Plug 'prabirshrestha/asyncomplete-lsp.vim'
-
-" Initialize plugin system
-""" call plug#end()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 """ Miscellaneous Settings
@@ -191,7 +133,6 @@ set undoreload=10000        " Maximum number lines to save for undo on a buffer 
 "    let g:airline_solarized_bg='light'
 "
 "endif
-"autocmd vimenter * ++nested colorscheme solarized8
 
 highlight Comment cterm=italic
 
