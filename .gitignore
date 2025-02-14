@@ -79,7 +79,7 @@
 /.etc.git
 /src
 /contrib
-/bmc
+/wd
 /.asdf
 
 # macOS stuff
@@ -99,6 +99,7 @@
 /Dropbox
 /.dropbox
 /SynologyDrive
+/Google\ Drive
 
 # I don't use subversion for anything at the moment, but something keeps triggering generation of
 # configuration for it, so ignore that.
