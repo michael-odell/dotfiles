@@ -39,5 +39,5 @@ while (( i < ${#SOURCES[@]} )) ; do
     echo git push "${dest}"
     git push "${dest}"
 
-    i=$(( i + 1))
+    i=$(( i + 1 ))
 done

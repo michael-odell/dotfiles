@@ -9,9 +9,9 @@ module.exports = {
     handlers: [
         {
             match: [
-                /(jamboard|analytics|meet|chrome|calendar|mail|docs|cloud|console.cloud|drive|groups|sites)\.google\.com(\/.*)?/,
-                /gmail\.com(\/.*)?/,
-                /ceph.odell.sh(\/.*)?/,
+                /http(s)?:\/\/[^/]*(jamboard|analytics|meet|chrome|calendar|mail|docs|cloud|console.cloud|drive|groups|sites)\.google\.com(\/.*)?/,
+                /http(s)?:\/\/[^/]*gmail\.com(\/.*)?/,
+                /http(s)?:\/\/[^/]*ceph.odell.sh(\/.*)?/,
             ],
             // I always see this and want to use it, but it seems to just
             // match the raw domain, not the domain followed by any
@@ -27,12 +27,16 @@ module.exports = {
         // Workday stuff in Chrome, too
         {
             match: [
-                /lucid.app(\/.*)?/,
-                /miro.com(\/.*)?/,
-                /ghe.megaleo.com/,
-                /(my)?workday.com(\/.*)?/,
-                /workdayinternal.com(\/.*)?/,
-                /workday.okta.com(\/.*)?/,
+                /http(s)?:\/\/[^/]*lucid.app(\/.*)?/,
+                /http(s)?:\/\/[^/]*miro.com(\/.*)?/,
+                /http(s)?:\/\/[^/]*ghe.megaleo.com/,
+                /http(s)?:\/\/[^/]*(my)?workday.com(\/.*)?/,
+                /http(s)?:\/\/[^/]*workdayinternal.com(\/.*)?/,
+                /http(s)?:\/\/[^/]*workday.okta.com(\/.*)?/,
+                /http(s)?:\/\/[^/]*wolinks.com(\/.*)?/,
+                /http(s)?:\/\/[^/]*urldefense.com(\/.*)?/,
+                /http(s)?:\/\/[^/]*achievers.com/,
+                /http(s)?:\/\/[^/]*inday.io/,
             ],
             browser: "Google Chrome"
         },

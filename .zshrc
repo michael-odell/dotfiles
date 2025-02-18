@@ -45,15 +45,6 @@ plugin-def ${DOTFILES_PLUGIN_SOURCE}/fast-syntax-highlighting
 plugin-def ${DOTFILES_PLUGIN_SOURCE}/powerlevel10k
 plugin-def ${DOTFILES_PLUGIN_SOURCE}/zsh-history
 
-if [[ -r ~/.onbmc ]] ; then
-    plugin-def ${DOTFILES_PLUGIN_SOURCE}/odell-bmc
-    plugin-def https://saascm-gogs.onbmc.com/SaaS-Platform/bmc-tools.git
-fi
-
-if [[ -n ${commands[gogs]} && -n ${commands[op]} ]] ; then
-    alias gogs="op run -- gogs"
-fi
-
 plugin-def ${DOTFILES_PLUGIN_SOURCE}/zsh-completions
 
 #plugin-def ${DOTFILES_PLUGIN_SOURCE}/temp-envselect
