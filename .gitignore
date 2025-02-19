@@ -18,6 +18,9 @@
 /.config/containers
 /.config/wireshark
 
+# The set of ssh keys I want available is machine-specific
+/.config/1Password/ssh/agent.toml
+
 
 # .zsh has all things zsh -- most should be version controlled, but ones that
 # are generated should not.
@@ -117,12 +120,4 @@
 #src/
 
 # Miscellaneous things related to work
-/.anyconnect
-/.cisco
-/.onbmc
 /.okta
-/OneDrive - BMC Software, Inc
-/BMC Software, Inc
-/.Desktop OneDrive (1)
-/.Documents OneDrive (1)
-/.infoblox

@@ -29,7 +29,7 @@ module.exports = {
             match: [
                 /http(s)?:\/\/[^/]*lucid.app(\/.*)?/,
                 /http(s)?:\/\/[^/]*miro.com(\/.*)?/,
-                /http(s)?:\/\/[^/]*ghe.megaleo.com/,
+                /http(s)?:\/\/[^/]*megaleo.com/,
                 /http(s)?:\/\/[^/]*(my)?workday.com(\/.*)?/,
                 /http(s)?:\/\/[^/]*workdayinternal.com(\/.*)?/,
                 /http(s)?:\/\/[^/]*workday.okta.com(\/.*)?/,
