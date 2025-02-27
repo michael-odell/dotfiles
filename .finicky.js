@@ -36,8 +36,8 @@ module.exports = {
                 /http(s)?:\/\/[^/]*wolinks.com(\/.*)?/,
                 /http(s)?:\/\/[^/]*urldefense.com(\/.*)?/,
                 /http(s)?:\/\/[^/]*achievers.com/,
-                /http(s)?:\/\/[^/]*inday.io/,
-                /http(s)?:\/\/workday[^/]*/,
+                /http(s)?:\/\/[^/]*(inday|wdpharos).io/,
+                /http(s)?:\/\/[^/]*workday[^/]*/,
             ],
             browser: "Google Chrome"
         },
