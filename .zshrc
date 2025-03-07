@@ -117,7 +117,7 @@ zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 
 
-for cmd in kubectl helm podman kind nerdctl ; do
+for cmd in kubectl helm podman kind nerdctl heimdall ; do
     if [[ -n ${commands[$cmd]} ]] ; then
         cached-source $cmd completion zsh
     fi
