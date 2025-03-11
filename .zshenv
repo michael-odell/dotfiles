@@ -37,6 +37,7 @@ fi
 
 export TZ="America/Denver"
 export ANSIBLE_NOCOWS=1
+export RIPGREP_CONFIG_PATH=$HOME/.config/ripgrep/config
 
 if [[ ! -d ~/.venv && -n ${commands[python3]} && ${DOTFILES_INSTALL:=1} -eq 1 ]] ; then
     echo "Initializing personal python venv..." >&2

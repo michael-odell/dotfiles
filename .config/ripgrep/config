@@ -1,0 +1,6 @@
+# There are some _hugely_ long lines in files occasionally, particularly json and ML training type data.
+#
+# This is here to keep one line from taking up hundreds of lines in a search result
+#
+# Note: override with -m0 or --max-columns=0
+--max-columns=500
