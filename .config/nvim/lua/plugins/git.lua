@@ -1,7 +1,11 @@
 return {
-    { "tpope/vim-fugitive" },
+    {
+        "tpope/vim-fugitive",
+        lazy = false,
+    },
     {
         "lewis6991/gitsigns.nvim",
+        lazy = false,
         config = function()
             -- ref: https://github.com/lewis6991/gitsigns.nvim?tab=readme-ov-file#installation--usage
             require('gitsigns').setup {
