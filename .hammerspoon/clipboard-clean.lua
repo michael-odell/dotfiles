@@ -1,3 +1,4 @@
+-- Remove RTF version of current clipboard, leaving just plaintext
 hs.hotkey.bind({"cmd", "alt", "ctrl"}, "P", function()
     local pb = hs.pasteboard.contentTypes()
     local contains = hs.fnutils.contains
