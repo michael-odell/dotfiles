@@ -11,6 +11,7 @@ module.exports = {
             match: [
                 /http(s)?:\/\/[^/]*(jamboard|analytics|meet|chrome|calendar|mail|docs|cloud|console.cloud|drive|groups|sites)\.google\.com(\/.*)?/,
                 /http(s)?:\/\/[^/]*gmail\.com(\/.*)?/,
+                /http(s)?:\/\/[^/]*forms\.gle(\/.*)?/,
                 /http(s)?:\/\/[^/]*ceph.odell.sh(\/.*)?/,
             ],
             // I always see this and want to use it, but it seems to just
@@ -40,6 +41,7 @@ module.exports = {
                 /http(s)?:\/\/[^/]*wdscylla.de/,
                 /http(s)?:\/\/[^/]*workday[^/]*/,
                 /http(s)?:\/\/[^/]*getcortexapp.com[^/]*/,
+                /http(s)?:\/\/s2.bl-1.com\//,
             ],
             browser: "Google Chrome"
         },

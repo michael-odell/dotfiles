@@ -1,0 +1,47 @@
+---- Custom URL dispatcher for Hammerspoon
+--hs.loadSpoon("URLDispatcher")
+--
+--
+---- Uncomment the following line to enable debug logging
+---- spoon.URLDispatcher.logger.setLogLevel("debug")
+--
+--
+--function appID(app)
+--    if hs.application.infoForBundlePath(app) then
+--      return hs.application.infoForBundlePath(app)['CFBundleIdentifier']
+--    end
+--end
+--
+--
+--local safariBrowser = appID("/Applications/Safari.app")
+--local chromeBrowser = appID("/Applications/Google Chrome.app")
+--local edgeBrowser = appID("/Applications/Microsoft Edge.app")
+--local firefoxBrowser = appID("/Applications/Firefox.app")
+--local braveBrowser = appID("/Applications/Brave Browser.app")
+--local operaBrowser = appID("/Applications/Opera.app")
+--local zoomApp = appID("/Applications/zoom.us.app")
+--
+--
+---- Define URL patterns and their corresponding browsers
+--spoon.URLDispatcher.url_patterns = {
+--
+--    -- Always open Google URLs in Chrome
+--    { "https://google%.com", chromeBrowser },
+--    { "https://goo%.gl", chromeBrowser },
+--
+--    -- Always open Apple URLs in Safari
+--    { "https://apple%.com", safariBrowser },
+--    { "https://icloud%.com", safariBrowser },
+--
+--    -- Workday systems should use Chrome
+--    { "https://workday%.com", chromeBrowser },
+--    { "https://workdayinternal%.com", chromeBrowser },
+--    { "https://console%.megaleo%.com", chromeBrowser },
+--
+--    -- Open Zoom links directly in the Zoom app
+--    { "https://zoom%.us", zoomApp },
+--    { "https://zoom%.com", zoomApp },
+--}
+--
+---- Start the URL dispatcher
+--spoon.URLDispatcher:start()
