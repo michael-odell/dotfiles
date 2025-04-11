@@ -2,8 +2,8 @@
 hs.loadSpoon("URLDispatcher")
 
 
--- Uncomment the following line to enable debug logging
-spoon.URLDispatcher.logger.setLogLevel("debug")
+-- Uncomment the following line to enable debug logging in console
+-- spoon.URLDispatcher.logger.setLogLevel("debug")
 
 
 function appID(app)
