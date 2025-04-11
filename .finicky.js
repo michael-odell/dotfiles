@@ -9,8 +9,7 @@ module.exports = {
     handlers: [
         {
             match: [
-                /http(s)?:\/\/[^/]*(jamboard|analytics|meet|chrome|calendar|mail|docs|cloud|console.cloud|drive|groups|sites)\.google\.com(\/.*)?/,
-                /http(s)?:\/\/[^/]*gmail\.com(\/.*)?/,
+                /http(s)?:\/\/([^/]*\.)?(google|gmail)\.com(\/.*)?/,
                 /http(s)?:\/\/[^/]*forms\.gle(\/.*)?/,
                 /http(s)?:\/\/[^/]*ceph.odell.sh(\/.*)?/,
             ],
