@@ -11,7 +11,7 @@ end)
 -- Load an external config file
 function loadConfigFile(filePath)
     print("Loading config file: " .. filePath)
-    
+
     -- Use pcall to safely load the file, catching any errors
     local status, err = pcall(function() dofile(filePath) end)
 

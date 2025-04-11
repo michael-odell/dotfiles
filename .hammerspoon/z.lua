@@ -2,6 +2,8 @@
 hs.loadSpoon("Zing")
 local zing = spoon.Zing
 
+zing.logger.setLogLevel("verbose")
+
 -- Configuration for Zing
 zing.searchEngine = "https://duckduckgo.com/{%?q=%@%}"
 zing.inputWidth = 16
@@ -13,7 +15,7 @@ zing.bookmarks = {
     -- Workday bookmarks
     ["jira"] = "https://jira2.workday.com/{%browse/%1%}",
     ["jql"] = "https://jira2.workday.com/issues/{%?jql=%@%}",
-    ["wd"] = "https://wd5.myworkday.com/workday/",
+    ["wd"] = "https://wd5.myworkday.com/workday/{%d/search.htmld?q=%@&state=searchCategory-all%%3Adefault%}",
 
     -- Personal bookmarks
     ["gh"] = "https://github.com/{%jmichael-odell/%1%}",

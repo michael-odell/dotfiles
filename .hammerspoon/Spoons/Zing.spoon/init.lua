@@ -22,7 +22,7 @@ obj.author = "Jason Heddings"
 obj.license = "MIT"
 
 -- Properties
-obj.logger = hs.logger.new("Zing", "debug")
+obj.logger = hs.logger.new("Zing", "warning")
 obj.chooser = nil
 obj.hotkeyShow = nil
 
@@ -63,24 +63,6 @@ obj.inputWidth = 20
 ---   }
 obj.bookmarks = { }
 
---- parseBookmark(text)
---- Function
---- Parse a string that may contain a bookmark followed by additional search terms
----
---- Parameters:
----  * text - A string that potentially contains a bookmark name followed by search terms
----
---- Returns:
----  * bookmark - The bookmark name if found, or nil
----  * rest - The remaining text after the bookmark, or nil if no bookmark was found
-function parseBookmark(text)
-    local bookmark, rest = text:match(BOOKMARK_PATTERN)
-    if bookmark and obj.bookmarks[bookmark] then
-        return bookmark, rest
-    end
-    return nil, nil
-end
-
 --- isURL(text)
 --- Function
 --- Check if a string looks like a URL
@@ -94,8 +76,26 @@ function isURL(text)
     return text:match("^[a-z]+://") or text:match("^www%.")
 end
 
---- isBookmark(text)
---- Function
+--- Zing:_parseBookmark(text)
+--- Method
+--- Parse a string that may contain a bookmark followed by additional search terms
+---
+--- Parameters:
+---  * text - A string that potentially contains a bookmark name followed by search terms
+---
+--- Returns:
+---  * bookmark - The bookmark name if found, or nil
+---  * rest - The remaining text after the bookmark, or nil if no bookmark was found
+function obj:_parseBookmark(text)
+    local bookmark, rest = text:match(BOOKMARK_PATTERN)
+    if bookmark and self.bookmarks[bookmark] then
+        return bookmark, rest
+    end
+    return nil, nil
+end
+
+--- Zing:_isBookmark(text)
+--- Method
 --- Check if a string is a valid bookmark or starts with a bookmark
 ---
 --- Parameters:
@@ -103,41 +103,29 @@ end
 ---
 --- Returns:
 ---  * A boolean indicating whether the text starts with a valid bookmark
-function isBookmark(text)
-    local bookmark, _ = parseBookmark(text)
+function obj:_isBookmark(text)
+    local bookmark, _ = self:_parseBookmark(text)
     return bookmark ~= nil
 end
 
---- getPasteboardURL()
---- Function
---- Check if the pasteboard contains a URL
----
---- Returns:
----  * The URL from the pasteboard, or nil if the pasteboard doesn't contain a URL
-function getPasteboardURL()
-    local contents = hs.pasteboard.getContents()
-    if contents and isURL(contents) then
-        return contents
-    end
-    return nil
-end
-
---- Zing:_expandPlaceholders(text, ...)
+--- Zing:_processTemplate(text, ...)
 --- Method
 --- Expand placeholders in a URL text with the provided parameters
 ---
 --- Parameters:
 ---  * text - The URL text containing placeholders
----  * ... - Variable number of parameters to replace placeholders
+---  * ... - The template parameters for placeholders
 ---
 --- Returns:
 ---  * The expanded URL with placeholders replaced
-function obj:_expandPlaceholders(text, ...)
+---
+--- Notes:
+---  * Text within template wrappers {%...%} will be removed if no parameters are provided
+function obj:_processTemplate(text, ...)
     local paramCount = select("#", ...)
 
     if paramCount > 0 then
-        text = self:_handleParams(text, ...)
-        text = text:gsub(PLACEHOLDER_PARAM, "%1")
+        text = self:_expandPlaceholders(text, ...)
     else
         text = text:gsub(PLACEHOLDER_PARAM, "")
     end
@@ -145,18 +133,27 @@ function obj:_expandPlaceholders(text, ...)
     return text
 end
 
---- Zing:_handleParams(text, ...)
+--- Zing:_expandPlaceholders(text, ...)
 --- Method
 --- Handle parameter replacement in text with placeholder values
 ---
 --- Parameters:
 ---  * text - The text containing placeholders
----  * ... - Variable number of parameters to replace placeholders
+---  * ... - The parameters to replace placeholders
 ---
 --- Returns:
----  * The text with placeholders replaced by encoded parameter values
-function obj:_handleParams(text, ...)
+---  * The expanded text with placeholders replaced by encoded parameter values
+---
+--- Notes:
+---  * Use %% to get a literal % in the output (escaping)
+---  * Use %@ to replace with all parameters joined by a space
+---  * Use %1, %2, etc. to replace with positional parameters
+function obj:_expandPlaceholders(text, ...)
     local params = {...}
+
+    -- Temporarily replace escaped percent signs
+    local percentMarker = "\0PERCENT_SIGN\0"
+    text = text:gsub("%%%%", percentMarker)
 
     -- Replace %@ with all parameters
     text = text:gsub(
@@ -184,6 +181,12 @@ function obj:_handleParams(text, ...)
         end
     )
 
+    -- Remove template markers, but keep the content inside
+    text = text:gsub(PLACEHOLDER_PARAM, "%1")
+
+    -- Finally, restore the escaped % as a single %
+    text = text:gsub(percentMarker, "%%")
+
     return text
 end
 
@@ -197,7 +200,7 @@ end
 --- Returns:
 ---  * The generated URL, or nil if the text doesn't start with a valid bookmark
 function obj:_handleBookmark(text)
-    local bookmark, rest = parseBookmark(text)
+    local bookmark, rest = self:_parseBookmark(text)
 
     if bookmark then
         local target = self.bookmarks[bookmark]
@@ -211,7 +214,7 @@ function obj:_handleBookmark(text)
             return target(table.unpack(params))
         else
             self.logger.d("Processing URL:", bookmark, "->", target, "? {", table.concat(params, ", "), "}")
-            return self:_expandPlaceholders(target, table.unpack(params))
+            return self:_processTemplate(target, table.unpack(params))
         end
     end
 
@@ -249,7 +252,7 @@ end
 ---  * A URL for the search using the configured search engine
 function obj:_handleSearchQuery(text)
     self.logger.v("Processing search request:", text)
-    return self:_expandPlaceholders(self.searchEngine, text)
+    return self:_processTemplate(self.searchEngine, text)
 end
 
 --- Zing:_handleQueryText(text)
@@ -268,7 +271,7 @@ function obj:_handleQueryText(text)
 
     self.logger.v("Processing user query:", text)
 
-    if isBookmark(text) then
+    if self:_isBookmark(text) then
         return obj:_handleBookmark(text)
     end
 
