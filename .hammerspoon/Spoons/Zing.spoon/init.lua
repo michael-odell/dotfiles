@@ -5,7 +5,8 @@
 --- queries and select from a list of suggestions.
 
 -- Patterns that we use to match placeholders in a URL
-local PLACEHOLDER_POS = "%%(%d+)"
+local PLACEHOLDER_PERCENT = "%%%%"
+local PLACEHOLDER_POSITION = "%%(%d+)"
 local PLACEHOLDER_ARGS = "%%@"
 local PLACEHOLDER_PARAM = "{%%([^}]*)%%}"
 
@@ -149,43 +150,57 @@ end
 ---  * Use %@ to replace with all parameters joined by a space
 ---  * Use %1, %2, etc. to replace with positional parameters
 function obj:_expandPlaceholders(text, ...)
-    local params = {...}
-
-    -- Temporarily replace escaped percent signs
-    local percentMarker = "\0PERCENT_SIGN\0"
-    text = text:gsub("%%%%", percentMarker)
-
-    -- Replace %@ with all parameters
-    text = text:gsub(
-        PLACEHOLDER_ARGS,
-        function()
-            self.logger.v("Found placeholder: @")
-            local value = table.concat(params, " ")
-            return hs.http.encodeForQuery(value)
-        end
-    )
-
-    -- Replace numeric placeholders
-    text = text:gsub(
-        PLACEHOLDER_POS,
-        function(n)
-            local index = tonumber(n)
-            self.logger.v("Found placeholder:", index)
-
-            if index <= #params then
-                local value = params[index]
-                return hs.http.encodeForQuery(value)
+    -- Encode each parameter into a URL-safe format
+    local params = hs.fnutils.map(
+        {...},
+        function(param)
+            if param and param ~= "" then
+                return hs.http.encodeForQuery(param)
             end
-
             return ""
         end
     )
 
+    -- Create the replacement table
+    local replacements = { }
+
     -- Remove template markers, but keep the content inside
+    -- NOTE: do this first to remove extra markers during processing
     text = text:gsub(PLACEHOLDER_PARAM, "%1")
 
-    -- Finally, restore the escaped % as a single %
-    text = text:gsub(percentMarker, "%%")
+    -- Find escaped % and mark for replacement
+    local percentMarker = "\0ZING_PCT\0"
+    text = text:gsub(PLACEHOLDER_PERCENT, percentMarker)
+    replacements[percentMarker] = "%"
+
+    -- Join all-args into a single string with HTML-space separator
+    local argsMarker = "\0ZING_ARGS\0"
+    text = text:gsub(PLACEHOLDER_ARGS, argsMarker)
+    replacements[argsMarker] = table.concat(params, "%20")
+
+    -- Find numeric placeholders and mark for replacement
+    text = text:gsub(
+        PLACEHOLDER_POSITION,
+        function(n)
+            local index = tonumber(n)
+            self.logger.v("Found placeholder:", index)
+
+            local posMarker = "\0ZING_POS_" .. index .. "\0"
+            if index <= #params then
+                replacements[posMarker] = params[index]
+            else
+                replacements[posMarker] = ""
+            end
+            return posMarker
+        end
+    )
+
+    -- Replace all markers with their actual values
+    for marker, value in pairs(replacements) do
+        -- Escape % in the value to avoid pattern conflicts
+        value = value:gsub("%%", "%%%%")
+        text = text:gsub(marker, value)
+    end
 
     return text
 end
@@ -272,7 +287,7 @@ function obj:_handleQueryText(text)
     self.logger.v("Processing user query:", text)
 
     if self:_isBookmark(text) then
-        return obj:_handleBookmark(text)
+        return self:_handleBookmark(text)
     end
 
     if isURL(text) then
@@ -282,7 +297,7 @@ function obj:_handleQueryText(text)
     return obj:_handleSearchQuery(text)
 end
 
---- _createBookmarkChoice(key)
+--- Zing:_createBookmarkChoice(key)
 --- Method
 --- Create a choice object for a specific bookmark
 ---
@@ -326,7 +341,7 @@ function obj:_completionCallback(choice)
 
     local text = choice.text
     local url = self:_handleQueryText(text)
-    
+
     if not url then
         hs.alert.show("Invalid query")
         return false
@@ -352,13 +367,13 @@ end
 function obj:_queryChangedCallback(query)
     local choices = { }
     local subText = isURL(query) and "Press Enter to open URL" or "Press Enter to search"
-    
+
     -- Add the main query option
     table.insert(choices, {
-        ["text"] = query, 
+        ["text"] = query,
         ["subText"] = subText
     })
-    
+
     -- Add bookmark suggestions that match the query
     local queryLower = query:lower()
     for key, _ in pairs(self.bookmarks) do
@@ -410,19 +425,30 @@ function obj:bindHotkeys(mapping)
     return self
 end
 
---- Zing:start()
+--- Zing:init()
 --- Method
---- Start the Zing chooser
+--- Initialize the Zing chooser
 ---
 --- Returns:
 ---  * The Zing object
-function obj:start()
+function obj:init()
     self.chooser = hs.chooser.new(function(choice) return self:_completionCallback(choice) end)
 
     self.chooser:placeholderText("Enter URL, bookmark, or search query")
     self.chooser:searchSubText(false)
-    self.chooser:width(self.inputWidth)
     self.chooser:queryChangedCallback(function(query) self:_queryChangedCallback(query) end)
+
+    return self
+end
+
+--- Zing:start()
+--- Method
+--- Start Zing
+---
+--- Returns:
+---  * The Zing object
+function obj:start()
+    self.chooser:width(self.inputWidth)
 
     if (self.hotkeyShow) then
         self.hotkeyShow:enable()

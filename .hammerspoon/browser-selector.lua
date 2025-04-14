@@ -30,9 +30,11 @@ spoon.URLDispatcher.url_patterns = {
     -- NOTE: Lua Patterns (https://www.lua.org/pil/20.2.html), not regex
 
     { "https://workday.*%.slack%.com/archives/", slackApp},
+    { "https://workday.*%.slack%.com/messages/", slackApp},
 
     -- Always open Google URLs in Chrome
     { "https://google%.com", chromeBrowser},
+    { "https://.*%.google%.com", chromeBrowser},
     { "https://gmail%.com", chromeBrowser},
     { "https://forms%.gle", chromeBrowser},
     { "https://goo%.gl", chromeBrowser },
@@ -53,6 +55,7 @@ spoon.URLDispatcher.url_patterns = {
     { "https://.*wdpharos%.io", chromeBrowser },
     { "https://.*getcortexapp%.com", chromeBrowser },
     { "https://s2%.bl-1%.com", chromeBrowser },
+    { "https://wolinks.com/", chromeBrowser },
 
     -- Open Zoom links directly in the Zoom app
     { "https://zoom%.us", zoomApp },
