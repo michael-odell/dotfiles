@@ -2,13 +2,17 @@
 
 hs.window.animationDuration = 0
 
-local config = {
-    modKeys = {"cmd", "alt", "ctrl"},
-    showAlert = true,
+config = {
+    -- Note: Backspace doesn't seem to respond to cmd-alt-ctrl, perhaps
+    -- for macos reasons: https://github.com/Hammerspoon/hammerspoon/issues/3642
+    modKeys = {"alt", "ctrl"},
+    showAlert = false,
 
     maxWindowWidth = 1250,  -- maximum window width in pixels (nil for no limit)
     maxWindowHeight = nil, -- maximum window height in pixels (nil for no limit)
 }
+
+magnetState = nil
 
 local anchor = {
     left = "left",
@@ -61,6 +65,11 @@ function resizeWindow(anchors, scaleWidth, scaleHeight, constrainWidth, constrai
         hs.alert.show(string.format("Window size: %d x %d", frame.w, frame.h))
     end
 
+    magnetState = {
+        lastWindow = win,
+        lastFrame = win:frame()
+    }
+
     win:setFrame(frame)
 end
 
@@ -107,4 +116,11 @@ end)
 -- Tile the current window to bottom right corner
 hs.hotkey.bind(config.modKeys, "K", function()
     resizeWindow({anchor.bottom, anchor.right}, scale.half, scale.half, true, true)
+end)
+
+hs.hotkey.bind(config.modKeys, "delete", function()
+    if magnetState then
+        magnetState.lastWindow:setFrame(magnetState.lastFrame)
+        magnetState = nil
+    end
 end)
