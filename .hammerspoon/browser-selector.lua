@@ -3,7 +3,7 @@ hs.loadSpoon("URLDispatcher")
 
 
 -- Uncomment the following line to enable debug logging in console
--- spoon.URLDispatcher.logger.setLogLevel("debug")
+spoon.URLDispatcher.logger.setLogLevel("debug")
 
 
 function appID(app)
@@ -18,10 +18,6 @@ local chromeBrowser = appID("/Applications/Google Chrome.app")
 local zoomApp = appID("/Applications/zoom.us.app")
 local slackApp = appID("/Applications/Slack.app")
 
--- Finicky used to handle these for me, but I think Hammerspoon can do
--- it all now (?)
---local finickyBrowser = appID("/Applications/Finicky.app")
---spoon.URLDispatcher.default_handler = finickyBrowser
 spoon.URLDispatcher.default_handler = safariBrowser
 
 -- Define URL patterns and their corresponding browsers
@@ -32,8 +28,11 @@ spoon.URLDispatcher.url_patterns = {
     { "https://workday.*%.slack%.com/archives/", slackApp},
     { "https://workday.*%.slack%.com/messages/", slackApp},
 
-    -- Always open Google URLs in Chrome
-    { "https://google%.com", chromeBrowser},
+    -- Typical searches stay in safari
+    { "https://www%.google%.com/search", safariBrowser},
+    { "https://google%.com/search", safariBrowser},
+
+    -- But the rest of google should be opened in chrome
     { "https://.*%.google%.com", chromeBrowser},
     { "https://gmail%.com", chromeBrowser},
     { "https://forms%.gle", chromeBrowser},
@@ -42,7 +41,9 @@ spoon.URLDispatcher.url_patterns = {
 
     -- Workday systems should use Chrome
     { "https://workday%.com", chromeBrowser },
-    { "https://workdayinternal%.com", chromeBrowser },
+    { "https://workday%.com", chromeBrowser },
+    { "https://workday%.peakon%.com", chromeBrowser },
+    { "https://.*workdayinternal%.com", chromeBrowser },
     { "https://console%.megaleo%.com", chromeBrowser },
     { "https://.*lucid%.app", chromeBrowser },
     { "https://.*miro%.com", chromeBrowser },
@@ -56,6 +57,8 @@ spoon.URLDispatcher.url_patterns = {
     { "https://.*getcortexapp%.com", chromeBrowser },
     { "https://s2%.bl-1%.com", chromeBrowser },
     { "https://wolinks.com/", chromeBrowser },
+    { "https://workday%.okta%.com/", chromeBrowser },
+    { "https://.*%.workday%.build/", chromeBrowser },
 
     -- Open Zoom links directly in the Zoom app
     { "https://zoom%.us", zoomApp },

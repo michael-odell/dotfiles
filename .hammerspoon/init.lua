@@ -7,6 +7,10 @@ hs.hotkey.bind({"cmd", "alt", "ctrl"}, "R", function()
     hs.reload()
 end)
 
+hs.hotkey.bind({"cmd", "alt", "ctrl"}, "C", function()
+    hs.toggleConsole()
+end)
+
 
 -- Load an external config file
 function loadConfigFile(filePath)
