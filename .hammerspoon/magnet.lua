@@ -12,8 +12,6 @@ config = {
     maxWindowHeight = nil, -- maximum window height in pixels (nil for no limit)
 }
 
-magnetState = nil
-
 local anchor = {
     left = "left",
     right = "right",
@@ -75,12 +73,12 @@ end
 
 -- Tile the current window to the left half of the screen
 hs.hotkey.bind(config.modKeys, "Left", function()
-    resizeWindow({anchor.left, anchor.top, anchor.bottom}, scale.half, scale.full, false, false)
+    resizeWindow({anchor.left, anchor.top, anchor.bottom}, scale.half, scale.full, true, false)
 end)
 
 -- Tile the current window to the right half of the screen
 hs.hotkey.bind(config.modKeys, "Right", function()
-    resizeWindow({anchor.right, anchor.top, anchor.bottom}, scale.half, scale.full, false, false)
+    resizeWindow({anchor.right, anchor.top, anchor.bottom}, scale.half, scale.full, true, false)
 end)
 
 -- Tile the current window to the top half of the screen
