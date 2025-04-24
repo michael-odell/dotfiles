@@ -3,7 +3,7 @@ hs.loadSpoon("URLDispatcher")
 
 
 -- Uncomment the following line to enable debug logging in console
-spoon.URLDispatcher.logger.setLogLevel("debug")
+-- spoon.URLDispatcher.logger.setLogLevel("debug")
 
 
 function appID(app)
@@ -25,7 +25,13 @@ spoon.URLDispatcher.url_patterns = {
 
     -- NOTE: Lua Patterns (https://www.lua.org/pil/20.2.html), not regex
 
-    { "https://workday.*%.slack%.com/archives/", slackApp},
+    -- NOTE: I suspect this sort of link isn't processed correctly for
+    -- some cases through hammerspoon, but not certain.  This was one
+    -- link I couldn't open via hammerspoon but could via chrome.  It's
+    -- specifically a link to #ipesre-100934-wd3-impl-search-dev
+    --   https://workday.enterprise.slack.com/archives/C07V2FGC924
+    -- { "https://workday.*%.slack%.com/archives/", slackApp},
+
     { "https://workday.*%.slack%.com/messages/", slackApp},
 
     -- Typical searches stay in safari
@@ -40,15 +46,11 @@ spoon.URLDispatcher.url_patterns = {
     { "https://ceph%.odell%.sh", chromeBrowser },
 
     -- Workday systems should use Chrome
-    { "https://workday%.com", chromeBrowser },
-    { "https://workday%.com", chromeBrowser },
-    { "https://workday%.peakon%.com", chromeBrowser },
-    { "https://.*workdayinternal%.com", chromeBrowser },
+    { "https://[^/]*workday[^/]*/", chromeBrowser },
     { "https://console%.megaleo%.com", chromeBrowser },
     { "https://.*lucid%.app", chromeBrowser },
     { "https://.*miro%.com", chromeBrowser },
     { "https://.*megaleo%.com", chromeBrowser },
-    { "https://.*workday%.com", chromeBrowser },
     { "https://.*urldefense%.com", chromeBrowser },
     { "https://.*achievers%.com", chromeBrowser },
     { "https://.*wdscylla%.de", chromeBrowser },
@@ -57,8 +59,6 @@ spoon.URLDispatcher.url_patterns = {
     { "https://.*getcortexapp%.com", chromeBrowser },
     { "https://s2%.bl-1%.com", chromeBrowser },
     { "https://wolinks.com/", chromeBrowser },
-    { "https://workday%.okta%.com/", chromeBrowser },
-    { "https://.*%.workday%.build/", chromeBrowser },
 
     -- Open Zoom links directly in the Zoom app
     { "https://zoom%.us", zoomApp },
