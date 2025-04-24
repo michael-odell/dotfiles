@@ -2,8 +2,9 @@
 ---
 --- Snapster is a Hammerspoon spoon that helps arrange windows on macOS.
 
+local LayoutManager = dofile(hs.spoons.resourcePath("layout.lua"))
 local FrameScaler = dofile(hs.spoons.resourcePath("scaler.lua"))
-local FrameLayout = dofile(hs.spoons.resourcePath("layout.lua"))
+local ScreenAnchor = dofile(hs.spoons.resourcePath("anchor.lua"))
 local FrameResizer = dofile(hs.spoons.resourcePath("resize.lua"))
 local WindowHistory = dofile(hs.spoons.resourcePath("undo.lua"))
 
@@ -12,7 +13,7 @@ obj.__index = obj
 
 -- Metadata
 obj.name = "Snapster"
-obj.version = "1.2"
+obj.version = "1.3rc1"
 obj.author = "Jason Heddings"
 obj.license = "MIT"
 
@@ -79,19 +80,19 @@ obj.scale = {
     quarterScreen = FrameScaler.QUARTER_SCREEN,
 }
 
---- Snapster.layout
+--- Snapster.anchor
 --- Variable
---- A table of predefined window layouts.
-obj.layout = {
-    left = FrameLayout.LEFT_HALF,
-    right = FrameLayout.RIGHT_HALF,
-    top = FrameLayout.TOP_HALF,
-    bottom = FrameLayout.BOTTOM_HALF,
-    topLeft = FrameLayout.TOP_LEFT,
-    bottomLeft = FrameLayout.BOTTOM_LEFT,
-    topRight = FrameLayout.TOP_RIGHT,
-    bottomRight = FrameLayout.BOTTOM_RIGHT,
-    fullScreen = FrameLayout.FULL_SCREEN
+--- A table of predefined screen anchors.
+obj.anchor = {
+    left = ScreenAnchor.LEFT_SIDE,
+    right = ScreenAnchor.RIGHT_SIDE,
+    top = ScreenAnchor.TOP_OF_SCREEN,
+    bottom = ScreenAnchor.BOTTOM_OF_SCREEN,
+    topLeft = ScreenAnchor.TOP_LEFT,
+    bottomLeft = ScreenAnchor.BOTTOM_LEFT,
+    topRight = ScreenAnchor.TOP_RIGHT,
+    bottomRight = ScreenAnchor.BOTTOM_RIGHT,
+    fullScreen = ScreenAnchor.FULL_SCREEN
 }
 
 --- Snapster.resize
@@ -167,7 +168,7 @@ end
 --- Notes:
 ---  * Each layout object in the list must have an apply() method that takes a window object
 ---  * If showAlert is true, displays an alert with the window dimensions after applying layouts
-function obj:_apply(layouts)
+function obj:_apply(layout)
     local win = hs.window.focusedWindow()
 
     if not win then
@@ -175,32 +176,16 @@ function obj:_apply(layouts)
         return
     end
     
-    self.history:push(win)
-
-    local frame = win:frame()
     local app = win:application()
     local appname = app and app:name() or win:title()
 
-    self.logger.d("Begin layout:", appname, "[", win:title(), "]")
-    self.logger.d("  => (", frame.w, "x", frame.h, ") @ [", frame.x, ",", frame.y, "]")
+    self.history:push(win)
 
-    for _, layout in ipairs(layouts) do
-        frame = layout:apply(win)
-        win:setFrame(frame)
-    end
-
-    self.logger.i(
-        "Moving", appname,
-        "to (", frame.w, "x", frame.h,
-        ") @ [", frame.x, ",", frame.y, "]"
-    ) 
+    local frame = layout:apply(win)
 
     if self.showAlert then
         hs.alert.show(appname .. " (" .. frame.w .. "x" .. frame.h .. ")")
     end
-
-    self.logger.d("Layout complete:", appname, "[", win:title(), "]")
-    self.logger.d("  => (", frame.w, "x", frame.h, ") @ [", frame.x, ",", frame.y, "]")
 end
 
 --- Snapster:bind(mapping, width, height, anchors)
@@ -211,14 +196,14 @@ end
 ---  * mapping - A table {mods, key} defining the hotkey
 ---  * ... - A list of layout operations to apply
 ---
---- Remarks:
+--- Notes:
 ---  * The layout operations will be applied in the order they are provided.
 function obj:bind(mapping, ...)
     local mods = mapping[1]
     local key = mapping[2]
     local keyBinding = keyname(mods, key)
 
-    local layouts = {...}
+    local mgr = LayoutManager:new(...)
 
     -- Clean up existing hotkey if it exists
     if self.hotkeys[keyBinding] then
@@ -229,7 +214,9 @@ function obj:bind(mapping, ...)
     self.logger.d("Binding hotkey", keyBinding)
 
     -- Create the new hotkey
-    self.hotkeys[keyBinding] = hs.hotkey.new(mods, key, function() self:_apply(layouts) end)
+    self.hotkeys[keyBinding] = hs.hotkey.new(
+        mods, key, function() self:_apply(mgr) end
+    )
     
     return self
 end
@@ -294,7 +281,7 @@ function obj:stop()
     
     if self.history then
         self.history:clear()
-        self.history = 0
+        self.history = nil
     end
 
     self.logger.i("Snapster stopped")

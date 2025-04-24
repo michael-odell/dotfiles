@@ -17,16 +17,16 @@ snap.apps = {
 }
 
 -- Setup key binding for half screen layouts
-snap:bind({{"ctrl", "alt", "cmd"}, "left"}, snap.scale.halfWidth, snap.layout.left)
-snap:bind({{"ctrl", "alt", "cmd"}, "right"}, snap.scale.halfWidth, snap.layout.right)
-snap:bind({{"ctrl", "alt", "cmd"}, "up"}, snap.scale.halfHeight, snap.layout.top)
-snap:bind({{"ctrl", "alt", "cmd"}, "down"}, snap.scale.halfHeight, snap.layout.bottom)
+snap:bind({{"ctrl", "alt", "cmd"}, "left"}, snap.scale.halfWidth, snap.anchor.left)
+snap:bind({{"ctrl", "alt", "cmd"}, "right"}, snap.scale.halfWidth, snap.anchor.right)
+snap:bind({{"ctrl", "alt", "cmd"}, "up"}, snap.scale.halfHeight, snap.anchor.top)
+snap:bind({{"ctrl", "alt", "cmd"}, "down"}, snap.scale.halfHeight, snap.anchor.bottom)
 
 -- Setup key binding for quarter screen layouts
-snap:bind({{"ctrl", "alt", "cmd"}, "U"}, snap.scale.quarterScreen, snap.layout.topLeft)
-snap:bind({{"ctrl", "alt", "cmd"}, "I"}, snap.scale.quarterScreen, snap.layout.topRight)
-snap:bind({{"ctrl", "alt", "cmd"}, "J"}, snap.scale.quarterScreen, snap.layout.bottomLeft)
-snap:bind({{"ctrl", "alt", "cmd"}, "K"}, snap.scale.quarterScreen, snap.layout.bottomRight)
+snap:bind({{"ctrl", "alt", "cmd"}, "U"}, snap.scale.quarterScreen, snap.anchor.topLeft)
+snap:bind({{"ctrl", "alt", "cmd"}, "I"}, snap.scale.quarterScreen, snap.anchor.topRight)
+snap:bind({{"ctrl", "alt", "cmd"}, "J"}, snap.scale.quarterScreen, snap.anchor.bottomLeft)
+snap:bind({{"ctrl", "alt", "cmd"}, "K"}, snap.scale.quarterScreen, snap.anchor.bottomRight)
 
 -- Setup key binding for full screen layout
 snap:bind({{"ctrl", "alt", "cmd"}, "F"}, snap.scale.fullScreen)

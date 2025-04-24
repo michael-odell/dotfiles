@@ -1,103 +1,105 @@
---- FrameLayout
+--- LayoutManager
 --- Class
---- Represents a layout for a window frame.
+--- Manages and applies multiple window layout operations in sequence.
+---
+--- The LayoutManager coordinates multiple layout operations (like resizing, 
+--- positioning, or anchoring) to be applied to a window in the proper order.
+--- Each operation must implement an `apply(win)` method that takes a window
+--- and returns a modified frame.
 
-FrameLayout = {}
-FrameLayout.__index = FrameLayout
+LayoutManager = {}
+LayoutManager.__index = LayoutManager
 
-local ANCHOR_LEFT = "left"
-local ANCHOR_RIGHT = "right"
-local ANCHOR_TOP = "top"
-local ANCHOR_BOTTOM = "bottom"
+--- LayoutOperation
+--- Class
+--- Base class for window layout operations.
+---
+--- Layout operations perform specific window manipulations like resizing,
+--- positioning, or anchoring. Each operation should be designed to perform
+--- a single transform on a window frame.
 
---- FrameLayout:new(...)
+LayoutOperation = {}
+LayoutOperation.__index = LayoutOperation
+
+--- LayoutOperation:new(obj)
 --- Method
---- Creates a new FrameLayout instance with the specified anchors.
-function FrameLayout:new(...)
+--- Creates a new LayoutOperation instance.
+---
+--- Parameters:
+---  * obj - An optional table with properties to be merged into the new instance
+---
+--- Returns:
+---  * A new LayoutOperation instance
+function LayoutOperation:new(obj)
+    local instance = obj or {}
+    setmetatable(instance, self)
+    return instance
+end
+
+--- LayoutOperation:apply(frame, context)
+--- Method
+--- Applies a layout transformation to the given frame.
+---
+--- Parameters:
+---  * frame - An hs.geometry rect representing the current window frame
+---  * context - The window object providing context for the layout operation
+---
+--- Returns:
+---  * A modified frame (hs.geometry rect) after applying the layout operation
+function LayoutOperation:apply(frame, context)
+    error("apply() must be implemented by subclass")
+end
+
+--- LayoutManager:new(...)
+--- Method
+--- Creates a new LayoutManager instance.
+---
+--- Parameters:
+---  * ... - Zero or more layout operation objects, each must implement an apply(frame, context) method
+---
+--- Returns:
+---  * A new LayoutManager instance
+function LayoutManager:new(...)
     local instance = {
-        anchors = {...}
+        operations = {...}
     }
     return setmetatable(instance, self)
 end
 
---- FrameLayout:apply(win)
+--- LayoutManager:apply(win)
 --- Method
---- Applies the layout to the specified window.
-function FrameLayout:apply(win)
+--- Applies the layout operations to the specified window.
+---
+--- Parameters:
+---  * win - An hs.window object to apply the layout operations to
+---
+--- Returns:
+---  * The final frame after all operations have been applied
+---
+--- Notes:
+---  * Each layout operation is called in sequence
+function LayoutManager:apply(win)
     local frame = win:frame()
-    local screen = win:screen()
-    local max = screen:frame()
+    local app = win:application()
+    local appname = app and app:name() or win:title()
 
     local logger = spoon.Snapster.logger
 
-    logger.d("FrameLayout:apply(", table.concat(self.anchors, ", "), ")")
+    logger.d("Begin layout:", appname, "[", win:title(), "]")
+    logger.d("  => (", frame.w, "x", frame.h, ") @ [", frame.x, ",", frame.y, "]")
 
-    if hs.fnutils.contains(self.anchors, ANCHOR_LEFT) then
-        frame.x = max.x
-        logger.d("Left anchor:", frame.x)
+    for _, op in ipairs(self.operations) do
+        frame = op:apply(frame, win)
     end
 
-    if hs.fnutils.contains(self.anchors, ANCHOR_RIGHT) then
-        frame.x = max.x + max.w - frame.w
-        logger.d("Right anchor:", frame.x)
-    end
+    logger.i("Moving", appname, "to (", frame.w, "x", frame.h, ") @ [", frame.x, ",", frame.y, "]") 
 
-    if hs.fnutils.contains(self.anchors, ANCHOR_TOP) then
-        frame.y = max.y
-        logger.d("Top anchor:", frame.y)
-    end
+    win:setFrame(frame)
 
-    if hs.fnutils.contains(self.anchors, ANCHOR_BOTTOM) then
-        frame.y = max.y + max.h - frame.h
-        logger.d("Bottom anchor:", frame.y)
-    end
+    logger.d("Layout complete:", appname, "[", win:title(), "]")
+    logger.d("  => (", frame.w, "x", frame.h, ") @ [", frame.x, ",", frame.y, "]")
 
     return frame
 end
 
---- FrameLayout.LEFT
---- Variable
---- Predefined layout for the left half of the screen.
-FrameLayout.LEFT_HALF = FrameLayout:new(ANCHOR_LEFT, ANCHOR_TOP, ANCHOR_BOTTOM)
-
---- FrameLayout.RIGHT
---- Variable
---- Predefined layout for the right half of the screen.
-FrameLayout.RIGHT_HALF = FrameLayout:new(ANCHOR_RIGHT, ANCHOR_TOP, ANCHOR_BOTTOM)
-
---- FrameLayout.TOP_HALF
---- Variable
---- Predefined layout for the top half of the screen.
-FrameLayout.TOP_HALF = FrameLayout:new(ANCHOR_TOP, ANCHOR_LEFT, ANCHOR_RIGHT)
-
---- FrameLayout.BOTTOM_HALF
---- Variable
---- Predefined layout for the bottom half of the screen.
-FrameLayout.BOTTOM_HALF = FrameLayout:new(ANCHOR_BOTTOM, ANCHOR_LEFT, ANCHOR_RIGHT)
-
---- FrameLayout.TOP_LEFT
---- Variable
---- Predefined layout for the top left corner of the screen.
-FrameLayout.TOP_LEFT = FrameLayout:new(ANCHOR_TOP, ANCHOR_LEFT)
-
---- FrameLayout.BOTTOM_LEFT
---- Variable
---- Predefined layout for the bottom left corner of the screen.
-FrameLayout.BOTTOM_LEFT = FrameLayout:new(ANCHOR_BOTTOM, ANCHOR_LEFT)
-
---- FrameLayout.TOP_RIGHT
---- Variable
---- Predefined layout for the top right corner of the screen.
-FrameLayout.TOP_RIGHT = FrameLayout:new(ANCHOR_TOP, ANCHOR_RIGHT)
-
---- FrameLayout.BOTTOM_RIGHT
---- Variable
---- Predefined layout for the bottom right corner of the screen.
-FrameLayout.BOTTOM_RIGHT = FrameLayout:new(ANCHOR_BOTTOM, ANCHOR_RIGHT)
-
---- FrameLayout.FULL_SCREEN
---- Variable
---- Predefined layout for the full screen.
-FrameLayout.FULL_SCREEN = FrameLayout:new(ANCHOR_LEFT, ANCHOR_RIGHT, ANCHOR_TOP, ANCHOR_BOTTOM)
-
-return FrameLayout
+return LayoutManager
