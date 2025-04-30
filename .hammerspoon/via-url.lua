@@ -4,3 +4,9 @@
 hs.urlevent.bind("someAlert", function(eventName, params)
     hs.alert.show("Received someAlert")
 end)
+
+hs.urlevent.bind("focus", function(eventName, params)
+    local log = hs.logger.new('focus', 'debug')
+    log.i("eventName: " .. eventName )
+    log.i("params: " .. table.concat(params, '\n'))
+end)

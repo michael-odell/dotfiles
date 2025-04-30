@@ -11,6 +11,8 @@ hs.hotkey.bind({"cmd", "alt", "ctrl"}, "C", function()
     hs.toggleConsole()
 end)
 
+-- Allow use of the hs command line tool
+require("hs.ipc")
 
 -- Load an external config file
 function loadConfigFile(filePath)
