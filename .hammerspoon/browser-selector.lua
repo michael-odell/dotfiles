@@ -25,13 +25,9 @@ spoon.URLDispatcher.url_patterns = {
 
     -- NOTE: Lua Patterns (https://www.lua.org/pil/20.2.html), not regex
 
-    -- NOTE: I suspect this sort of link isn't processed correctly for
-    -- some cases through hammerspoon, but not certain.  This was one
-    -- link I couldn't open via hammerspoon but could via chrome.  It's
-    -- specifically a link to #ipesre-100934-wd3-impl-search-dev
-    --   https://workday.enterprise.slack.com/archives/C07V2FGC924
-    -- { "https://workday.*%.slack%.com/archives/", slackApp},
-
+    -- NOTE: Slack links with /archives/ in them don't seem to work to
+    -- pass directly to the app as of 2025-05.  The app will activate,
+    -- but it won't go to the right location.
     { "https?://workday.*%.slack%.com/messages/", slackApp},
 
     -- Typical searches stay in safari

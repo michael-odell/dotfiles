@@ -1,0 +1,15 @@
+#!/usr/bin/env zsh
+
+# Send all output to stderr
+exec - >&2
+
+# 1 is red
+echoti setaf 1
+echoti bold
+
+echo -n "${@}"
+
+# Color off
+echoti sgr0
+
+echo
