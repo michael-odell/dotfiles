@@ -1,0 +1,27 @@
+#!/bin/zsh
+
+# To initialize kopia for a given machine:
+#
+#  1. Set up the vault with something like this (for local -- other create subcommands options exist for
+#     other backup target types).
+#
+#     WARNING: This stores the local password in plaintext.  Since the files are all local, that seems
+#     reasonable enough to me, but you probably don't want to do that for remote vaults.
+#
+#       kopia repository create filesystem --no-use-keychain --persist-credentials --path=TARGET_PATH_HERE
+#       kopia policy set --global --compression=zstd
+#
+#  2. Back up the directories you want controlled -- the full set of files you back up will continue to
+#     be used by the automated job that creates new snapshots periodically.
+#
+#       kopia snapshot create $HOME/.zsh $HOME/contrib $HOME/src
+#
+#  3. Enable the service to back them up
+#
+#       # MAYBE first have to launchctl enable user/$UID/us.theodells.kopia.backup
+#       launchctl load ~/Library/LaunchAgents/us.theodells.kopia.backup.plist
+#
+
+echo "--------------------------------------------------------------------------------"
+echo -n "Initiating backup on " ; date
+exec /opt/homebrew/bin/kopia snapshot create --all

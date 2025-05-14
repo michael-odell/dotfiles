@@ -1,0 +1,22 @@
+{
+  "storage": {
+    "type": "filesystem",
+    "config": {
+      "path": "/Users/michael.odell/Library/CloudStorage/GoogleDrive-michael.odell@workday.com/Shared drives/michael-odell/kopia-backups",
+      "fileMode": 384,
+      "dirMode": 448,
+      "dirShards": null
+    }
+  },
+  "caching": {
+    "cacheDirectory": "../../Library/Caches/kopia/60c8d95c76c9b792",
+    "maxCacheSize": 5242880000,
+    "maxMetadataCacheSize": 5242880000,
+    "maxListCacheDuration": 30
+  },
+  "hostname": "ajjxglcvnwp",
+  "username": "michael.odell",
+  "description": "Repository in Filesystem: /Users/michael.odell/Library/CloudStorage/GoogleDrive-michael.odell@workday.com/Shared drives/michael-odell/kopia-backups",
+  "enableActions": false,
+  "formatBlobCacheDuration": 900000000000
+}

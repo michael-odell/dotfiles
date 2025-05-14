@@ -29,6 +29,7 @@
 
 
 # System-local things shouldn't generally be shared
+/.zshenv.local
 /.zshrc.local
 /.local
 

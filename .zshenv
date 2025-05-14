@@ -12,6 +12,9 @@ if [[ ${OSTYPE} == darwin* ]] ; then
     typeset -xT INFOPATH infopath
 fi
 
+print -v HOSTNAME_SHORT -P %m     # Set HOSTNAME_SHORT in OS-independent way
+[[ -r ~/.zshenv.local ]] && source ~/.zshenv.local
+
 path+=(
     # Multipass stores aliases here on macos
     "$HOME/Library/Application Support/multipass/bin"(N)
@@ -53,3 +56,5 @@ fi
 if [[ -d ~/contrib/gogs-cli ]] ; then
     path+=(~/contrib/gogs-cli)
 fi
+
+export KOPIA_CONFIG_PATH=$HOME/.config/kopia/$HOSTNAME_SHORT

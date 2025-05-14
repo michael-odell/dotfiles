@@ -5,8 +5,6 @@ zstyle ':completion:*' use-cache
 mkdir -p ~/.cache/zsh-completion
 zstyle ':completion:*' cache-path $HOME/.cache/zsh-completion
 
-print -v HOSTNAME_SHORT -P %m     # Set HOSTNAME_SHORT in OS-independent way
-
 zmodload zsh/datetime
 
 [[ -r ~/.dotfilesrc ]] && source ~/.dotfilesrc
