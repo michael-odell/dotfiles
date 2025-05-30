@@ -1,6 +1,10 @@
 -- This is the main configuration file for Hammerspoon.
 local configDir = hs.fs.currentDir()
 
+CONFIG = {
+    USB_DEVICE_ALERTS = false,
+    DEVICE_WATCHER_LOG_LEVEL = "info"
+}
 
 -- Reload Hammerspoon config
 hs.hotkey.bind({"cmd", "alt", "ctrl"}, "R", function()
@@ -9,6 +13,10 @@ end)
 
 hs.hotkey.bind({"cmd", "alt", "ctrl"}, "C", function()
     hs.toggleConsole()
+end)
+
+hs.hotkey.bind({"cmd", "alt", "ctrl"}, "X", function()
+    hs.alert.show("Front application bundle ID: " .. hs.application.frontmostApplication():bundleID())
 end)
 
 -- Allow use of the hs command line tool

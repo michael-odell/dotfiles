@@ -25,8 +25,8 @@ spoon.URLDispatcher.url_patterns = {
 
     -- NOTE: Lua Patterns (https://www.lua.org/pil/20.2.html), not regex
 
-    -- NOTE: Slack links with /archives/ in them don't seem to work to
-    -- pass directly to the app as of 2025-05.  The app will activate,
+    -- NOTE: _Some_ slack links with /archives/ in them don't seem to work
+    -- to pass directly to the app as of 2025-05.  The app will activate,
     -- but it won't go to the right location.
     { "https?://workday.*%.slack%.com/messages/", slackApp},
 
