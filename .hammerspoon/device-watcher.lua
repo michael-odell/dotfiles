@@ -49,6 +49,24 @@ DEVICES = {
                 app:kill()
             end
         end
+    },
+    WorkMonitor = {
+        type = "usb",
+        id = {
+            -- Some piece of my Dell monitor, vendor name in string form
+            -- is Generic or Realtek, but it's what I've got
+            vendorID = 0xbda,
+            productID = 0x1100
+        },
+        onPresent = function()
+            local currentAudioInfo = hs.audiodevice.current()
+            if currentAudioInfo.uid == "BuiltInSpeakerDevice" and not currentAudioInfo.muted then
+                local currentAudioDevice = hs.audiodevice.findDeviceByUID(currentAudioInfo.uid)
+                currentAudioDevice:setOutputMuted(true)
+                logger.i("Muting speakers at work monitor.")
+            end
+
+        end,
     }
 }
 
