@@ -36,9 +36,9 @@
     # =========================[ Line #2 ]=========================
     newline                 # \n
     #status                  # exit code of the last command
-    my_bg_jobs
-    my_rc
-    my_prompt_char             # prompt symbol
+    odell_bg_jobs
+    odell_rc
+    odell_prompt_char             # prompt symbol
   )
 
   # The list of segments shown on the right. Fill it with less important segments.
@@ -58,6 +58,7 @@
     #gcloud                  # google cloud cli account and project (https://cloud.google.com/)
     #google_app_cred         # google application credentials (https://cloud.google.com/docs/authentication/production)
     context                 # user@hostname
+    odell_nook
     time                    # current time
     # =========================[ Line #2 ]=========================
     newline
@@ -921,16 +922,32 @@
     p10k segment -b 1 -f 3 -i '*' -t 'hello, %n'
   }
 
-  function prompt_my_bg_jobs {
+  function prompt_odell_bg_jobs {
     p10k segment -t '%(1j:%F{yellow}*%j%f:)'
   }
 
-  function prompt_my_rc {
+  function prompt_odell_rc {
     p10k segment -t '%(?..%F{red}(%?%)%f)'
   }
 
-  function prompt_my_prompt_char {
+  function prompt_odell_prompt_char {
     p10k segment -t '%B%(!.%F{magenta}#.%F{6}>)%b%f'
+  }
+
+  typeset -g POWERLEVEL9K_ODELL_NOOK_FOREGROUND=
+  typeset -g POWERLEVEL9K_ODELL_NOOK_BACKGROUND=
+
+  function prompt_odell_nook {
+    if [[ -n ${NOOK} ]] ; then
+      local segment="%B[%b $NOOK %B]%b"
+      if [[ -n ${NOOK_COLOR_BG} ]] ; then
+        segment="%K{${NOOK_COLOR_BG}}${segment}%k"
+      fi
+      if [[ -n ${NOOK_COLOR} ]] ; then
+        segment="%F{${NOOK_COLOR}}${segment}%f"
+      fi
+      p10k segment -t "$segment"
+    fi
   }
 
   # User-defined prompt segments can be customized the same way as built-in segments.
@@ -976,3 +993,5 @@ typeset -g POWERLEVEL9K_CONFIG_FILE=${${(%):-%x}:a}
 
 (( ${#p10k_config_opts} )) && setopt ${p10k_config_opts[@]}
 'builtin' 'unset' 'p10k_config_opts'
+
+# vim: sw=2
