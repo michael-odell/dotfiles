@@ -1,0 +1,5 @@
+cdsed() {
+    cd "$(echo $PWD | sed "s&$1&$2&g")"
+}
+
+# vim: set ft=zsh:

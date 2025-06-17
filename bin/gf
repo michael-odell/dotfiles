@@ -2,7 +2,7 @@
 
 # Chosen grep tool -- gnu grep
 grep=grep
-if which ggrep 2>/dev/null ; then
+if which ggrep &>/dev/null ; then
     grep=ggrep
 fi
 
