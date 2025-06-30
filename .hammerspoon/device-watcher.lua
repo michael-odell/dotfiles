@@ -53,10 +53,10 @@ DEVICES = {
     WorkMonitor = {
         type = "usb",
         id = {
-            -- Some piece of my Dell monitor, vendor name in string form
-            -- is Generic or Realtek, but it's what I've got
-            vendorID = 0xbda,
-            productID = 0x1100
+            -- Part of my Thunderbolt 3 dock that I bring to work or the
+            -- monitor, I haven't investigated more deeply
+            vendorID = 0x639,
+            productID = 0x7213
         },
         onPresent = function()
             local currentAudioInfo = hs.audiodevice.current()
