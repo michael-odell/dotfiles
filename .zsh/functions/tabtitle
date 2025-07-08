@@ -1,0 +1,7 @@
+# Interaction with termtitle can be confusing -- if you never set termtitle, this sets both termtitle and
+# tab title, at least on iterm2
+#
+# See termtitle for more in-depth info about how these (seem to) work (in my experience)
+tabtitle() {
+    echo -n "]1;$*"
+}

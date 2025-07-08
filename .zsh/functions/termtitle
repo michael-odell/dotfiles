@@ -1,0 +1,19 @@
+termtitle() {
+
+    # What I read suggests that there are these escape sequences relevant to window titles:
+    #
+    #  OSC 0: Set window icon and title
+    #  OSC 1: Sometimes used for tab title
+    #  OSC 2: Set just title without icon
+    #
+    # Handling by terminal:
+    #
+    # iterm2:
+    #   sets both window title and tab title to this unless you've also used OSC 1 (see tabtitle)
+    #
+    # tmux:
+    #   will honor both OSC 0 or OSC 2 for this and stores the value in `pane_title`
+    #
+
+    echo -n "]2;$*"
+}

@@ -1,0 +1,16 @@
+precmd() {
+    local title
+    print -v title -P "%2~"
+
+    if [[ -n ${NOOK} ]] ; then
+        title="${NOOK}: ${title}"
+    fi
+
+    # Setting both to the same thing gets me similar titles across tmux and iterm.  Theoretically on
+    # iterm I might be able to do better with a shorter tab title extended in the title bar, but I'm not
+    # worried about that granularity (yet?)
+    termtitle "${title}"
+    tabtitle "${title}"
+}
+
+# vim: set ft=zsh:
