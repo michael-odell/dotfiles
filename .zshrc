@@ -102,8 +102,8 @@ fi
 bindkey -e
 
 
-GITHUB=git@github.com:michael-odell
-GITHUB_HTTPS=https://github.com/michael-odell
+GITHUB=git@github.com:
+GITHUB_HTTPS=https://github.com/
 
 which gdircolors &>/dev/null && cached-source gdircolors
 
