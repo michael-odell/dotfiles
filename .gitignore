@@ -85,6 +85,7 @@
 /contrib
 /wd
 /.asdf
+/.vscode
 
 # macOS stuff
 /Applications
@@ -122,3 +123,10 @@
 
 # Miscellaneous things related to work
 /.okta
+/.okta2aws
+/.canyonero.state
+/.lush
+/.pt-helm
+/.spc-*
+/globalprotect
+/.redhat
