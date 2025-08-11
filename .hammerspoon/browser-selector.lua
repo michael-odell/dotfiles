@@ -33,7 +33,6 @@ spoon.URLDispatcher.url_patterns = {
     -- Typical searches stay in safari
     { "https?://www%.google%.com/search", safariBrowser},
     { "https?://google%.com/search", safariBrowser},
-    { "https?://.*github%.com/", chromeBrowser},
 
     -- But the rest of google should be opened in chrome
     { "https?://.*%.google%.com", chromeBrowser},

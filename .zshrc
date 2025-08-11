@@ -175,3 +175,6 @@ if [[ $- == *i* && -n ${TMUX_PRJDIR} ]] ; then
     # But don't do it in subshells
     unset TMUX_PRJDIR
 fi
+
+# The r builtin repeats history and descends from ksh.  I don't use it.
+disable r
