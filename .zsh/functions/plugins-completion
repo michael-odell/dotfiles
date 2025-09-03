@@ -1,0 +1,10 @@
+local p
+for p in "${ZSH_PLUGINS[@]}" ; do
+
+    local completions_file=${ZSH_PLUGIN_DIR[$p]}/${p}.plugin.zshrc
+    if [ -e "$completions_file" ] ; then
+        source "$completions_file"
+    fi
+done
+
+# vim: set ft=zsh:

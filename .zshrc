@@ -115,7 +115,7 @@ zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 
 
-for cmd in kubectl helm podman kind nerdctl heimdall canyonero ; do
+for cmd in kubectl helm podman kind nerdctl ; do
     if [[ -n ${commands[$cmd]} ]] ; then
         cached-source $cmd completion zsh
     fi
@@ -127,6 +127,8 @@ if [[ -n ${commands[op]} ]] ; then
     cached-source op completion zsh
     compdef _op op
 fi
+
+plugins-completion
 
 if [[ -r /snap/juju/current/bash_completions/juju ]] ; then
     source /snap/juju/current/bash_completions/juju
