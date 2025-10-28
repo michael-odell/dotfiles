@@ -82,7 +82,7 @@ alias k8s=envselect
 # configure` but I've edited it a lot since then...
 source ~/.p10k.zsh
 
-setopt interactive_comments no_beep auto_pushd
+setopt interactive_comments no_beep auto_pushd no_bang_hist
 
 alias "ls=ls -F"
 alias "ll=ls -ltr"

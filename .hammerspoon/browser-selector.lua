@@ -52,6 +52,7 @@ spoon.URLDispatcher.url_patterns = {
     { "https?://.*wdscylla%.de", chromeBrowser },
     { "https?://.*inday%.io", chromeBrowser },
     { "https?://.*wdpharos%.io", chromeBrowser },
+    { "https?://.*gowday%.com", chromeBrowser },
     { "https?://.*getcortexapp%.com", chromeBrowser },
     { "https?://s2%.bl-1%.com", chromeBrowser },
     { "https?://wolinks.com/", chromeBrowser },

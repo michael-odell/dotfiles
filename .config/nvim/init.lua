@@ -6,6 +6,10 @@ vim.cmd('source ~/.config/nvim/oldinit.vim')
 
 vim.opt.signcolumn = 'yes'
 
+vim.diagnostic.config({
+        virtual_text = true
+    })
+
 -- require('lspconfig')["helm-ls"].setup {
 --     settings = {
 --         ['helm-ls'] = {
