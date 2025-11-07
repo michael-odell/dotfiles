@@ -38,6 +38,9 @@ nnoremap <leader>p :diffput<CR>
 " Copy the whole file to clipboard
 noremap <leader>c :silent w !yank<CR>
 
+" Copy to system clipboard
+vnoremap <leader>y :w !yank<CR>
+
 noremap <leader>x :!chmod +x %<CR>
 
 set hidden

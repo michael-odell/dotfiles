@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+UNAME=$(uname)
+if [[ ${UNAME} == "Darwin" ]] ; then
+    exec pbcopy
+else
+    echo "Unable to yank for uname=${UNAME}" >&2
+    exit 1
+fi
