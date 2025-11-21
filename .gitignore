@@ -32,6 +32,7 @@
 /.zshenv.local
 /.zshrc.local
 /.local
+/.zsh_sessions
 
 
 # Packager-related directories
@@ -130,4 +131,5 @@
 /.spc-*
 /globalprotect
 /.redhat
-/.config/cxpdev
+/.config/cxpkube
+/.docsbuild

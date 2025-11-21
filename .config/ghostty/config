@@ -1,0 +1,5 @@
+theme = Selenized Light
+window-height = 65
+window-width = 105
+clipboard-trim-trailing-spaces = true
+font-size = 11

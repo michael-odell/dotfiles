@@ -71,8 +71,8 @@
   typeset -g POWERLEVEL9K_ICON_PADDING=none
 
   typeset -g POWERLEVEL9K_COLOR_SCHEME='light'
-  typeset -g POWERLEVEL9K_FOREGROUND=0
-  typeset -g POWERLEVEL9K_BACKGROUND=7
+  typeset -g POWERLEVEL9K_FOREGROUND=8
+  typeset -g POWERLEVEL9K_BACKGROUND=0
 
   # When set to true, icons appear before content on both sides of the prompt. When set
   # to false, icons go after content. If empty or not set, icons go before content in the left
@@ -105,8 +105,8 @@
   # separate prompt from command output. You might want to set POWERLEVEL9K_PROMPT_ADD_NEWLINE=false
   # for more compact prompt if using using this option.
   typeset -g POWERLEVEL9K_MULTILINE_FIRST_PROMPT_GAP_CHAR=
-  typeset -g POWERLEVEL9K_MULTILINE_FIRST_PROMPT_GAP_BACKGROUND=7
-  typeset -g POWERLEVEL9K_MULTILINE_NEWLINE_PROMPT_GAP_BACKGROUND=
+  typeset -g POWERLEVEL9K_MULTILINE_FIRST_PROMPT_GAP_BACKGROUND=0
+  typeset -g POWERLEVEL9K_MULTILINE_NEWLINE_PROMPT_GAP_BACKGROUND=0
   if [[ $POWERLEVEL9K_MULTILINE_FIRST_PROMPT_GAP_CHAR != ' ' ]]; then
     # The color of the filler. You'll probably want to match the color of POWERLEVEL9K_MULTILINE
     # ornaments defined above.
@@ -264,14 +264,14 @@
 
   #####################################[ vcs: git status ]######################################
   # Version control system colors.
-  # typeset -g POWERLEVEL9K_VCS_CLEAN_BACKGROUND=2
-  # typeset -g POWERLEVEL9K_VCS_MODIFIED_BACKGROUND=3
-  # typeset -g POWERLEVEL9K_VCS_UNTRACKED_BACKGROUND=2
-  # typeset -g POWERLEVEL9K_VCS_CONFLICTED_BACKGROUND=3
-  # typeset -g POWERLEVEL9K_VCS_LOADING_BACKGROUND=8
+typeset -g POWERLEVEL9K_VCS_CLEAN_BACKGROUND=0
+typeset -g POWERLEVEL9K_VCS_MODIFIED_BACKGROUND=0
+typeset -g POWERLEVEL9K_VCS_UNTRACKED_BACKGROUND=0
+typeset -g POWERLEVEL9K_VCS_CONFLICTED_BACKGROUND=0
+typeset -g POWERLEVEL9K_VCS_LOADING_BACKGROUND=0
 
   # Branch icon. Set this parameter to '\uF126 ' for the popular Powerline branch icon.
-  typeset -g POWERLEVEL9K_VCS_BRANCH_ICON=
+  typeset -g POWERLEVEL9K_VCS_BRANCH_ICON='\uF126 '
 
   # Untracked files icon. It's really a question mark, your font isn't broken.
   # Change the value of this parameter to show a different icon.
@@ -295,17 +295,17 @@
       return
     fi
 
-    # Styling for different parts of Git status.
-    local       meta='%7F' # white foreground
-    local      clean='%0F' # black foreground
-    local   modified='%0F' # black foreground
-    local  untracked='%0F' # black foreground
-    local conflicted='%1F' # red foreground
+    # Foreground colors for different parts of Git status.
+    local       meta='%5F'  # magenta
+    local      clean='%15F' # black
+    local   modified='%3F'  # yellow
+    local  untracked='%7F'  # grey
+    local conflicted='%1F'  # red
 
     local res
     local where  # branch or tag
     if [[ -n $VCS_STATUS_LOCAL_BRANCH ]]; then
-      res+="${clean}${(g::)POWERLEVEL9K_VCS_BRANCH_ICON}"
+      res+="${meta}${(g::)POWERLEVEL9K_VCS_BRANCH_ICON}"
       where=${(V)VCS_STATUS_LOCAL_BRANCH}
     elif [[ -n $VCS_STATUS_TAG ]]; then
       res+="${meta}#"
@@ -411,8 +411,8 @@
 
   ###############[ asdf: asdf version manager (https://github.com/asdf-vm/asdf) ]###############
   # Default asdf color. Only used to display tools for which there is no color override (see below).
-  typeset -g POWERLEVEL9K_ASDF_FOREGROUND=0
-  typeset -g POWERLEVEL9K_ASDF_BACKGROUND=7
+  typeset -g POWERLEVEL9K_ASDF_FOREGROUND=8
+  typeset -g POWERLEVEL9K_ASDF_BACKGROUND=0
 
   # There are four parameters that can be used to hide asdf tools. Each parameter describes
   # conditions under which a tool gets hidden. Parameters can hide tools but not unhide them. If at
@@ -470,49 +470,49 @@
   typeset -g POWERLEVEL9K_ASDF_SHOW_ON_UPGLOB=
 
   # Ruby version from asdf.
-  typeset -g POWERLEVEL9K_ASDF_RUBY_FOREGROUND=0
+  typeset -g POWERLEVEL9K_ASDF_RUBY_FOREGROUND=8
   typeset -g POWERLEVEL9K_ASDF_RUBY_BACKGROUND=1
   # typeset -g POWERLEVEL9K_ASDF_RUBY_VISUAL_IDENTIFIER_EXPANSION='⭐'
   # typeset -g POWERLEVEL9K_ASDF_RUBY_SHOW_ON_UPGLOB='*.foo|*.bar'
 
   # Python version from asdf.
-  typeset -g POWERLEVEL9K_ASDF_PYTHON_FOREGROUND=0
+  typeset -g POWERLEVEL9K_ASDF_PYTHON_FOREGROUND=8
   typeset -g POWERLEVEL9K_ASDF_PYTHON_BACKGROUND=4
   # typeset -g POWERLEVEL9K_ASDF_PYTHON_VISUAL_IDENTIFIER_EXPANSION='⭐'
   # typeset -g POWERLEVEL9K_ASDF_PYTHON_SHOW_ON_UPGLOB='*.foo|*.bar'
 
   # Go version from asdf.
-  typeset -g POWERLEVEL9K_ASDF_GOLANG_FOREGROUND=0
+  typeset -g POWERLEVEL9K_ASDF_GOLANG_FOREGROUND=8
   typeset -g POWERLEVEL9K_ASDF_GOLANG_BACKGROUND=4
   # typeset -g POWERLEVEL9K_ASDF_GOLANG_VISUAL_IDENTIFIER_EXPANSION='⭐'
   # typeset -g POWERLEVEL9K_ASDF_GOLANG_SHOW_ON_UPGLOB='*.foo|*.bar'
 
   # Node.js version from asdf.
-  typeset -g POWERLEVEL9K_ASDF_NODEJS_FOREGROUND=0
+  typeset -g POWERLEVEL9K_ASDF_NODEJS_FOREGROUND=8
   typeset -g POWERLEVEL9K_ASDF_NODEJS_BACKGROUND=2
   # typeset -g POWERLEVEL9K_ASDF_NODEJS_VISUAL_IDENTIFIER_EXPANSION='⭐'
   # typeset -g POWERLEVEL9K_ASDF_NODEJS_SHOW_ON_UPGLOB='*.foo|*.bar'
 
   # Rust version from asdf.
-  typeset -g POWERLEVEL9K_ASDF_RUST_FOREGROUND=0
+  typeset -g POWERLEVEL9K_ASDF_RUST_FOREGROUND=8
   typeset -g POWERLEVEL9K_ASDF_RUST_BACKGROUND=208
   # typeset -g POWERLEVEL9K_ASDF_RUST_VISUAL_IDENTIFIER_EXPANSION='⭐'
   # typeset -g POWERLEVEL9K_ASDF_RUST_SHOW_ON_UPGLOB='*.foo|*.bar'
 
   # .NET Core version from asdf.
-  typeset -g POWERLEVEL9K_ASDF_DOTNET_CORE_FOREGROUND=0
+  typeset -g POWERLEVEL9K_ASDF_DOTNET_CORE_FOREGROUND=8
   typeset -g POWERLEVEL9K_ASDF_DOTNET_CORE_BACKGROUND=5
   # typeset -g POWERLEVEL9K_ASDF_DOTNET_CORE_VISUAL_IDENTIFIER_EXPANSION='⭐'
   # typeset -g POWERLEVEL9K_ASDF_DOTNET_CORE_SHOW_ON_UPGLOB='*.foo|*.bar'
 
   # Flutter version from asdf.
-  typeset -g POWERLEVEL9K_ASDF_FLUTTER_FOREGROUND=0
+  typeset -g POWERLEVEL9K_ASDF_FLUTTER_FOREGROUND=8
   typeset -g POWERLEVEL9K_ASDF_FLUTTER_BACKGROUND=4
   # typeset -g POWERLEVEL9K_ASDF_FLUTTER_VISUAL_IDENTIFIER_EXPANSION='⭐'
   # typeset -g POWERLEVEL9K_ASDF_FLUTTER_SHOW_ON_UPGLOB='*.foo|*.bar'
 
   # Lua version from asdf.
-  typeset -g POWERLEVEL9K_ASDF_LUA_FOREGROUND=0
+  typeset -g POWERLEVEL9K_ASDF_LUA_FOREGROUND=8
   typeset -g POWERLEVEL9K_ASDF_LUA_BACKGROUND=4
   # typeset -g POWERLEVEL9K_ASDF_LUA_VISUAL_IDENTIFIER_EXPANSION='⭐'
   # typeset -g POWERLEVEL9K_ASDF_LUA_SHOW_ON_UPGLOB='*.foo|*.bar'
@@ -524,37 +524,37 @@
   # typeset -g POWERLEVEL9K_ASDF_JAVA_SHOW_ON_UPGLOB='*.foo|*.bar'
 
   # Perl version from asdf.
-  typeset -g POWERLEVEL9K_ASDF_PERL_FOREGROUND=0
+  typeset -g POWERLEVEL9K_ASDF_PERL_FOREGROUND=8
   typeset -g POWERLEVEL9K_ASDF_PERL_BACKGROUND=4
   # typeset -g POWERLEVEL9K_ASDF_PERL_VISUAL_IDENTIFIER_EXPANSION='⭐'
   # typeset -g POWERLEVEL9K_ASDF_PERL_SHOW_ON_UPGLOB='*.foo|*.bar'
 
   # Erlang version from asdf.
-  typeset -g POWERLEVEL9K_ASDF_ERLANG_FOREGROUND=0
+  typeset -g POWERLEVEL9K_ASDF_ERLANG_FOREGROUND=8
   typeset -g POWERLEVEL9K_ASDF_ERLANG_BACKGROUND=1
   # typeset -g POWERLEVEL9K_ASDF_ERLANG_VISUAL_IDENTIFIER_EXPANSION='⭐'
   # typeset -g POWERLEVEL9K_ASDF_ERLANG_SHOW_ON_UPGLOB='*.foo|*.bar'
 
   # Elixir version from asdf.
-  typeset -g POWERLEVEL9K_ASDF_ELIXIR_FOREGROUND=0
+  typeset -g POWERLEVEL9K_ASDF_ELIXIR_FOREGROUND=8
   typeset -g POWERLEVEL9K_ASDF_ELIXIR_BACKGROUND=5
   # typeset -g POWERLEVEL9K_ASDF_ELIXIR_VISUAL_IDENTIFIER_EXPANSION='⭐'
   # typeset -g POWERLEVEL9K_ASDF_ELIXIR_SHOW_ON_UPGLOB='*.foo|*.bar'
 
   # Postgres version from asdf.
-  typeset -g POWERLEVEL9K_ASDF_POSTGRES_FOREGROUND=0
+  typeset -g POWERLEVEL9K_ASDF_POSTGRES_FOREGROUND=8
   typeset -g POWERLEVEL9K_ASDF_POSTGRES_BACKGROUND=6
   # typeset -g POWERLEVEL9K_ASDF_POSTGRES_VISUAL_IDENTIFIER_EXPANSION='⭐'
   # typeset -g POWERLEVEL9K_ASDF_POSTGRES_SHOW_ON_UPGLOB='*.foo|*.bar'
 
   # PHP version from asdf.
-  typeset -g POWERLEVEL9K_ASDF_PHP_FOREGROUND=0
+  typeset -g POWERLEVEL9K_ASDF_PHP_FOREGROUND=8
   typeset -g POWERLEVEL9K_ASDF_PHP_BACKGROUND=5
   # typeset -g POWERLEVEL9K_ASDF_PHP_VISUAL_IDENTIFIER_EXPANSION='⭐'
   # typeset -g POWERLEVEL9K_ASDF_PHP_SHOW_ON_UPGLOB='*.foo|*.bar'
 
   # Haskell version from asdf.
-  typeset -g POWERLEVEL9K_ASDF_HASKELL_FOREGROUND=0
+  typeset -g POWERLEVEL9K_ASDF_HASKELL_FOREGROUND=8
   typeset -g POWERLEVEL9K_ASDF_HASKELL_BACKGROUND=3
   # typeset -g POWERLEVEL9K_ASDF_HASKELL_VISUAL_IDENTIFIER_EXPANSION='⭐'
   # typeset -g POWERLEVEL9K_ASDF_HASKELL_SHOW_ON_UPGLOB='*.foo|*.bar'
@@ -562,8 +562,8 @@
 
   ################[ todo: todo items (https://github.com/todotxt/todo.txt-cli) ]################
   # Todo color.
-  # typeset -g POWERLEVEL9K_TODO_FOREGROUND=0
-  # typeset -g POWERLEVEL9K_TODO_BACKGROUND=8
+  # typeset -g POWERLEVEL9K_TODO_FOREGROUND=8
+  # typeset -g POWERLEVEL9K_TODO_BACKGROUND=0
   # Hide todo when the total number of tasks is zero.
   typeset -g POWERLEVEL9K_TODO_HIDE_ZERO_TOTAL=true
   # Hide todo when the number of tasks after filtering is zero.
@@ -587,14 +587,14 @@
 
   ##################################[ context: user@hostname ]##################################
   # Context color when running with privileges.
-  typeset -g POWERLEVEL9K_CONTEXT_ROOT_FOREGROUND=1
-  #typeset -g POWERLEVEL9K_CONTEXT_ROOT_BACKGROUND=0
+  typeset -g POWERLEVEL9K_CONTEXT_ROOT_FOREGROUND=8
+  typeset -g POWERLEVEL9K_CONTEXT_ROOT_BACKGROUND=8
   # Context color in SSH without privileges.
   typeset -g POWERLEVEL9K_CONTEXT_{REMOTE,REMOTE_SUDO}_FOREGROUND=3
   #typeset -g POWERLEVEL9K_CONTEXT_{REMOTE,REMOTE_SUDO}_BACKGROUND=0
   # Default context color (no privileges, no SSH).
   typeset -g POWERLEVEL9K_CONTEXT_FOREGROUND=3
-  #typeset -g POWERLEVEL9K_CONTEXT_BACKGROUND=0
+  typeset -g POWERLEVEL9K_CONTEXT_BACKGROUND=8
 
   # Context format when running with privileges: user@hostname.
   typeset -g POWERLEVEL9K_CONTEXT_ROOT_TEMPLATE='%n@%m'
