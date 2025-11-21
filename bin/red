@@ -5,7 +5,7 @@ exec - >&2
 
 # 1 is red
 echoti setaf 1
-echoti bold
+#echoti bold
 
 echo -n "${@}"
 
