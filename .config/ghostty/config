@@ -3,3 +3,7 @@ window-height = 65
 window-width = 105
 clipboard-trim-trailing-spaces = true
 font-size = 11
+
+cursor-style = block_hollow
+cursor-color = black
+shell-integration-features = no-cursor
