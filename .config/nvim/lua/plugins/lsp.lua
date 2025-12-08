@@ -18,7 +18,7 @@ return {
             handlers = {
                 -- Default
                 function(server_name)
-                    require('lspconfig')[server_name].setup({})
+                    vim.lsp.enable(server_name)
                 end,
             }
         }

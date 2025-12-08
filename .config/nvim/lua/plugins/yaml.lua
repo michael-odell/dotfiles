@@ -2,7 +2,7 @@ return {
     {
         "neovim/nvim-lspconfig",
         config = function()
-            require('lspconfig')["yamlls"].setup {
+            vim.lsp.config('yamlls', {
                 settings = {
                     yaml = {
                         format = {
@@ -31,7 +31,7 @@ return {
                         },
                     }
                 }
-            }
+            })
         end,
     },
     {
@@ -48,7 +48,7 @@ return {
             cfg.setup({
                 -- ref: https://github.com/someone-stole-my-name/yaml-companion.nvim?tab=readme-ov-file#%EF%B8%8F--configuration
                 })
-            require("lspconfig")["yamlls"].setup(cfg)
+            vim.lsp.enable('yamlls')
         end,
     }
 }
