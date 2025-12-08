@@ -61,9 +61,9 @@ DEVICES = {
         onPresent = function()
             local currentAudioInfo = hs.audiodevice.current()
             if currentAudioInfo.uid == "BuiltInSpeakerDevice" and not currentAudioInfo.muted then
+                logger.i("Muting speakers at work monitor.")
                 local currentAudioDevice = hs.audiodevice.findDeviceByUID(currentAudioInfo.uid)
                 currentAudioDevice:setOutputMuted(true)
-                logger.i("Muting speakers at work monitor.")
             end
 
         end,
@@ -78,7 +78,7 @@ function handleUsbDevicePresent(vendorName, vendorID, productName, productID)
         hs.alert.show(message)
     end
 
-    for k, v in pairs(DEVICES) do
+    for _, v in pairs(DEVICES) do
         if v.type == "usb" then
             -- Execute handler if one exists
             if v.onPresent ~= nil and v.id.vendorID == vendorID and v.id.productID == productID then
@@ -97,7 +97,7 @@ function handleUsbDeviceAbsent(vendorName, vendorID, productName, productID)
         hs.alert.show(message)
     end
 
-    for k, v in pairs(DEVICES) do
+    for _, v in pairs(DEVICES) do
         if v.type == "usb" then
             -- Execute handler if one exists
             if v.onAbsent ~= nil and v.id.vendorID == vendorID and v.id.productID == productID then

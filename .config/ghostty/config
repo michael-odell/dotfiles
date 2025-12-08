@@ -7,3 +7,6 @@ font-size = 11
 cursor-style = block_hollow
 cursor-color = black
 shell-integration-features = no-cursor
+
+# Don't open new tabs/windwos in the current directory
+window-inherit-working-directory = false
