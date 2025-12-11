@@ -934,19 +934,15 @@ typeset -g POWERLEVEL9K_VCS_LOADING_BACKGROUND=0
     p10k segment -t '%B%(!.%F{magenta}#.%F{6}>)%b%f'
   }
 
-  typeset -g POWERLEVEL9K_ODELL_NOOK_FOREGROUND=
-  typeset -g POWERLEVEL9K_ODELL_NOOK_BACKGROUND=
+  typeset -g POWERLEVEL9K_ODELL_NOOK_FOREGROUND=0
+  # Setting a background won't match special NOOK_COLORS and the background extends beyond the segment
+  #typeset -g POWERLEVEL9K_ODELL_NOOK_BACKGROUND=7
 
   function prompt_odell_nook {
-    if [[ -n ${NOOK} ]] ; then
-      local segment="%B[%b $NOOK %B]%b"
-      if [[ -n ${NOOK_COLOR_BG} ]] ; then
-        segment="%K{${NOOK_COLOR_BG}}${segment}%k"
-      fi
-      if [[ -n ${NOOK_COLOR} ]] ; then
-        segment="%F{${NOOK_COLOR}}${segment}%f"
-      fi
-      p10k segment -t "$segment"
+    if [[ -n ${NOOK} && -n ${NOOK_COLOR} ]] ; then
+      local segment="[$NOOK]"
+      segment="%K{${NOOK_COLOR}}${segment}%k"
+      p10k segment -t "${segment}"
     fi
   }
 

@@ -1,0 +1,23 @@
+nook() {
+    export NOOK=$1
+    export KUBECONFIG=$HOME/.kube/config.${NOOK}
+
+    # Default color -- specific nooks may override
+    export NOOK_COLOR=7
+
+    case "$NOOK" in
+        proteus*)
+            export NOOK_COLOR=green
+            ;;
+    esac
+
+    if [[ -n "${TMUX}" ]] ; then
+        # NOTE: These options are also set in .zshrc to ensure passing them along to new tmux sessions
+        tmux set-option @nook "${NOOK}"
+        tmux set-environment NOOK "${NOOK}"
+
+        tmux set-option @nook_style "bg=$NOOK_COLOR"
+        tmux set-environment NOOK_COLOR "${NOOK_COLOR}"
+    fi
+}
+# vim: set ft=zsh:

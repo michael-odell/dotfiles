@@ -1,0 +1,17 @@
+#compdef nook
+
+_message 'hi'
+local -a config_files clusters
+
+# Available nooks are defined by the set of kube configs that exist here.
+config_files=($HOME/.kube/config.*(N))
+
+# But the filename is config.SOMETHING and we want just the SOMETHING
+clusters=( ${${config_files:t}#config.} )
+
+if (( ${#clusters} > 0 )) ; then
+    _arguments '1:cluster name:($clusters)'
+else
+    _message "No config.* files found in ~/.kube"
+fi
+# vim: set ft=zsh:

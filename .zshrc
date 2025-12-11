@@ -171,11 +171,17 @@ zstyle ':completion:*' use-compctl true
 zstyle ':completion:*' verbose true
 #zstyle :compinstall filename '/Users/michael/.zshrc'
 
-# For new tmux windows, cd into the stored, project dir if available
+# For new tmux windows cd into the stored, project dir if available
 if [[ $- == *i* && -n ${TMUX_PRJDIR} ]] ; then
     cd ${TMUX_PRJDIR}
     # But don't do it in subshells
     unset TMUX_PRJDIR
+
+fi
+
+# If starting up a tmux session, let tmux know the current nook.
+if [[ -n "${TMUX}" && -n "${NOOK}" ]] ; then
+    nook "${NOOK}"
 fi
 
 # The r builtin repeats history and descends from ksh.  I don't use it.
