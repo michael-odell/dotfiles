@@ -8,5 +8,7 @@ cursor-style = block_hollow
 cursor-color = black
 shell-integration-features = no-cursor
 
+scrollback-limit=102400
+
 # Don't open new tabs/windwos in the current directory
 window-inherit-working-directory = false

@@ -13,43 +13,45 @@ DEVICES = {
     --     onPresent = nil, -- optionally a function to run when the device is present
     --     onAbsent = nil,  -- optionally a function to run when the device is not attached
     -- },
-    StreamDeck = {
-        type = "usb",
-        id = {
-            vendorID = 0xfd9,
-            productID = 0x84,
-        },
-        onPresent = function()
-            local streamDeckApp = "com.elgato.StreamDeck"
 
-            -- StreamDeck's app is annoying to start.  If you don't start it with special
-            -- arguemnts OR even if you do but it's already running, it'll pop up a window.
-            --
-            -- So all of this is just to get it running without popping up a window
-            local app = hs.application.get(streamDeckApp)
-            if not app  then
-                logger.i("Starting StreamDeck app.")
-                local task = hs.task.new("/usr/bin/open", nil, {"-g", "-b", streamDeckApp, "--args", "--runinbk"}):start()
-            end
+    -- Not using the StreamDeck for the moment at least.
+    -- StreamDeck = {
+    --     type = "usb",
+    --     id = {
+    --         vendorID = 0xfd9,
+    --         productID = 0x84,
+    --     },
+    --     onPresent = function()
+    --         local streamDeckApp = "com.elgato.StreamDeck"
 
-            -- It's much easier to start mutedeck
-            logger.i("Making sure MuteDeck is running.")
-            hs.application.open("com.mutedeck.mac")
-        end,
-        onAbsent = function()
-            local streamDeckApp = "com.elgato.StreamDeck"
-            local app = hs.application.get(streamDeckApp)
-            if app then
-                logger.i("Stopping StreamDeck app.")
-                app:kill()
-            end
-            app = hs.application.get("com.mutedeck.mac")
-            if app then
-                logger.i("Stopping mutedeck app.")
-                app:kill()
-            end
-        end
-    },
+    --         -- StreamDeck's app is annoying to start.  If you don't start it with special
+    --         -- arguemnts OR even if you do but it's already running, it'll pop up a window.
+    --         --
+    --         -- So all of this is just to get it running without popping up a window
+    --         local app = hs.application.get(streamDeckApp)
+    --         if not app  then
+    --             logger.i("Starting StreamDeck app.")
+    --             local task = hs.task.new("/usr/bin/open", nil, {"-g", "-b", streamDeckApp, "--args", "--runinbk"}):start()
+    --         end
+
+    --         -- It's much easier to start mutedeck
+    --         logger.i("Making sure MuteDeck is running.")
+    --         hs.application.open("com.mutedeck.mac")
+    --     end,
+    --     onAbsent = function()
+    --         local streamDeckApp = "com.elgato.StreamDeck"
+    --         local app = hs.application.get(streamDeckApp)
+    --         if app then
+    --             logger.i("Stopping StreamDeck app.")
+    --             app:kill()
+    --         end
+    --         app = hs.application.get("com.mutedeck.mac")
+    --         if app then
+    --             logger.i("Stopping mutedeck app.")
+    --             app:kill()
+    --         end
+    --     end
+    -- },
     WorkMonitor = {
         type = "usb",
         id = {
