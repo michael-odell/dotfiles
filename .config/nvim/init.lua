@@ -7,6 +7,8 @@ vim.cmd('source ~/.config/nvim/oldinit.vim')
 
 vim.opt.signcolumn = 'yes'
 
+vim.lsp.enable("cue")
+
 vim.diagnostic.config({
         virtual_text = true
     })

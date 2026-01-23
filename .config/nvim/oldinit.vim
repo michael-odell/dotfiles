@@ -204,6 +204,9 @@ function! ForceMyFormatOptions()
     " But do remove the comment leader when joining lines
     setlocal formatoptions+=j
 
+    " Do not automatically wrap non-comment lines mid-editing
+    setlocal formatoptions-=t
+
 endfunction
 
 function! ToggleAutoFormat()

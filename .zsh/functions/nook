@@ -1,6 +1,11 @@
 nook() {
     export NOOK=$1
-    export KUBECONFIG=$HOME/.kube/config.${NOOK}
+
+    if [[ -d ~/.kube/${NOOK} ]] ; then
+        export KUBECONFIG="$HOME/.kube/${NOOK}/kubeconfig"
+    else
+        export KUBECONFIG="$HOME/.kube/config.${NOOK}"
+    fi
 
     # Default color -- specific nooks may override
     export NOOK_COLOR=7
