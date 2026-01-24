@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+SSH_TARGET=$1
+
+infocmp -x "${TERM}" | ssh "${SSH_TARGET}" -- tic -x -
