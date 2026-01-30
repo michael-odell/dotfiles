@@ -51,32 +51,28 @@ return {
             "hrsh7th/cmp-nvim-lsp",
         },
         config = function()
-            -- Merge cmp capabilities into LSP defaults
-            local lspconfig_defaults = require('lspconfig').util.default_config
-            lspconfig_defaults.capabilities = vim.tbl_deep_extend(
-                'force',
-                lspconfig_defaults.capabilities,
-                require('cmp_nvim_lsp').default_capabilities()
-            )
+            -- Add nvim-cmp capabilities to LSP (for completion support)
+            vim.lsp.config('*', {
+                capabilities = require('cmp_nvim_lsp').default_capabilities(),
+            })
 
-            -- LSP keybindings (applied when LSP attaches to a buffer)
+            -- LSP keybindings (beyond Neovim 0.11 defaults)
+            -- Defaults now include: K (hover), grn (rename), gra (code action),
+            -- grr (references), gri (implementation), gO (symbols), CTRL-S (sig help)
             vim.api.nvim_create_autocmd('LspAttach', {
                 desc = 'LSP actions',
                 callback = function(event)
                     local opts = { buffer = event.buf }
 
-                    vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+                    -- Navigation (gd, gD are not defaults)
                     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
                     vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
-                    vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
                     vim.keymap.set('n', 'go', vim.lsp.buf.type_definition, opts)
-                    vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
-                    vim.keymap.set('n', 'gs', vim.lsp.buf.signature_help, opts)
-                    vim.keymap.set('n', '<F2>', vim.lsp.buf.rename, opts)
+
+                    -- Formatting (not a default)
                     vim.keymap.set({ 'n', 'x' }, '<F3>', function()
                         vim.lsp.buf.format({ async = true })
                     end, opts)
-                    vim.keymap.set('n', '<F4>', vim.lsp.buf.code_action, opts)
                 end,
             })
 
