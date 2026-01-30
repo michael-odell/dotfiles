@@ -1,29 +1,6 @@
-
-"if executable('ctags')
-"    " This automatically runs ctags on projects so that they're quickly set up for vim's use.  It does
-"    " cause .tags files to get generated, though.
-"    let g:gutentags_ctags_tagfile='.tags'
-"    Plug 'ludovicchabant/vim-gutentags'
-"
-"    let g:airline_section_y = '%{gutentags#statusline()}%{&et? "" : "<<TABS>>"} [%{&ft}:%{&fo}]'
-"else
-"    let g:airline_section_y = '%{&et? "" : "<<TABS>>"} [%{&ft}:%{&fo}]'
-"endif
-"
-"set laststatus=2
-"let g:airline#extensions#branch#enabled = 0
-"let g:airline#extensions#branch#empty_message = ''
-"let g:airline#extensions#syntastic#enabled = 0
-"let g:airline#extensions#whitespace#enabled = 0
-"" Replace the 'utf-8[unix] section with formatoptions
-"Plug 'vim-airline/vim-airline'
-"Plug 'vim-airline/vim-airline-themes'
-
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 """ Miscellaneous Settings
-
-let mapleader=","
+" Note: mapleader is set in lazy-nvim.lua (must be set before lazy.nvim loads)
 
 set mouse=a
 
@@ -124,19 +101,6 @@ set undoreload=10000        " Maximum number lines to save for undo on a buffer 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 """ Colors
 
-"if $ITERM_PROFILE == 'Solarized Dark'
-"    set background=dark
-"    let g:airline_theme='solarized'
-"    let g:airline_solarized_bg='dark'
-"
-""elseif $ITERM_PROFILE == 'Solarized Light'
-"else
-"    set background=light
-"    let g:airline_theme='solarized'
-"    let g:airline_solarized_bg='light'
-"
-"endif
-
 highlight Comment cterm=italic
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -181,6 +145,12 @@ set expandtab           "(Expand tabs into spaces)
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""" Format Options
+" NEVER auto-wrap text while typing. The FileType autocmd in init.lua also
+" enforces this after ftplugins load, but set the global default too.
+set formatoptions-=t
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 """ Searching
 set showmatch           " Show matching brackets
 set ignorecase          " Case insensitive searching
@@ -190,24 +160,6 @@ set hlsearch            " highlight matches - :nohl to turn it off
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-" ftplugins screw with things.  All of my 'after' scripts for ftplugins call
-" this function to correct formatoptions after loading the ftplugin. Idea came
-" from http://peox.net/articles/vimconfig.html
-function! ForceMyFormatOptions()
-	setlocal formatoptions+=n
-
-	" Do not automatically extend comments upon <CR> or adding a new line.
-	" Automatic wrapping will still do so.
-	setlocal formatoptions-=r
-	setlocal formatoptions-=o
-    " But do remove the comment leader when joining lines
-    setlocal formatoptions+=j
-
-    " Do not automatically wrap non-comment lines mid-editing
-    setlocal formatoptions-=t
-
-endfunction
 
 function! ToggleAutoFormat()
 	if &fo =~ 'a'

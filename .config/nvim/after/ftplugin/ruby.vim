@@ -1,5 +1,3 @@
-call ForceMyFormatOptions()
-
 setlocal formatoptions+=cr
 
 setlocal sw=2

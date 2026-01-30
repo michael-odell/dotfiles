@@ -5,18 +5,12 @@ return {
             { "nvim-lua/plenary.nvim" }
         },
         opts = {
-            layout = {
-                height = {
-                    min = 30,  -- the default
-                    max = 100
+            defaults = {
+                layout_config = {
+                    height = 0.9,
+                    width = 0.9,
                 },
-                width = {
-                    min = 30,  -- the default
-                    max = 90,
-                }
-
             },
         },
-
     }
 }
