@@ -24,8 +24,6 @@ vim.api.nvim_create_autocmd("FileType", {
     end
 })
 
-vim.lsp.enable("cue")
-
 vim.diagnostic.config({
     virtual_text = true
 })
