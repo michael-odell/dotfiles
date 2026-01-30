@@ -28,3 +28,11 @@ vim.diagnostic.config({
     virtual_text = true
 })
 
+-- Enable treesitter highlighting for supported filetypes
+vim.api.nvim_create_autocmd("FileType", {
+    desc = "Enable treesitter highlighting",
+    callback = function()
+        pcall(vim.treesitter.start)
+    end,
+})
+
