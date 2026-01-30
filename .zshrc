@@ -50,6 +50,7 @@ plugin-def ${DOTFILES_PLUGIN_SOURCE}/zsh-completions
 PLUGIN_UPDATE_FREQUENCY=30d plugins-update
 
 alias dotfiles="git --git-dir=$HOME/.dotfiles.git --work-tree=$HOME"
+alias dotfiles-vi="GIT_DIR=${HOME}/.dotfiles.git GIT_WORK_TREE=${HOME} nvim"
 if [[ -r ~/.dotfiles.git/FETCH_HEAD ]] && older-than 30d ~/.dotfiles.git/FETCH_HEAD ; then
     echo "Updating local dotfiles..." >&2
     dotfiles pull
