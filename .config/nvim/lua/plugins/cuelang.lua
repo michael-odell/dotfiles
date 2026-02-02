@@ -1,14 +1,8 @@
+-- CUE language support
 -- ref: https://github.com/cue-lang/cue/wiki/LSP:-Getting-started
--- Cue uses treesitter for highlighting; ensure filetype detection works
-return {
-    {
-        "nvim-treesitter/nvim-treesitter",
-        init = function()
-            vim.filetype.add({
-                extension = {
-                    cue = "cue",
-                },
-            })
-        end,
-    },
-}
+--
+-- Setup:
+--   - Filetype detection: init.lua (vim.filetype.add)
+--   - Treesitter parser: treesitter.lua (syntax highlighting)
+--   - LSP: lsp.lua (vim.lsp.enable("cue")) - requires `cue` binary in PATH
+return {}

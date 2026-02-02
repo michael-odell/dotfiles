@@ -1,5 +1,12 @@
 vim.opt.background = "light"
 
+-- Filetype detection for languages not built into Neovim
+vim.filetype.add({
+    extension = {
+        cue = "cue",
+    },
+})
+
 require("lazy-nvim")
 
 vim.cmd('source ~/.config/nvim/oldinit.vim')
