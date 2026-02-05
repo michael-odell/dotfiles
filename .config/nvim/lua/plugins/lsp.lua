@@ -67,6 +67,7 @@ return {
                     -- Navigation (gd, gD are not defaults)
                     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
                     vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
+                    vim.keymap.set('n', '<C-]>', vim.lsp.buf.definition, opts)
                     vim.keymap.set('n', 'go', vim.lsp.buf.type_definition, opts)
 
                     -- Formatting (not a default)
