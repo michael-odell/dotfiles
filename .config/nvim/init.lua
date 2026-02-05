@@ -24,9 +24,13 @@ vim.api.nvim_create_autocmd("FileType", {
         fo:remove("r")  -- Don't auto-insert comment leader on <CR>
         fo:remove("o")  -- Don't auto-insert comment leader on 'o' or 'O'
 
-        -- Schedule 't' removal to run AFTER all ftplugins - 't' should NEVER be on
+        -- Schedule 't' removal to run AFTER all ftplugins
+        -- Exception: prose filetypes where auto-wrap is useful
         vim.schedule(function()
-            vim.opt_local.formatoptions:remove("t")
+            local prose_filetypes = { markdown = true, text = true }
+            if not prose_filetypes[vim.bo.filetype] then
+                vim.opt_local.formatoptions:remove("t")
+            end
         end)
     end
 })
