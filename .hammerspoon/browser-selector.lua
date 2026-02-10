@@ -60,6 +60,7 @@ spoon.URLDispatcher.url_patterns = {
     { "https?://workpool.web.app/", chromeBrowser },
     { "https?://www.hackerrank.com/", chromeBrowser },
     { "https?://hr.gs/", chromeBrowser },
+    { "https?://sana.ai/", chromeBrowser },
 
     -- Open Zoom links directly in the Zoom app
     { "https?://zoom%.us", zoomApp },

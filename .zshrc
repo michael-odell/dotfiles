@@ -90,9 +90,6 @@ alias "ll=ls -ltr"
 alias "la=ls -ltra"
 
 
-
-
-export EDITOR=vi
 if [[ -n ${commands[nvim]} ]] ; then
     alias vi=nvim
     alias vim=nvim

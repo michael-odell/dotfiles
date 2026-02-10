@@ -15,11 +15,6 @@ fi
 print -v HOSTNAME_SHORT -P %m     # Set HOSTNAME_SHORT in OS-independent way
 [[ -r ~/.zshenv.local ]] && source ~/.zshenv.local
 
-path+=(
-    # Multipass stores aliases here on macos
-    "$HOME/Library/Application Support/multipass/bin"(N)
-)
-
 
 # NOTE: The (N) in the list "nulls" the item if the directory doesn't
 # exist
@@ -42,19 +37,18 @@ export TZ="America/Denver"
 export ANSIBLE_NOCOWS=1
 export RIPGREP_CONFIG_PATH=$HOME/.config/ripgrep/config
 
+# Note -- overridden with nvim if available in .zshrc for interactive sessions
+export EDITOR=vi
+
+export PAGER="less"
+export LESS="-RM~gIJFXQ -x4"
+export LESSHISTFILE="${HOME}/.history/less.${HOST%%.*}"
+export SYSTEMD_LESS="$LESS"
+export KOPIA_CONFIG_PATH=$HOME/.config/kopia/$HOSTNAME_SHORT
+
 if [[ ! -d ~/.venv && -n ${commands[python3]} && ${DOTFILES_INSTALL:=1} -eq 1 ]] ; then
     echo "Initializing personal python venv..." >&2
     python3 -m venv ~/.venv
     ~/.venv/bin/pip3 install kubernetes
 fi
 
-if [[ -d ~/.venv && -z ${VIRTUAL_ENV:-} ]] ; then
-    export VIRTUAL_ENV=~/.venv
-    path=(~/.venv/bin $path)
-fi
-
-if [[ -d ~/contrib/gogs-cli ]] ; then
-    path+=(~/contrib/gogs-cli)
-fi
-
-export KOPIA_CONFIG_PATH=$HOME/.config/kopia/$HOSTNAME_SHORT

@@ -1,10 +1,5 @@
 [[ -f ~/.zsh/debug ]] && echo "--- .zprofile" >&2
 
-export PAGER="less"
-export LESS="-RM~gIJFXQ -x4"
-export LESSHISTFILE="${HOME}/.history/less.${HOST%%.*}"
-export SYSTEMD_LESS="$LESS"
-
 # NO WORKY
 #path=( "${HOME}/bin" "${path[@]}" "${HOME}/go/bin"(N) )
 
@@ -39,8 +34,23 @@ load_brew () {
         source ${brew_path}/share/google-cloud-sdk/path.zsh.inc
         source ${brew_path}/share/google-cloud-sdk/completion.zsh.inc
     fi
-
 }
-
+# WARNING: On mac, this ends up re-setting all existing PATH, MANPATH, INFOPATH settings.  Hence why mine
+# all follow here
 [[ ${OSTYPE} == darwin* ]] && load_brew
+
+
+path+=(
+    "${HOME}/go/bin"(N)
+
+    # Multipass stores aliases here on macos
+    "$HOME/Library/Application Support/multipass/bin"(N)
+)
+
+
+if [[ -d ~/.venv && -z ${VIRTUAL_ENV:-} ]] ; then
+    export VIRTUAL_ENV=~/.venv
+    path=(~/.venv/bin $path)
+fi
+
 [[ -f ~/.zsh/debug ]] && echo "--- END .zprofile $(declare -p path)" >&2
