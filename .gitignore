@@ -40,6 +40,9 @@
 /.venv
 
 
+# These seem to be system-specific and maybe not worth tracking anyway (?)
+/.claude.json*
+
 
 # Potentially sensitive things shouldn't be stored
 /.aws

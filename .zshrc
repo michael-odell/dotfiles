@@ -10,15 +10,15 @@ zmodload zsh/datetime
 [[ -r ~/.dotfilesrc ]] && source ~/.dotfilesrc
 [[ -r ~/.zshrc.local ]] && source ~/.zshrc.local
 
-if [[ ! -d ~/.asdf && ${DOTFILES_INSTALL} -eq 1 ]] ; then
-    git clone --branch v0.14.0 \
-        -c advice.detachedHead=false \
-        https://github.com/asdf-vm/asdf.git ~/.asdf
-fi
-
-export ASDF_FORCE_PREPEND=yes
-export ASDF_DATA_DIR=$HOME/.local/asdf
-[[ -r ~/.asdf/asdf.sh ]] && source ~/.asdf/asdf.sh
+#if [[ ! -d ~/.asdf && ${DOTFILES_INSTALL} -eq 1 ]] ; then
+#    git clone --branch v0.14.0 \
+#        -c advice.detachedHead=false \
+#        https://github.com/asdf-vm/asdf.git ~/.asdf
+#fi
+#
+#export ASDF_FORCE_PREPEND=yes
+#export ASDF_DATA_DIR=$HOME/.local/asdf
+#[[ -r ~/.asdf/asdf.sh ]] && source ~/.asdf/asdf.sh
 
 # NOTE: as of 2024-04, bug affects helm/stern version locking on arm mac -- see asdf-ensure-available
 #asdf-ensure-available \

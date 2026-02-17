@@ -42,11 +42,17 @@ load_brew () {
 
 path+=(
     "${HOME}/go/bin"(N)
+    "${HOME}/.local/bin"(N)
 
     # Multipass stores aliases here on macos
     "$HOME/Library/Application Support/multipass/bin"(N)
 )
 
+if [[ ! -d ~/.venv && -n ${commands[python3]} && ${DOTFILES_INSTALL:=1} -eq 1 ]] ; then
+    echo "Initializing personal python venv..." >&2
+    python3 -m venv ~/.venv
+    ~/.venv/bin/pip3 install kubernetes
+fi
 
 if [[ -d ~/.venv && -z ${VIRTUAL_ENV:-} ]] ; then
     export VIRTUAL_ENV=~/.venv
