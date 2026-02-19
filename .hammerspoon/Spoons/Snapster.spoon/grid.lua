@@ -7,7 +7,7 @@
 --- through the grid or grow/shrink them. Movement crosses screen boundaries;
 --- resizing is constrained to the current screen.
 ---
---- Move: steps one column at a time, collapsing multi-column windows.
+--- Move: steps one column at a time, preserving span.
 --- Resize: extends the edge in the given direction if possible, otherwise
 ---         shrinks from the opposite side.
 
@@ -36,6 +36,8 @@ function GridOp:new(direction, mode, threshold, vertical)
     return setmetatable(instance, self)
 end
 
+local ALIGNMENT_TOLERANCE = 10 -- pixels
+
 local function round(x)
     return math.floor(x + 0.5)
 end
@@ -45,6 +47,17 @@ local function getNumCols(screen, threshold)
     return (sf.w / sf.h) >= threshold and 3 or 2
 end
 
+local function detectVerticalZone(wf, sf)
+    local halfH = sf.h / 2
+    local atTop = math.abs(wf.y - sf.y) < ALIGNMENT_TOLERANCE
+    local atMid = math.abs(wf.y - (sf.y + halfH)) < ALIGNMENT_TOLERANCE
+    local isHalf = math.abs(wf.h - halfH) < ALIGNMENT_TOLERANCE
+
+    if atTop and isHalf then return "top" end
+    if atMid and isHalf then return "bottom" end
+    return nil
+end
+
 local function detectPosition(win, threshold)
     local screen = win:screen()
     local sf = screen:frame()
@@ -52,11 +65,18 @@ local function detectPosition(win, threshold)
     local numCols = getNumCols(screen, threshold)
     local colWidth = sf.w / numCols
 
-    local col = round((wf.x - sf.x) / colWidth)
+    local exactCol = (wf.x - sf.x) / colWidth
+    local exactSpan = wf.w / colWidth
+
+    local col = round(exactCol)
     col = math.max(0, math.min(col, numCols - 1))
 
-    local span = round(wf.w / colWidth)
+    local span = round(exactSpan)
     span = math.max(1, math.min(span, numCols - col))
+
+    local colOff = math.abs(exactCol - col) * colWidth
+    local spanOff = math.abs(exactSpan - span) * colWidth
+    local aligned = colOff < ALIGNMENT_TOLERANCE and spanOff < ALIGNMENT_TOLERANCE
 
     return {
         col = col,
@@ -65,6 +85,10 @@ local function detectPosition(win, threshold)
         screen = screen,
         colWidth = colWidth,
         screenFrame = sf,
+        aligned = aligned,
+        exactCol = exactCol,
+        exactSpan = exactSpan,
+        verticalZone = detectVerticalZone(wf, sf),
     }
 end
 
@@ -113,38 +137,64 @@ function GridOp:_move(pos)
     local logger = spoon.Snapster.logger
     local v = self.vertical
 
+    if v ~= "full" and pos.verticalZone and pos.verticalZone ~= v then
+        logger.d("  switch vertical:", pos.verticalZone, "->", v)
+        return makeFrame(pos.screenFrame, pos.colWidth, pos.col, pos.span, v)
+    end
+
+    if not pos.aligned then
+        local targetCol
+        if self.direction == "right" then
+            targetCol = math.floor(pos.exactCol + pos.exactSpan - 0.001)
+        else
+            targetCol = math.floor(pos.exactCol)
+        end
+        targetCol = math.max(0, math.min(targetCol, pos.numCols - 1))
+        logger.d("  snap to col:", targetCol)
+        return makeFrame(pos.screenFrame, pos.colWidth, targetCol, 1, v)
+    end
+
+    local span = pos.span
+
     if self.direction == "right" then
-        local nextCol = pos.col + pos.span
-        if nextCol < pos.numCols then
-            return makeFrame(pos.screenFrame, pos.colWidth, nextCol, 1, v)
+        local nextCol = pos.col + 1
+        if nextCol + span <= pos.numCols then
+            return makeFrame(pos.screenFrame, pos.colWidth, nextCol, span, v)
         end
         local next = pos.screen:toEast()
         if next then
             local sf = next:frame()
             local nc = getNumCols(next, self.threshold)
+            local ns = math.min(span, nc)
             logger.d("  -> screen:", next:name())
-            return makeFrame(sf, sf.w / nc, 0, 1, v)
+            return makeFrame(sf, sf.w / nc, 0, ns, v)
         end
-        return makeFrame(pos.screenFrame, pos.colWidth, pos.numCols - 1, 1, v)
+        return makeFrame(pos.screenFrame, pos.colWidth, pos.numCols - span, span, v)
     else
         local nextCol = pos.col - 1
         if nextCol >= 0 then
-            return makeFrame(pos.screenFrame, pos.colWidth, nextCol, 1, v)
+            return makeFrame(pos.screenFrame, pos.colWidth, nextCol, span, v)
         end
         local prev = pos.screen:toWest()
         if prev then
             local sf = prev:frame()
             local nc = getNumCols(prev, self.threshold)
+            local ns = math.min(span, nc)
             logger.d("  -> screen:", prev:name())
-            return makeFrame(sf, sf.w / nc, nc - 1, 1, v)
+            return makeFrame(sf, sf.w / nc, nc - ns, ns, v)
         end
-        return makeFrame(pos.screenFrame, pos.colWidth, 0, 1, v)
+        return makeFrame(pos.screenFrame, pos.colWidth, 0, span, v)
     end
 end
 
 function GridOp:_resize(pos)
     local logger = spoon.Snapster.logger
     local v = self.vertical
+
+    if v ~= "full" and pos.verticalZone and pos.verticalZone ~= v then
+        logger.d("  switch vertical:", pos.verticalZone, "->", v)
+        return makeFrame(pos.screenFrame, pos.colWidth, pos.col, pos.span, v)
+    end
 
     if self.direction == "right" then
         if pos.col + pos.span < pos.numCols then
