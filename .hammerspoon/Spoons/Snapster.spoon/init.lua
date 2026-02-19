@@ -6,6 +6,8 @@ local LayoutManager = dofile(hs.spoons.resourcePath("layout.lua"))
 local FrameScaler = dofile(hs.spoons.resourcePath("scaler.lua"))
 local ScreenAnchor = dofile(hs.spoons.resourcePath("anchor.lua"))
 local FrameResizer = dofile(hs.spoons.resourcePath("resize.lua"))
+local AdaptiveOp = dofile(hs.spoons.resourcePath("adaptive.lua"))
+local GridOp = dofile(hs.spoons.resourcePath("grid.lua"))
 local WindowHistory = dofile(hs.spoons.resourcePath("undo.lua"))
 
 local obj = {}
@@ -75,6 +77,8 @@ obj.apps = {}
 --- A table of predefined scaling factors.
 obj.scale = {
     halfWidth = FrameScaler.HALF_WIDTH,
+    thirdWidth = FrameScaler.THIRD_WIDTH,
+    quarterWidth = FrameScaler.QUARTER_WIDTH,
     halfHeight = FrameScaler.HALF_HEIGHT,
     fullScreen = FrameScaler.FULL_SCREEN,
     quarterScreen = FrameScaler.QUARTER_SCREEN,
@@ -106,6 +110,59 @@ obj.resize = {
     large = FrameResizer.SXGA,
     xlarge = FrameResizer.WUXGA
 }
+
+--- Snapster.adaptive(default, ...)
+--- Function
+--- Creates an adaptive layout operation that selects behavior based on screen aspect ratio.
+---
+--- Parameters:
+---  * default - The default LayoutOperation to use on standard screens
+---  * ... - One or more rule tables of the form {ratio, operation}
+---
+--- Returns:
+---  * An AdaptiveOp instance
+---
+--- Notes:
+---  * Rules are matched from highest ratio to lowest; the first match wins
+---  * Example: `snap.adaptive(snap.scale.halfWidth, {2.0, snap.scale.thirdWidth})`
+---    uses third-width on ultrawides (ratio >= 2.0) and half-width everywhere else
+obj.adaptive = function(default, ...)
+    return AdaptiveOp:new(default, ...)
+end
+
+--- Snapster.grid(threshold)
+--- Function
+--- Creates a set of grid-based navigation and resizing operations.
+---
+--- Parameters:
+---  * threshold - Minimum aspect ratio for 3-column grids (default 2.0)
+---
+--- Returns:
+---  * A table of GridOp instances for full-height, top-half, and bottom-half movement/resizing
+---
+--- Notes:
+---  * Move operations step one column at a time and cross screen boundaries
+---  * Resize operations extend toward the given direction if possible,
+---    otherwise shrink from the opposite side
+---  * "Up" variants constrain to the top half; "Down" variants to the bottom half
+obj.grid = function(threshold)
+    return {
+        moveLeft       = GridOp:new("left",  "move",   threshold),
+        moveRight      = GridOp:new("right", "move",   threshold),
+        resizeLeft     = GridOp:new("left",  "resize", threshold),
+        resizeRight    = GridOp:new("right", "resize", threshold),
+
+        moveUpLeft     = GridOp:new("left",  "move",   threshold, "top"),
+        moveUpRight    = GridOp:new("right", "move",   threshold, "top"),
+        resizeUpLeft   = GridOp:new("left",  "resize", threshold, "top"),
+        resizeUpRight  = GridOp:new("right", "resize", threshold, "top"),
+
+        moveDownLeft   = GridOp:new("left",  "move",   threshold, "bottom"),
+        moveDownRight  = GridOp:new("right", "move",   threshold, "bottom"),
+        resizeDownLeft = GridOp:new("left",  "resize", threshold, "bottom"),
+        resizeDownRight= GridOp:new("right", "resize", threshold, "bottom"),
+    }
+end
 
 --- keyname(mods, key)
 --- Function

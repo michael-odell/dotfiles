@@ -94,7 +94,18 @@ function LayoutManager:apply(win)
 
     logger.i("Moving", appname, "to (", frame.w, "x", frame.h, ") @ [", frame.x, ",", frame.y, "]") 
 
+    local osf = win:screen():frame()
+    local crossScreen = frame.x < osf.x or frame.x >= osf.x + osf.w or
+                        frame.y < osf.y or frame.y >= osf.y + osf.h
+
     win:setFrame(frame)
+
+    if crossScreen then
+        logger.i("Cross-screen move, scheduling reapply")
+        hs.timer.doAfter(0.1, function()
+            win:setFrame(frame)
+        end)
+    end
 
     logger.d("Layout complete:", appname, "[", win:title(), "]")
     logger.d("  => (", frame.w, "x", frame.h, ") @ [", frame.x, ",", frame.y, "]")

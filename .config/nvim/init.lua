@@ -27,7 +27,7 @@ vim.api.nvim_create_autocmd("FileType", {
         -- Schedule 't' removal to run AFTER all ftplugins
         -- Exception: prose filetypes where auto-wrap is useful
         vim.schedule(function()
-            local prose_filetypes = { markdown = true, text = true }
+            local prose_filetypes = { markdown = true, text = true, gitcommit = true }
             if not prose_filetypes[vim.bo.filetype] then
                 vim.opt_local.formatoptions:remove("t")
             end
@@ -46,4 +46,16 @@ vim.api.nvim_create_autocmd("FileType", {
         pcall(vim.treesitter.start)
     end,
 })
+
+-- Toggle diagnostics/errors for current buffer to avoid the really annoying ones
+vim.keymap.set('n', '<leader>e', function()
+    local bufnr = 0
+    if vim.diagnostic.is_enabled({ bufnr = bufnr }) then
+        vim.diagnostic.enable(false, { bufnr = bufnr })
+        print("Diagnostics Disabled")
+    else
+        vim.diagnostic.enable(true, { bufnr = bufnr })
+        print("Diagnostics Enabled")
+    end
+end, { desc = "Toggle Buffer Diagnostics" })
 

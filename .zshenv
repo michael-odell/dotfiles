@@ -19,7 +19,7 @@ print -v HOSTNAME_SHORT -P %m     # Set HOSTNAME_SHORT in OS-independent way
 # NOTE: The (N) in the list "nulls" the item if the directory doesn't
 # exist
 typeset -xUT PRJPATH prjpath
-prjpath=(~/src/*/(N) ~/src(N) ~/wd/*/(N) ~/wd(N) ~/contrib/*/(N) ~/contrib(N) ~/src/learn(N) ~/.zsh/plugins(N))
+prjpath=(~/src/*/(N) ~/src(N) ~/wd/*/(N) ~/wd(N) ~/contrib/*/(N) ~/contrib(N) ~/src/learn(N) ~/.zsh/plugins(N) ~/ai)
 
 
 # I use this to avoid having a distinction between login and non-login shells.  This sources the two
