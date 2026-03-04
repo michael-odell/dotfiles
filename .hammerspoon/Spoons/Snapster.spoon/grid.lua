@@ -156,6 +156,14 @@ function GridOp:_move(pos)
 
     local span = pos.span
 
+    if span >= pos.numCols then
+        if self.direction == "right" then
+            return makeFrame(pos.screenFrame, pos.colWidth, pos.numCols - 1, 1, v)
+        else
+            return makeFrame(pos.screenFrame, pos.colWidth, 0, 1, v)
+        end
+    end
+
     if self.direction == "right" then
         local nextCol = pos.col + 1
         if nextCol + span <= pos.numCols then
