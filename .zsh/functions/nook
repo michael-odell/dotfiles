@@ -10,11 +10,14 @@ nook() {
     # Default color -- specific nooks may override
     export NOOK_COLOR=7
 
-    case "$NOOK" in
-        proteus*)
-            export NOOK_COLOR=green
-            ;;
-    esac
+    if [[ -n "${NOOK_HANDLER}" ]] ; then
+        if [[ -r "${NOOK_HANDLER}" ]] ; then
+            source "${NOOK_HANDLER}"
+        else
+            echo "ERROR: Unable to read ${NOOK_HANDLER}." >&2
+            return 2
+        fi
+    fi
 
     if [[ -n "${TMUX}" ]] ; then
         # NOTE: These options are also set in .zshrc to ensure passing them along to new tmux sessions
