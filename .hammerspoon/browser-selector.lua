@@ -41,6 +41,12 @@ spoon.URLDispatcher.url_patterns = {
     { "https?://goo%.gl", chromeBrowser },
     { "https?://ceph%.odell%.sh", chromeBrowser },
 
+    -- Open Zoom links directly in the Zoom app
+    { "https?://zoom%.us", zoomApp },
+    { "https?://zoom%.com", zoomApp },
+    { "https?://.*%.zoom%.us", zoomApp },
+    { "https?://.*%.zoom%.com", zoomApp },
+
     -- Workday systems should use Chrome
     { "https?://[^/]*workday[^/]*", chromeBrowser },
     { "https?://console%.megaleo%.com", chromeBrowser },
@@ -61,10 +67,6 @@ spoon.URLDispatcher.url_patterns = {
     { "https?://www.hackerrank.com/", chromeBrowser },
     { "https?://hr.gs/", chromeBrowser },
     { "https?://sana.ai/", chromeBrowser },
-
-    -- Open Zoom links directly in the Zoom app
-    { "https?://zoom%.us", zoomApp },
-    { "https?://zoom%.com", zoomApp },
 }
 
 -- Start the URL dispatcher
