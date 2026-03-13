@@ -10,5 +10,9 @@ shell-integration-features = no-cursor
 
 scrollback-limit=102400
 
+# Cursor CLI requests modifyOtherKeys but doesn't handle the Shift+Space
+# sequence (\e[27;2;32~), so just send a plain space instead.
+keybind = shift+space=text:\x20
+
 # Don't open new tabs/windwos in the current directory
 window-inherit-working-directory = false
