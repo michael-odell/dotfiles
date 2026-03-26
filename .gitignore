@@ -5,6 +5,10 @@
 # not _presently_ managing asdf configurations
 /.tool-versions
 
+# Nor _presently_ anything related to agents...
+/.claude
+/.cursor
+
 
 # The .config directory is a mix of saved and not
 /.config/nvim/autoload
@@ -136,3 +140,11 @@
 /.redhat
 /.config/cxpkube
 /.docsbuild
+
+# And due to rampant ruby/js stuff with peculiar settings there
+/.bundle
+/.gemrc
+/.npmrc
+/.rbenv
+/.yarnrc
+/node_modules
