@@ -45,3 +45,6 @@ export LESS="-RM~gIJFXQ -x4"
 export LESSHISTFILE="${HOME}/.history/less.${HOST%%.*}"
 export SYSTEMD_LESS="$LESS"
 export KOPIA_CONFIG_PATH=$HOME/.config/kopia/$HOSTNAME_SHORT
+
+# ref: https://code.claude.com/docs/en/fullscreen
+export CLAUDE_CODE_NO_FLICKER=1
