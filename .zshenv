@@ -33,6 +33,10 @@ if [[ ! -o login ]] ; then
     source ${ZDOTDIR:-$HOME}/.zprofile
 fi
 
+if [[ -r "$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock" ]] ; then
+    export SSH_AUTH_SOCK="$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+fi
+
 export TZ="America/Denver"
 export ANSIBLE_NOCOWS=1
 export RIPGREP_CONFIG_PATH=$HOME/.config/ripgrep/config
