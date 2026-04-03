@@ -1,0 +1,164 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+    cat >&2 <<EOF
+Usage: ghlink [OPTIONS] FILE[:LINE]
+
+Generate a GitHub URL for a file in a git repository.
+
+Options:
+  -l, --line LINE   Append line anchor (#LLINE) to the URL
+  -r, --ref REF     Use a specific branch, tag, or SHA (default: current branch)
+  -o, --open        Open URL in the browser (macOS only)
+  -c, --copy        Copy the URL to the clipboard (pbcopy)
+  -h, --help        Show this help
+
+Environment:
+  GHLINK_HOSTS      Space-separated list of GitHub hostnames to recognize
+                    (default: github.com)
+
+Examples:
+  ghlink src/foo.go
+  ghlink src/foo.go:42
+  ghlink -l 42 src/foo.go
+  ghlink -r main src/foo.go
+  ghlink -c src/foo.go
+EOF
+    exit 1
+}
+
+LINE=
+REF=
+COPY=0
+OPEN=0
+FILE=
+
+while [[ $# -gt 0 ]] ; do
+    case $1 in
+        -l|--line)
+            LINE=$2
+            shift
+            ;;
+        -r|--ref)
+            REF=$2
+            shift
+            ;;
+        -c|--copy)
+            COPY=1
+            ;;
+        -o|--open)
+            OPEN=1
+            ;;
+        -h|--help)
+            usage
+            ;;
+        --)
+            shift
+            break
+            ;;
+        -*)
+            echo "ghlink: unknown option: $1" >&2
+            usage
+            ;;
+        *)
+            FILE=$1 ;;
+    esac
+    shift
+done
+
+# Handle remaining positional args after --
+if [[ $# -gt 0 ]] ; then
+    FILE=$1
+    shift
+fi
+
+if [[ -z "${FILE:-}" ]] ; then
+    echo "ghlink: file argument required" >&2
+    usage
+fi
+
+# Split file:LINE shorthand
+if [[ "$FILE" =~ ^(.+):([0-9]+)$ ]] ; then
+    if [[ -z "$LINE" ]] ; then
+        LINE=${BASH_REMATCH[2]}
+    fi
+    FILE=${BASH_REMATCH[1]}
+fi
+
+# Resolve to absolute path
+FILE=$(cd "$(dirname "$FILE")" && pwd)/$(basename "$FILE")
+
+if [[ ! -e "$FILE" ]] ; then
+    echo "ghlink: file not found: $FILE" >&2
+    exit 1
+fi
+
+# Find git root
+GIT_ROOT=$(git -C "$(dirname "$FILE")" rev-parse --show-toplevel 2>/dev/null) || {
+    echo "ghlink: not inside a git repository: $FILE" >&2
+    exit 1
+}
+
+# Get remote URL
+REMOTE_URL=$(git -C "$GIT_ROOT" remote get-url origin 2>/dev/null) || {
+    echo "ghlink: no 'origin' remote found" >&2
+    exit 1
+}
+
+# Parse SSH or HTTPS remote URL, stripping trailing .git
+if [[ "$REMOTE_URL" =~ ^git@([^:]+):(.+)$ ]] ; then
+    GH_HOST=${BASH_REMATCH[1]}
+    REPO_PATH=${BASH_REMATCH[2]%.git}
+elif [[ "$REMOTE_URL" =~ ^https?://([^/]+)/(.+)$ ]] ; then
+    GH_HOST=${BASH_REMATCH[1]}
+    REPO_PATH=${BASH_REMATCH[2]%.git}
+else
+    echo "ghlink: unrecognized remote URL format: $REMOTE_URL" >&2
+    exit 1
+fi
+
+# Validate host against known GitHub instances
+GHLINK_HOSTS=${GHLINK_HOSTS:-github.com}
+FOUND=0
+for h in $GHLINK_HOSTS ; do
+    if [[ "$GH_HOST" == "$h" ]] ; then
+        FOUND=1
+        break
+    fi
+done
+if [[ $FOUND -eq 0 ]] ; then
+    echo "ghlink: remote host '$GH_HOST' is not in GHLINK_HOSTS ($GHLINK_HOSTS)" >&2
+    exit 1
+fi
+
+# Determine ref
+if [[ -z "$REF" ]] ; then
+    REF=$(git -C "$GIT_ROOT" rev-parse --abbrev-ref HEAD 2>/dev/null)
+    if [[ "$REF" == "HEAD" ]] ; then
+        # Detached HEAD — use commit SHA
+        REF=$(git -C "$GIT_ROOT" rev-parse HEAD)
+    fi
+fi
+
+# Compute relative path from repo root
+REL_PATH=${FILE#"$GIT_ROOT/"}
+
+# Build URL
+URL="https://${GH_HOST}/${REPO_PATH}/blob/${REF}/${REL_PATH}"
+if [[ -n "$LINE" ]] ; then
+    URL="${URL}#L${LINE}"
+fi
+
+
+if [[ $COPY -eq 1 ]] ; then
+    echo "$URL" | pbcopy
+fi
+
+if [[ $OPEN -eq 1 ]] ; then
+    open "$URL"
+fi
+
+if [[ $OPEN -eq 0 && $COPY -eq 0 ]] ; then
+    echo "$URL"
+fi
