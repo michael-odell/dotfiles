@@ -1,8 +1,12 @@
 {
   "permissions": {
-    "allow": [
-    ]
+    "allow": []
+  },
+  "enabledPlugins": {
+    "gopls-lsp@claude-plugins-official": true
   },
   "effortLevel": "medium",
-  "showClearContextOnPlanAccept": true
+  "showClearContextOnPlanAccept": true,
+  "showThinkingSummaries": true,
+  "model": "opusplan"
 }
