@@ -57,6 +57,11 @@ if [[ -r ~/.dotfiles.git/FETCH_HEAD ]] && older-than 30d ~/.dotfiles.git/FETCH_H
     dotfiles pull
 fi
 
+# I don't use the cursor application, preferring the cursor CLI instead.  But I tend to forget that it's
+# command is cursor-agent rather than cursor.  In any case, when I want to open the app, I use
+# non-terminal means to open it, so aliasing here will save me some trouble without causing much.
+alias cursor=cursor-agent
+
 # Allow Ctrl-S as hotkey rather than terminal stop
 stty -ixon
 

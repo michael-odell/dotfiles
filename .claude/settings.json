@@ -3,10 +3,27 @@
     "allow": []
   },
   "enabledPlugins": {
-    "gopls-lsp@claude-plugins-official": true
+    "gopls-lsp@claude-plugins-official": true,
+    "allow": [
+      "Bash(git -C /Users/michael.odell/wd/* log *)",
+      "Bash(git -C /Users/michael.odell/wd/* show *)",
+      "Bash(git -C /Users/michael.odell/wd/* diff *)",
+      "Bash(git -C /Users/michael.odell/wd/* status *)",
+      "Bash(git log *)",
+      "Bash(git show *)",
+      "Bash(git diff *)",
+      "Bash(git status *)",
+      "Bash(git status)",
+      "Bash(ls /Users/michael.odell/wd/*)",
+      "Bash(cat /Users/michael.odell/wd/*)"
+    ]
   },
   "effortLevel": "medium",
   "showClearContextOnPlanAccept": true,
   "showThinkingSummaries": true,
-  "model": "opusplan"
+  "model": "opusplan",
+  "statusLine": {
+    "type": "command",
+    "command": "bash /Users/michael.odell/.claude/statusline-command.sh"
+  }
 }
