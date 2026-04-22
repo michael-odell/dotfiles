@@ -20,10 +20,8 @@ color_cyan='\033[36m'
 # Spend color (magenta)
 color_magenta='\033[35m'
 
-# Mode colors
-color_mode_auto='\033[32m'    # green  — auto mode
-color_mode_plan='\033[33m'    # yellow — plan mode
-color_mode_other='\033[37m'   # white  — unknown/other mode
+# Token counter color (blue)
+color_blue='\033[34m'
 
 # Separator color
 color_sep='\033[90m'  # dark gray
@@ -77,8 +75,7 @@ usage_color() {
 # ---------------------------------------------------------------------------
 # Extract fields from JSON
 # ---------------------------------------------------------------------------
-mode=$(echo "$input" | jq -r '.mode // empty')
-model=$(echo "$input" | jq -r '.model.display_name')
+model=$(echo "$input" | jq -r '.model.id')
 
 ctx_used=$(echo "$input" | jq -r '.context_window.used_percentage // empty')
 
@@ -110,25 +107,26 @@ else
   spend=""
 fi
 
+# Format token counts: raw if < 1000, else rounded to nearest thousand with "k"
+fmt_tokens() {
+  local n=$1
+  if [ "$n" -lt 1000 ]; then
+    printf '%s' "$n"
+  else
+    printf '%sk' "$(( (n + 500) / 1000 ))"
+  fi
+}
+
+tok_in=$(fmt_tokens "$total_in")
+tok_out=$(fmt_tokens "$total_out")
+
 # ---------------------------------------------------------------------------
 # Build output segments
 # ---------------------------------------------------------------------------
 sep=$(printf "${color_sep}│${reset}")
 
-# 0. Mode indicator — leftmost element
-if [ -n "$mode" ]; then
-  case "$mode" in
-    auto)  mcolor="$color_mode_auto"  ;;
-    plan)  mcolor="$color_mode_plan"  ;;
-    *)     mcolor="$color_mode_other" ;;
-  esac
-  out=$(printf "${bold}${mcolor}%s${reset}" "$mode")
-  out="${out}  ${sep}  "
-else
-  out=""
-fi
-
 # 1. Model name (bold, default color)
+out=""
 out="${out}$(printf "${bold}%s${reset}" "$model")"
 
 # 2. Rate-limit bars — only when data is available
@@ -161,6 +159,11 @@ fi
 # 4. Session spend
 if [ -n "$spend" ]; then
   out="${out}  ${sep}  ${color_magenta}\$${spend}${reset}"
+fi
+
+# 5. Token counters (input / output)
+if [ "$total_in" -gt 0 ] || [ "$total_out" -gt 0 ]; then
+  out="${out}  ${sep}  ${dim}in${reset} ${color_blue}${tok_in}${reset}  ${dim}out${reset} ${color_blue}${tok_out}${reset}"
 fi
 
 printf '%b' "$out"
