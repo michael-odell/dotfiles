@@ -2,6 +2,11 @@
   "permissions": {
     "allow": []
   },
+  "model": "opusplan",
+  "statusLine": {
+    "type": "command",
+    "command": "bash /Users/michael.odell/.claude/statusline-command.sh"
+  },
   "enabledPlugins": {
     "gopls-lsp@claude-plugins-official": true,
     "allow": [
@@ -21,9 +26,6 @@
   "effortLevel": "medium",
   "showClearContextOnPlanAccept": true,
   "showThinkingSummaries": true,
-  "model": "opusplan",
-  "statusLine": {
-    "type": "command",
-    "command": "bash /Users/michael.odell/.claude/statusline-command.sh"
-  }
+  "skipAutoPermissionPrompt": true,
+  "theme": "light"
 }
