@@ -67,6 +67,7 @@ spoon.URLDispatcher.url_patterns = {
     { "https?://www.hackerrank.com/", chromeBrowser },
     { "https?://hr.gs/", chromeBrowser },
     { "https?://sana.ai/", chromeBrowser },
+    { "https?://linear.app/", chromeBrowser },
 }
 
 -- Start the URL dispatcher
