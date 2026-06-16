@@ -30,6 +30,7 @@ local function chromeBrowser(url)
                     if (tab.url() && tab.url() === target) {
                         win.activeTabIndex = t + 1;
                         win.index = 1;
+                        win.minimized = false;
                         chrome.activate();
                         return true;
                     }

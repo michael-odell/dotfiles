@@ -2,6 +2,7 @@
   "permissions": {
     "allow": []
   },
+  "model": "opus[1m]",
   "statusLine": {
     "type": "command",
     "command": "bash /Users/michael.odell/.claude/statusline-command.sh"
@@ -26,6 +27,5 @@
   "showClearContextOnPlanAccept": true,
   "showThinkingSummaries": true,
   "theme": "light",
-  "skipAutoPermissionPrompt": true,
-  "model": "opus"
+  "skipAutoPermissionPrompt": true
 }
