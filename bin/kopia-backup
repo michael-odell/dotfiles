@@ -19,7 +19,9 @@
 #  3. Enable the service to back them up
 #
 #       # MAYBE first have to launchctl enable user/$UID/us.theodells.kopia.backup
-#       launchctl load ~/Library/LaunchAgents/us.theodells.kopia.backup.plist
+#       launchctl bootstrap gui/$(id -u) "$HOME/Library/LaunchAgents/us.theodells.kopia.backup.plist"
+#       # and to reload, you might have to unload it first
+#       launchctl bootout gui/$(id -u) "$HOME/Library/LaunchAgents/us.theodells.kopia.backup.plist"
 #
 
 echo "--------------------------------------------------------------------------------"

@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
     <key>Label</key>
-    <string>us.theodells.restic.backup</string>
+    <string>us.theodells.kopia.backup</string>
 
     <key>WorkingDirectory</key>
     <string>/Users/michael.odell</string>
@@ -20,7 +20,7 @@
     </array>
 
     <key>StartInterval</key>
-    <integer>1800</integer> <!-- Every 30 minutes -->
+    <integer>3600</integer> <!-- Every hour -->
 
     <key>RunAtLoad</key>
     <true/>

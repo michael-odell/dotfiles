@@ -14,9 +14,36 @@ end
 
 
 local safariBrowser = appID("/Applications/Safari.app")
-local chromeBrowser = appID("/Applications/Google Chrome.app")
 local zoomApp = appID("/Applications/zoom.us.app")
 local slackApp = appID("/Applications/Slack.app")
+
+-- Opens a URL in Chrome, switching to an existing tab if one already has that URL.
+local function chromeBrowser(url)
+    local jxa = string.format([[
+        (function() {
+            var chrome = Application('Google Chrome');
+            var target = "%s";
+            for (var w = 0; w < chrome.windows.length; w++) {
+                var win = chrome.windows[w];
+                for (var t = 0; t < win.tabs.length; t++) {
+                    var tab = win.tabs[t];
+                    if (tab.url() && tab.url() === target) {
+                        win.activeTabIndex = t + 1;
+                        win.index = 1;
+                        chrome.activate();
+                        return true;
+                    }
+                }
+            }
+            return false;
+        })();
+    ]], url:gsub('"', '\\"'))
+
+    local ok, found = hs.osascript.javascript(jxa)
+    if not ok or not found then
+        hs.execute(string.format("open -a 'Google Chrome' '%s'", url:gsub("'", "'\\''")))
+    end
+end
 
 spoon.URLDispatcher.default_handler = safariBrowser
 
