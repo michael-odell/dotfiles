@@ -8,7 +8,6 @@
     "command": "bash /Users/michael.odell/.claude/statusline-command.sh"
   },
   "enabledPlugins": {
-    "gopls-lsp@claude-plugins-official": true,
     "allow": [
       "Bash(git -C /Users/michael.odell/wd/* log *)",
       "Bash(git -C /Users/michael.odell/wd/* show *)",
