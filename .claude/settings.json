@@ -23,7 +23,6 @@
     ]
   },
   "effortLevel": "medium",
-  "showClearContextOnPlanAccept": true,
   "showThinkingSummaries": true,
   "theme": "light",
   "skipAutoPermissionPrompt": true
