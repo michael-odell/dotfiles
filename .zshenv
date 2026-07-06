@@ -52,3 +52,4 @@ export KOPIA_CONFIG_PATH=$HOME/.config/kopia/$HOSTNAME_SHORT
 
 # ref: https://code.claude.com/docs/en/fullscreen
 export CLAUDE_CODE_NO_FLICKER=1
+export CLAUDE_CODE_DISABLE_MOUSE_CLICKS=1

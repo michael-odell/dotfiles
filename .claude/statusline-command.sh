@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
 # Claude Code status line — compact, information-dense
+#
+# Enable by adding this to ~/.claude/settings.json
+#
+#  "statusLine": {
+#    "type": "command",
+#    "command": "bash /Users/michael.odell/.claude/statusline-command.sh"
+#  },
+
 input=$(cat)
 
 # ---------------------------------------------------------------------------

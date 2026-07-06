@@ -8,6 +8,10 @@
 # Nor _presently_ anything related to agents...
 /.claude
 /.cursor
+# Too system-specific -- particularly around chosen model
+/.claude/settings.json
+# These seem to be system-specific and maybe not worth tracking anyway (?)
+/.claude.json*
 
 
 # The .config directory is a mix of saved and not
@@ -44,8 +48,6 @@
 /.venv
 
 
-# These seem to be system-specific and maybe not worth tracking anyway (?)
-/.claude.json*
 
 
 # Potentially sensitive things shouldn't be stored
