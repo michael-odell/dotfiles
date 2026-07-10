@@ -1,0 +1,41 @@
+[defaults]
+home_root  = "~/src"
+path       = "flat"
+worktrees  = false
+branches   = ["main"]
+on_rewrite = "stop"      # stop | follow  (§5.2)
+prune      = "auto"      # auto | report | manual  (§5.3)
+
+[hosts.github]
+base = "git@github.com:"
+
+[tag.vendor]
+home_root = "~/contrib"
+path = "owner"
+
+[tag.zsh-plugin]
+home_root = "~/.zsh/plugins"
+path      = "flat"
+
+# third-party plugin: supply-chain-mirror (review-gated)
+[[repo]]
+id       = "github:romkatv/powerlevel10k"
+fork     = "github:michael-odell/powerlevel10k"
+tags     = ["zsh-plugin"]
+workflow = "supply-chain-mirror"
+branches = ["master"]
+
+# my own plugin: a normal repo I work on
+[[repo]]
+id       = "github:michael-odell/zsh-history"
+tags     = ["zsh-plugin"]
+workflow = "upstream-push"
+
+# vendored, pinned to latest tag, read-only
+[[repo]]
+id        = "github:prometheus/prometheus"
+tags      = ["vendor"]
+workflow  = "vendor"
+pin       = "latest-tag"
+home_root = "~/vendor"
+path      = "owner"
