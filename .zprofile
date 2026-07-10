@@ -43,7 +43,6 @@ load_brew () {
 path+=(
     "${HOME}/go/bin"(N)
     "${HOME}/.local/bin"(N)
-    "${HOME}/src/noodle"(N)
 
     # Multipass stores aliases here on macos
     "$HOME/Library/Application Support/multipass/bin"(N)
