@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+CACHE_DIR=$HOME/.cache/dotfiles
+mkdir -p "${CACHE_DIR}/download"
+
+export GH_HOST=github.com
+
+BINARY=${CACHE_DIR}/repo
+RELEASE_JSON=${CACHE_DIR}/repo.release.json
+LAST_VERSION_FILE=${CACHE_DIR}/repo.last-version
+
+if [[ -z "$(find "${LAST_VERSION_FILE}" -mtime 7d 2>/dev/null )" ]] ; then
+
+    curl -s "https://api.github.com/repos/michael-odell/repo/releases/latest" > "${RELEASE_JSON}"
+    LATEST_VERSION=$(jq -r ".tag_name" < "${RELEASE_JSON}")
+
+    if [[ "${LATEST_VERSION}" != $(cat "${LAST_VERSION_FILE}" 2>/dev/null) ]] ; then
+        case "$(uname -s)" in
+            Linux)  os=linux ;;
+            Darwin) os=darwin ;;
+            *) echo "Unsupported arch $(uname -m)" >&2 ; exit 1 ;;
+        esac
+
+        case "$(uname -m)" in
+            x86_64|amd64)  arch=amd64 ;;
+            arm64|aarch64) arch=arm64 ;;
+            *) echo "Unsupported arch $(uname -m)" >&2 ; exit 1 ;;
+        esac
+
+        echo "Downloading ${LATEST_VERSION} (${os}/${arch})" >&2
+        URL=https://github.com/michael-odell/repo/releases/download/${LATEST_VERSION}/repo_${os}_${arch}.tar.gz
+        curl -fsSL "${URL}" -o "${BINARY}.tgz"
+
+        # Extract
+        tar xzOf "${BINARY}.tgz" repo > "${BINARY}"
+        rm "${BINARY}.tgz"
+        chmod +x "${BINARY}"
+
+        # The version file is the final stamp that we were successful in download
+        echo "${LATEST_VERSION}" > "${LAST_VERSION_FILE}"
+
+    fi
+
+fi
+exec "${CACHE_DIR}/repo" "${@}"
