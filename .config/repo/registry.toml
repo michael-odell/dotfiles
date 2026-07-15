@@ -1,41 +1,69 @@
+# repo registry — migrated to the named-root schema (DESIGN §3.4).
+#
+# What changed from the old file:
+#   - `[tag.*]` tables are gone; configuration now attaches to named [root.*]
+#     directory nodes with a `dir`. Settings inherit down the tree by `dir`
+#     prefix and are overridable per-root or per-repo.
+#   - the flat/owner axis is spelled `layout` (your old file used `path`, which
+#     was silently ignored — the reason vendor was never actually owner-nested).
+#   - `home_root` is gone (a root's `dir` is its home).
+#   - repos nest under their root: a `repos = [...]` list of bare ids for the
+#     common case, `[[root.<name>.repo]]` tables for exceptions.
+
 [defaults]
-home_root  = "~/src"
-path       = "flat"
 worktrees  = false
 branches   = ["main"]
-on_rewrite = "stop"      # stop | follow  (§5.2)
-prune      = "auto"      # auto | report | manual  (§5.3)
+on_rewrite = "stop"                 # stop | follow
+prune      = "auto"                 # auto | report | manual
+host       = "github"               # default host for bare-name clones
+# UNCERTAIN: forks are assumed to live under github:michael-odell. This lets
+# fork-pr / supply-chain-mirror repos derive their fork automatically instead of
+# stating it per repo. Change or remove if your forks live elsewhere.
+fork_owner = "github:michael-odell"
 
 [hosts.github]
 base = "git@github.com:"
 
-[tag.vendor]
-home_root = "~/contrib"
-path = "owner"
+# ── personal repos: your own code, pushed straight to origin ──────────────────
+[root.src]
+dir    = "~/src"
+layout = "flat"                     # ~/src/<repo>
+# workflow defaults to upstream-push. Repos already cloned here are discovered
+# automatically; list ids under `repos` only for ones you want provisioned on a
+# fresh machine, e.g.:
+# repos = [
+#   "github:michael-odell/repo",
+#   "github:michael-odell/homelab",
+# ]
 
-[tag.zsh-plugin]
-home_root = "~/.zsh/plugins"
-path      = "flat"
+# ── vendored third-party code: pulled to a pin, never pushed ──────────────────
+[root.contrib]
+dir      = "~/contrib"
+layout   = "owner"                  # ~/contrib/<owner>/<repo>
+workflow = "vendor"
+pin      = "latest-tag"
+# Anything cloned under ~/contrib is discovered and treated as vendored. Add ids
+# to `repos` here to have `repo` clone them for you.
 
-# third-party plugin: supply-chain-mirror (review-gated)
-[[repo]]
+# ── zsh plugins ───────────────────────────────────────────────────────────────
+# UNCERTAIN: the artifact generator currently emits plugins.zsh from the root
+# *named* "plugins" (a hardcoded name, flagged as a TODO in the code). Keep this
+# root named "plugins" until that becomes an explicit attribute, or tell me and
+# I'll wire an explicit flag instead.
+[root.plugins]
+dir    = "~/.zsh/plugins"
+layout = "flat"
+# your own plugins (upstream-push, no fork) — one line each:
+# repos = [
+#   "github:michael-odell/zsh-history",
+# ]
+
+# UNCERTAIN: supply-chain-mirror is unverified end-to-end because `repo review`
+# isn't implemented yet, so this entry may not behave fully. It's carried over
+# from your old config. The fork is derived from fork_owner
+# (github:michael-odell/powerlevel10k); `branches` differs from the default, so
+# it's stated. Provisioning would set up origin=fork + an `untrusted` remote.
+[[root.plugins.repo]]
 id       = "github:romkatv/powerlevel10k"
-fork     = "github:michael-odell/powerlevel10k"
-tags     = ["zsh-plugin"]
 workflow = "supply-chain-mirror"
 branches = ["master"]
-
-# my own plugin: a normal repo I work on
-[[repo]]
-id       = "github:michael-odell/zsh-history"
-tags     = ["zsh-plugin"]
-workflow = "upstream-push"
-
-# vendored, pinned to latest tag, read-only
-[[repo]]
-id        = "github:prometheus/prometheus"
-tags      = ["vendor"]
-workflow  = "vendor"
-pin       = "latest-tag"
-home_root = "~/vendor"
-path      = "owner"
