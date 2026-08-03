@@ -90,30 +90,21 @@ ctx_used=$(echo "$input" | jq -r '.context_window.used_percentage // empty')
 five_pct=$(echo "$input" | jq -r '.rate_limits.five_hour.used_percentage // empty')
 week_pct=$(echo "$input" | jq -r '.rate_limits.seven_day.used_percentage // empty')
 
-# Session spend: sum input+output tokens and estimate cost.
-# The JSON has no spend field, so we approximate from token counts.
-# Pricing varies by model; fall back to a generic estimate.
-total_in=$(echo "$input" | jq -r '.context_window.total_input_tokens // 0')
-total_out=$(echo "$input" | jq -r '.context_window.total_output_tokens // 0')
-model_id=$(echo "$input" | jq -r '.model.id')
-
-# Per-million-token prices (USD). Defaults cover claude-3-5/3-7 Sonnet range.
-case "$model_id" in
-  *opus*)      in_price="15.00"; out_price="75.00" ;;
-  *sonnet*)    in_price="3.00";  out_price="15.00" ;;
-  *haiku*)     in_price="0.80";  out_price="4.00"  ;;
-  *)           in_price="3.00";  out_price="15.00" ;;
-esac
-
-# Compute spend in cents to stay in integer arithmetic, then format
-if [ "$total_in" -gt 0 ] || [ "$total_out" -gt 0 ]; then
-  # Use awk for floating-point math
-  spend=$(awk -v i="$total_in" -v o="$total_out" \
-              -v ip="$in_price" -v op="$out_price" \
-    'BEGIN { printf "%.3f", (i * ip / 1000000) + (o * op / 1000000) }')
+# Session spend: Claude Code computes this itself (client-side estimate,
+# may differ from actual bill) and resets it on /clear. Token-count-based
+# estimation was removed because context_window.total_input_tokens /
+# total_output_tokens only reflect the most recent API call's context,
+# not cumulative session usage (as of Claude Code >= 2.1.132).
+spend_raw=$(echo "$input" | jq -r '.cost.total_cost_usd // empty')
+if [ -n "$spend_raw" ]; then
+  spend=$(awk -v c="$spend_raw" 'BEGIN { printf "%.2f", c }')
 else
   spend=""
 fi
+
+# Token counters (display only — current context window, not cumulative)
+total_in=$(echo "$input" | jq -r '.context_window.total_input_tokens // 0')
+total_out=$(echo "$input" | jq -r '.context_window.total_output_tokens // 0')
 
 # Format token counts: raw if < 1000, else rounded to nearest thousand with "k"
 fmt_tokens() {
@@ -169,9 +160,9 @@ if [ -n "$spend" ]; then
   out="${out}  ${sep}  ${color_magenta}\$${spend}${reset}"
 fi
 
-# 5. Token counters (input / output)
+# 5. Token counters (last API call's context, not cumulative session totals)
 if [ "$total_in" -gt 0 ] || [ "$total_out" -gt 0 ]; then
-  out="${out}  ${sep}  ${dim}in${reset} ${color_blue}${tok_in}${reset}  ${dim}out${reset} ${color_blue}${tok_out}${reset}"
+  out="${out}  ${sep}  ${dim}ctx-in${reset} ${color_blue}${tok_in}${reset}  ${dim}ctx-out${reset} ${color_blue}${tok_out}${reset}"
 fi
 
 printf '%b' "$out"
