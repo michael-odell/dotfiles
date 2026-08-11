@@ -6,7 +6,6 @@ CACHE_DIR=$HOME/.cache/dotfiles
 mkdir -p "${CACHE_DIR}"
 
 BINARY=${CACHE_DIR}/repo
-RELEASE_JSON=${CACHE_DIR}/repo.release.json
 LAST_VERSION_FILE=${CACHE_DIR}/repo.last-version
 
 # If there's not a last file from the last 7 days...
@@ -14,8 +13,8 @@ if [[ -z "$(find "${LAST_VERSION_FILE}" -mtime -7 2>/dev/null)" ]] ; then
 
     echo "Checking for release..." >&2
 
-    curl --fail -s "https://api.github.com/repos/michael-odell/repo/releases/latest" > "${RELEASE_JSON}"
-    LATEST_VERSION=$(jq -r ".tag_name" < "${RELEASE_JSON}")
+    LATEST_VERSION=$(curl --fail -sL -o /dev/null -w '%{url_effective}' \
+        "https://github.com/michael-odell/repo/releases/latest" | sed 's#.*/tag/##')
 
     if [[ "${LATEST_VERSION}" != $(cat "${LAST_VERSION_FILE}" 2>/dev/null) ]] ; then
         case "$(uname -s)" in

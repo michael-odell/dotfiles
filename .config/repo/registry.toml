@@ -12,7 +12,7 @@
 
 [defaults]
 worktrees  = false
-branches   = ["main"]
+# branches   = ["main"]
 on_rewrite = "stop"                 # stop | follow
 prune      = "auto"                 # auto | report | manual
 host       = "github"               # default host for bare-name clones
