@@ -12,10 +12,14 @@
 
 [defaults]
 worktrees  = false
-# branches   = ["main"]
-on_rewrite = "stop"                 # stop | follow
+#branches   = ["main"]
 prune      = "auto"                 # auto | report | manual
 host       = "github"               # default host for bare-name clones
+# push/task_branches (auto|manual|never, auto|report|disallow) default per
+# workflow — upstream-push: manual/report; fork-pr: auto/auto;
+# vendor/supply-chain-mirror: never/disallow. Overridable per root/repo below.
+# force_push/force_pull (branch-name globs, e.g. ["wip/*"]) default to [] —
+# never force in either direction unless a branch is explicitly listed.
 # UNCERTAIN: forks are assumed to live under github:michael-odell. This lets
 # fork-pr / supply-chain-mirror repos derive their fork automatically instead of
 # stating it per repo. Change or remove if your forks live elsewhere.
@@ -26,8 +30,13 @@ base = "git@github.com:"
 
 # ── personal repos: your own code, pushed straight to origin ──────────────────
 [root.src]
-dir    = "~/src"
-layout = "flat"                     # ~/src/<repo>
+dir           = "~/src"
+layout        = "flat"              # ~/src/<repo>
+push          = "auto"              # solo repos: push local commits, don't just report them
+task_branches = "auto"              # ...including task/feature branches — no PR step for a solo repo
+show_branches = "all"               # for confidence building in "pruneable"
+
+
 # workflow defaults to upstream-push. Repos already cloned here are discovered
 # automatically; list ids under `repos` only for ones you want provisioned on a
 # fresh machine, e.g.:
@@ -65,5 +74,16 @@ layout = "flat"
 # it's stated. Provisioning would set up origin=fork + an `untrusted` remote.
 [[root.plugins.repo]]
 id       = "github:romkatv/powerlevel10k"
+workflow = "supply-chain-mirror"
+branches = ["master"]
+expected_untracked = ["powerlevel10k.plugin.zsh"] # Created by my plugin loader
+
+[[root.plugins.repo]]
+id       = "github:zdharma-continuum/fast-syntax-highlighting"
+workflow = "supply-chain-mirror"
+branches = ["master"]
+
+[[root.plugins.repo]]
+id       = "github:zsh-users/zsh-completions"
 workflow = "supply-chain-mirror"
 branches = ["master"]

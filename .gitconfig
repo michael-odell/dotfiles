@@ -23,6 +23,10 @@
 [rerere]
     enabled = true
 
+[diff]
+# unlimited
+renameLimit = 0
+
 [diff "blackbox"]
     textconv = gpg --use-agent -q --batch --decrypt
 
