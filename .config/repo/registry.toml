@@ -13,7 +13,11 @@
 [defaults]
 worktrees  = false
 #branches   = ["main"]
-prune      = "auto"                 # auto | report | manual
+prune      = "interactive"          # manual | report | interactive | auto  (§5.3)
+prune_min_age = "5d"                # a landed branch whose ref moved more
+                                    # recently is reported, never removed —
+                                    # the one case no tier can see is work
+                                    # that landed and is still being built on.
 host       = "github"               # default host for bare-name clones
 # push/task_branches (auto|manual|never, auto|report|disallow) default per
 # workflow — upstream-push: manual/report; fork-pr: auto/auto;
