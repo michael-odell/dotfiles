@@ -1,0 +1,37 @@
+{
+  "includeCoAuthoredBy": false,
+  "permissions": {
+    "allow": [
+      "Bash(git log)",
+      "Bash(git log *)",
+      "Bash(git diff)",
+      "Bash(git diff *)",
+      "Bash(git status)",
+      "Bash(git status *)",
+      "Bash(git show)",
+      "Bash(git show *)",
+      "Bash(ls)",
+      "Bash(ls *)",
+      "Bash(cat)",
+      "Bash(cat *)",
+      "Bash(sed *)",
+      "Bash(grep *)",
+      "Bash(awk *)",
+      "Bash(python3)",
+      "Bash(python3 *)"
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bash /Users/michael.odell/.claude/statusline-command.sh"
+  },
+  "enabledPlugins": {
+    "gopls-lsp@claude-plugins-official": true
+  },
+  "effortLevel": "medium",
+  "showThinkingSummaries": true,
+  "theme": "light",
+  "skipAutoPermissionPrompt": true,
+  "gitAttribution": false,
+  "model": "opus"
+}

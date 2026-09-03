@@ -101,3 +101,29 @@ spoon.URLDispatcher.url_patterns = {
 
 -- Start the URL dispatcher
 spoon.URLDispatcher:start()
+
+-- Cmd-Alt-Ctrl-B cycles through browser override modes:
+--   1. Mixed Browsers - use the url_patterns/default_handler above as normal
+--   2. Safari Only    - force every URL to Safari
+--   3. Chrome Only     - force every URL to Chrome
+local browserModeLabels = { "Mixed Browsers", "Safari Only", "Chrome Only" }
+local currentBrowserMode = 1
+
+local originalDispatchURL = spoon.URLDispatcher.dispatchURL
+
+function spoon.URLDispatcher:dispatchURL(scheme, host, params, fullUrl, senderPid)
+    if currentBrowserMode == 2 then
+        hs.application.launchOrFocusByBundleID(safariBrowser)
+        hs.urlevent.openURLWithBundle(fullUrl, safariBrowser)
+        return
+    elseif currentBrowserMode == 3 then
+        chromeBrowser(fullUrl)
+        return
+    end
+    return originalDispatchURL(self, scheme, host, params, fullUrl, senderPid)
+end
+
+hs.hotkey.bind({"cmd", "alt", "ctrl"}, "B", function()
+    currentBrowserMode = (currentBrowserMode % #browserModeLabels) + 1
+    hs.alert.show(browserModeLabels[currentBrowserMode])
+end)

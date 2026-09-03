@@ -50,6 +50,9 @@ export LESSHISTFILE="${HOME}/.history/less.${HOST%%.*}"
 export SYSTEMD_LESS="$LESS"
 export KOPIA_CONFIG_PATH=$HOME/.config/kopia/$HOSTNAME_SHORT
 
+typeset -xUT REPO_REGISTRY_PATH repo_registry_path
+repo_registry_path=( ~/.config/repo/registry.toml )
+
 # ref: https://code.claude.com/docs/en/fullscreen
 export CLAUDE_CODE_NO_FLICKER=1
 export CLAUDE_CODE_DISABLE_MOUSE_CLICKS=1
