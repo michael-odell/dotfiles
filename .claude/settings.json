@@ -21,9 +21,10 @@
       "Bash(python3 *)"
     ]
   },
+  "model": "sonnet",
   "statusLine": {
     "type": "command",
-    "command": "bash /Users/michael.odell/.claude/statusline-command.sh"
+    "command": "bash \"$HOME/.claude/statusline-command.sh\""
   },
   "enabledPlugins": {
     "gopls-lsp@claude-plugins-official": true
@@ -31,7 +32,7 @@
   "effortLevel": "medium",
   "showThinkingSummaries": true,
   "theme": "light",
+  "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true,
-  "gitAttribution": false,
-  "model": "opus"
+  "gitAttribution": false
 }
