@@ -57,6 +57,7 @@ spoon.URLDispatcher.url_patterns = {
     -- to pass directly to the app as of 2025-05.  The app will activate,
     -- but it won't go to the right location.
     { "https?://workday.*%.slack%.com/messages/", slackApp},
+    { "https?://wdexternal%.slack%.com/archives/", slackApp},
 
     -- Typical searches stay in safari
     { "https?://www%.google%.com/search", safariBrowser},
