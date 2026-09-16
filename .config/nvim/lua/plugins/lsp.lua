@@ -19,6 +19,7 @@ return {
                 "yamlls",
                 "helm_ls",
                 "terraformls",
+                -- ref: https://github.com/artempyanykh/marksman
                 "marksman",
             },
             handlers = {
