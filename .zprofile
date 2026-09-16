@@ -41,7 +41,6 @@ load_brew () {
 
 
 path+=(
-    "${HOME}/go/bin"(N)
     "${HOME}/.local/bin"(N)
 
     # Multipass stores aliases here on macos

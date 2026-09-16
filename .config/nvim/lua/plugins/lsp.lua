@@ -19,6 +19,7 @@ return {
                 "yamlls",
                 "helm_ls",
                 "terraformls",
+                "marksman",
             },
             handlers = {
                 -- Default handler: enable the server

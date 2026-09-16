@@ -35,26 +35,32 @@ These apply to almost everything written.  Even code, output, and commit message
 
 ## Writing Code
 
-- Let the reader of the code breathe. Add empty lines between logical blocks of code.
+- Much _code_ is also prose.  Follow the usual writing guidelines especially in comments.  Use markdown
+  in comments, including links to other in-repo files.
+
+    - The audience and history rules from writing are especially important in code.  Follow them!
 
 - Add a small, to the point, comment to explain *what* the block does and *why*. Use examples when
   possible.
-
-- The audience and history rules above bite hardest here.  A comment is written for someone who has
-  never seen this code broken, so *why it is this way* belongs in the comment and *why it changed
-  today* belongs in the commit message.  Giveaways that you have written the wrong one: "used to",
-  "originally", "at the time", "turns out", "found by", "first attempt", "by mistake", "which is why
-  I".  Same for a design doc or README -- neither is a log.
-
-- Feel free to use markdown styles in code comments, too, including links.
 
 - In command examples, use long flags wherever the tool offers them -- `jq --raw-input` rather than
   `jq -R` -- so the meaning is readable without opening a man page.  Plenty of tools have no long
   forms at all; short flags are fine there.
 
-
-## Scope
+## Git
 
 - Working in logical segments is nice.  But don't let it stop you from fixing problems you see.  Don't
   bite off a huge extra project.  But if you notice misspelling or over-verbose-text, feel free to fix it
   while you're in the area.  This is how things move from worse to better over time.
+
+## OnePassword (op) and credentials
+
+- Many user credentials are protected by OnePassword.  If an environment variable's content starts with
+  `op://` or there's an `op get` or `op run` command, it'll prompt the user for access every time.
+
+- Avoid reading the specific credentials in order to protect them from leaking to disk via the agent
+  context.  Use the commands in order to protect them.
+
+- When a credential read is declined, it may be because the laptop is locked or the user simply wasn't
+  ready.  Don't try to troubleshoot OnePassword -- just ask the user how to proceed.
+

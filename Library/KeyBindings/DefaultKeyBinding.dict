@@ -1,0 +1,13 @@
+{
+    /* Word Movement (Emacs style) */
+    "~b" = "moveWordBackward:";
+    "~f" = "moveWordForward:";
+    "~B" = "moveWordBackwardAndModifySelection:";
+    "~F" = "moveWordForwardAndModifySelection:";
+
+    /* Line Movement (Native macOS, added here for completeness/selection) */
+    "^a" = "moveToBeginningOfLine:";
+    "^e" = "moveToEndOfLine:";
+    "^A" = "moveToBeginningOfLineAndModifySelection:";
+    "^E" = "moveToEndOfLineAndModifySelection:";
+}
