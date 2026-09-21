@@ -1,4 +1,9 @@
 {
+  "attribution": {
+    "commit": "",
+    "pr": "",
+    "sessionUrl": false
+  },
   "includeCoAuthoredBy": false,
   "permissions": {
     "allow": [
@@ -12,6 +17,7 @@
       "Bash(diff *)",
       "Bash(echo *)",
       "Bash(exit *)",
+      "Bash(gh release view *)",
       "Bash(git commit *)",
       "Bash(git diff *)",
       "Bash(git diff)",
@@ -40,6 +46,7 @@
       "Bash(python3 *)",
       "Bash(python3)",
       "Bash(sed *)",
+      "Bash(sort *)",
       "Bash(wait)",
       "Bash(wc *)",
       "Bash(xargs ls:*)",
@@ -59,10 +66,5 @@
   "theme": "light",
   "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true,
-  "gitAttribution": false,
-  "attribution": {
-      "commit": "",
-      "pr": "",
-      "sessionUrl": false
-  }
+  "gitAttribution": false
 }

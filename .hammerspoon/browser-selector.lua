@@ -79,6 +79,7 @@ spoon.URLDispatcher.url_patterns = {
     -- Workday systems should use Chrome
     { "https?://[^/]*workday[^/]*", chromeBrowser },
     { "https?://console%.megaleo%.com", chromeBrowser },
+    { "https?://.*peakon%.com", chromeBrowser },
     { "https?://.*lucid%.app", chromeBrowser },
     { "https?://.*miro%.com", chromeBrowser },
     { "https?://.*megaleo%.com", chromeBrowser },
