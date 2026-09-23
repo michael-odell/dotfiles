@@ -41,10 +41,10 @@ renameLimit = 0
 	tool = Kaleidoscope
 
 [includeIf "gitdir:~/wd/"]
-    path = ~/.gitconfig.wd
+    path = ~/.zsh/plugins/zsh-wd-odell/gitconfig.wd
 
 [includeIf "gitdir:~/.zsh/plugins/*-wd-*/"]
-    path = ~/.gitconfig.wd
+    path = ~/.zsh/plugins/zsh-wd-odell/gitconfig.wd
 
 [pull]
 	ff = only

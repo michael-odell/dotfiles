@@ -63,10 +63,10 @@
     "gopls-lsp@claude-plugins-official": true
   },
   "effortLevel": "medium",
+  "promptSuggestionEnabled": false,
   "showThinkingSummaries": true,
   "theme": "light",
   "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true,
-  "promptSuggestionEnabled": false,
   "gitAttribution": false
 }

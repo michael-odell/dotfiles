@@ -1,6 +1,0 @@
-[user]
-	name = Michael Odell
-	email = michael_odell@workday.com
-
-[url "ssh://git@bitbucket.workday.com/"]
-	insteadOf = https://bitbucket.workday.com/
