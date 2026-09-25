@@ -64,6 +64,11 @@
   },
   "effortLevel": "medium",
   "promptSuggestionEnabled": false,
+  "modelSettings": {
+    "claude-opus-5": {
+      "effortLevel": "medium"
+    }
+  },
   "showThinkingSummaries": true,
   "theme": "light",
   "agentPushNotifEnabled": true,
