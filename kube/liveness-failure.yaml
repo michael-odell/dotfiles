@@ -1,0 +1,35 @@
+# from: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: liveness-failure
+  labels:
+    app: liveness-failure
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: liveness-failure
+  template:
+    metadata:
+      labels:
+        app: liveness-failure
+    spec:
+      containers:
+      - name: not-live
+        image: alpine:latest
+        command:
+          - sleep
+          - "100000"
+        restartPolicy: Never
+        livenessProbe:
+          failureThreshold: 3
+          periodSeconds: 5
+          exec:
+            command:
+            - "/bin/false"
+      - name: live
+        image: alpine:latest
+        command:
+          - sleep
+          - "100000"

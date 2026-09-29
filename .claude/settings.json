@@ -54,7 +54,7 @@
       "Bash(yq *)"
     ]
   },
-  "model": "opus",
+  "model": "sonnet",
   "statusLine": {
     "type": "command",
     "command": "bash \"$HOME/.claude/statusline-command.sh\""
@@ -63,14 +63,16 @@
     "gopls-lsp@claude-plugins-official": true
   },
   "effortLevel": "medium",
-  "promptSuggestionEnabled": false,
   "modelSettings": {
     "claude-opus-5": {
       "effortLevel": "medium"
     }
   },
+  "promptSuggestionEnabled": false,
   "showThinkingSummaries": true,
-  "theme": "light",
+  "theme": "auto",
+  "editorMode": "normal",
+  "autoScrollEnabled": true,
   "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true,
   "gitAttribution": false

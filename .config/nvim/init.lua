@@ -1,5 +1,3 @@
-vim.opt.background = "light"
-
 -- Filetype detection for languages not built into Neovim
 vim.filetype.add({
     extension = {
@@ -59,3 +57,6 @@ vim.keymap.set('n', '<leader>e', function()
     end
 end, { desc = "Toggle Buffer Diagnostics" })
 
+if vim.g.neovide then
+    require("neovide")
+end

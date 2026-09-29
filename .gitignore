@@ -5,13 +5,13 @@
 # not _presently_ managing asdf configurations
 /.tool-versions
 
-# Nor _presently_ anything related to agents...
 /.claude
 /.cursor
-# Too system-specific -- particularly around chosen model
-/.claude/settings.json
 # These seem to be system-specific and maybe not worth tracking anyway (?)
 /.claude.json*
+
+# Ignore myobsidian vault symlink
+/obsidian
 
 
 # The .config directory is a mix of saved and not
@@ -25,6 +25,7 @@
 /.config/gcloud/
 /.config/containers
 /.config/wireshark
+/.config/1Password
 
 # The set of ssh keys I want available is machine-specific
 /.config/1Password/ssh/agent.toml
@@ -46,8 +47,7 @@
 # Packager-related directories
 /.gem
 /.venv
-
-
+/.swiftpm
 
 
 # Potentially sensitive things shouldn't be stored
@@ -55,6 +55,7 @@
 /.docker
 /.gnupg*
 /.history
+/.bash_history
 /.ipython
 /.kube
 /.node_repl_history
@@ -83,17 +84,12 @@
 /.zcompdump
 /go
 
-# No tracking for bash files at present
-/.bash*
-/.modell_bash_history
-
 
 # Locations I manage via git that shoudln't be stored in this repo
 /.dotfiles.git
 /.etc.git
 /src
 /contrib
-/wd
 /.asdf
 /.vscode
 
@@ -120,33 +116,7 @@
 # configuration for it, so ignore that.
 /.subversion
 
-#.gnupg-074/
-#.gnupg-079/
-#bin/
-#contrib/
-#music-restore/
-#myscript
-#myscript-f
-#oldetc/
-#private/
-#src/
-
-# Miscellaneous things related to work
-/.okta
-/.okta2aws
-/.canyonero.state
-/.lush
-/.pt-helm
-/.spc-*
-/globalprotect
-/.redhat
-/.config/cxpkube
-/.docsbuild
-
-# And due to rampant ruby/js stuff with peculiar settings there
 /.bundle
-/.gemrc
-/.npmrc
 /.rbenv
 /.yarnrc
 /node_modules

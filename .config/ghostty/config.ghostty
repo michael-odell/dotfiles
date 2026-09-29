@@ -1,0 +1,29 @@
+theme = light:Selenized Light,dark:Selenized Dark
+window-height = 65
+window-width = 105
+clipboard-trim-trailing-spaces = true
+
+font-family = SauceCodePro NFM
+font-family-bold = SauceCodePro NFM Medium
+font-family-italic = SauceCodePro NFM Italic
+font-family-bold-italic = SauceCodePro NFM Bold Italic
+font-size = 12
+
+cursor-style = block_hollow
+#cursor-color = black
+
+shell-integration-features = no-cursor, ssh-terminfo
+
+# 100MB
+scrollback-limit=104857600
+
+# Cursor CLI requests modifyOtherKeys but doesn't handle the Shift+Space
+# sequence (\e[27;2;32~), so just send a plain space instead.
+keybind = shift+space=text:\x20
+
+# Don't open new tabs/windwos in the current directory
+window-inherit-working-directory = false
+tab-inherit-working-directory = false
+working-directory = home
+
+clipboard-paste-protection = false
