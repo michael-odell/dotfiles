@@ -83,6 +83,7 @@
 /.zcompcache
 /.zcompdump
 /go
+/.config/helm/repositories.*
 
 
 # Locations I manage via git that shoudln't be stored in this repo

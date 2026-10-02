@@ -1,0 +1,134 @@
+# Starship port of ~/.p10k.zsh (powerline/rainbow wizard output, ascii, 2 lines, no backgrounds).
+#
+#     ~/dotfiles/starship.toml
+#     ... (blank line)
+#     > _
+#
+# Left of line 1: dir, git. Right of line 1: duration, terraform, nook, context, time.
+# Line 2: background jobs, exit code, prompt char.
+#
+# Use with `export STARSHIP_CONFIG=~/dotfiles/starship.toml`.
+
+add_newline = true
+
+# `$fill` pushes the right-hand modules to the edge, keeping them on line 1 like p10k does.
+format = """
+[ ](bg:0)$directory\
+$git_branch\
+$git_commit\
+$git_state\
+$git_status\
+$fill\
+$cmd_duration\
+$terraform\
+${custom.nook}\
+($username$hostname[ | ](bright-black bg:0))\
+$time\
+[ ](bg:0)\
+$line_break\
+$jobs\
+$status\
+${custom.root_char}\
+$character"""
+
+[fill]
+symbol = " "
+style = "bg:0"
+
+# --- dir ---
+[directory]
+style = "blue bg:0"
+read_only_style = "red bg:0"
+format = "[$path]($style)[$read_only]($read_only_style)[ ](bg:0)"
+home_symbol = "~"
+# Last segment in full, parents shortened to one character: ~/w/dotfiles
+truncation_length = 8
+truncate_to_repo = false
+#fish_style_pwd_dir_length = 1
+read_only = "!"
+
+# --- vcs ---
+# Example: ` main <1>2 *1 +1 !2 ?3` -- branch icon in magenta, the rest white (p10k 15).
+[git_branch]
+format = "[ ](purple bg:0)[$branch](bright-white bg:0)[(:$remote_branch)](bright-white bg:0)[ ](bg:0)"
+truncation_length = 40
+truncation_symbol = ".."
+
+[git_commit]
+format = "[@](purple bg:0)[$hash]($style)[ ](bg:0)"
+style = "bright-white bg:0"
+commit_hash_length = 8
+only_detached = true
+
+[git_state]
+format = "[$state( $progress_current/$progress_total)](red bg:0)[ ](bg:0)"
+
+[git_status]
+format = "([$ahead_behind$stashed$conflicted$staged$modified$untracked]($style))"
+style = "bright-white bg:0"
+ahead = " >${count}"
+behind = " <${count}"
+diverged = " <${behind_count}>${ahead_count}"
+stashed = "[ *${count}](bright-white bg:0)"
+conflicted = "[ ~${count}](red bg:0)"
+staged = "[ +${count}](yellow bg:0)"
+modified = "[ !${count}](yellow bg:0)"
+untracked = "[ ?${count}](white bg:0)"
+deleted = ""
+renamed = ""
+typechanged = ""
+
+# --- right side ---
+[cmd_duration]
+min_time = 3000
+format = "[$duration](bright-red bg:0)[ | ](bright-black bg:0)"
+show_milliseconds = false
+
+[terraform]
+format = "[$workspace](blue bg:0)[ ](bg:0)"
+detect_extensions = ["tf", "tfplan", "tfstate"]
+detect_folders = [".terraform"]
+
+# Shown only over SSH or as root, like p10k's context.
+[username]
+format = "[$user]($style)"
+style_user = "yellow bg:0"
+style_root = "yellow bg:0"
+show_always = false
+
+[hostname]
+ssh_only = true
+format = "[@$hostname](yellow bg:0)"
+
+[time]
+disabled = false
+time_format = "%-I:%M:%S"
+format = "[$time](bright-black bg:0)"
+
+# --- line 2 ---
+[jobs]
+symbol = ""
+number_threshold = 1
+symbol_threshold = 1
+format = "[*$number](yellow) "
+
+[status]
+disabled = false
+format = "[\\($status\\)](red) "
+
+# `$character` can't detect root, so mirror p10k's magenta `#` separately.
+[custom.root_char]
+when = '[ "$EUID" = 0 ]'
+command = "printf '#'"
+format = "[$output](bold purple) "
+
+[character]
+success_symbol = "[ > ](bold cyan bg:0)"
+error_symbol = "[ > ](bold cyan bg:0)"
+
+# `[$NOOK]` on a background of $NOOK_COLOR (256-color index), like prompt_odell_nook.
+[custom.nook]
+when = '[ -n "$NOOK" ] && [ -n "$NOOK_COLOR" ]'
+command = 'printf "\033[30;48;5;%sm[%s]\033[0m" "$NOOK_COLOR" "$NOOK"'
+format = "$output[ ](bg:0)"
+shell = ["sh"]
