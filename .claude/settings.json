@@ -60,7 +60,7 @@
     "command": "bash \"$HOME/.claude/statusline-command.sh\""
   },
   "enabledPlugins": {
-    "gopls-lsp@claude-plugins-official": true
+    "gopls-lsp@claude-plugins-official": false
   },
   "effortLevel": "medium",
   "modelSettings": {

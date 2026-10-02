@@ -56,3 +56,6 @@ repo_registry_path=( ~/.config/repo/registry.toml )
 # ref: https://code.claude.com/docs/en/fullscreen
 export CLAUDE_CODE_NO_FLICKER=1
 export CLAUDE_CODE_DISABLE_MOUSE_CLICKS=1
+
+# Without this, helm on macos uses a different path
+export HELM_REPOSITORY_CONFIG="${HOME}/.config/helm/repositories.yaml"
