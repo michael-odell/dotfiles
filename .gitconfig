@@ -30,8 +30,8 @@ renameLimit = 0
 [diff "blackbox"]
     textconv = gpg --use-agent -q --batch --decrypt
 
-[diff "sops"]
-    textconv = sops -d
+#[diff "sops"]
+#    textconv = sops -d
 
 [push]
 	default = matching

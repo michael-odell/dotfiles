@@ -12,7 +12,7 @@ font-size = 12
 cursor-style = block_hollow
 #cursor-color = black
 
-shell-integration-features = no-cursor, ssh-terminfo
+shell-integration-features = no-cursor, no-ssh-terminfo
 
 # 100MB
 scrollback-limit=104857600

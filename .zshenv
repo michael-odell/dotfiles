@@ -57,5 +57,8 @@ repo_registry_path=( ~/.config/repo/registry.toml )
 export CLAUDE_CODE_NO_FLICKER=1
 export CLAUDE_CODE_DISABLE_MOUSE_CLICKS=1
 
+export MOLE_AGE_KEY_CMD_DEV="op read op://private/homelab-age/private_key"
+export MOLE_AGE_KEY_CMD_PROD="op read op://private/homelab-age-prod/private_key"
+
 # Without this, helm on macos uses a different path
 export HELM_REPOSITORY_CONFIG="${HOME}/.config/helm/repositories.yaml"

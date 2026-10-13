@@ -54,7 +54,7 @@
       "Bash(yq *)"
     ]
   },
-  "model": "sonnet",
+  "model": "opus",
   "statusLine": {
     "type": "command",
     "command": "bash \"$HOME/.claude/statusline-command.sh\""
@@ -73,6 +73,7 @@
   "theme": "auto",
   "editorMode": "normal",
   "autoScrollEnabled": true,
+  "remoteControlAtStartup": true,
   "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true,
   "gitAttribution": false
