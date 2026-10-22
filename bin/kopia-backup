@@ -26,4 +26,10 @@
 
 echo "--------------------------------------------------------------------------------"
 echo -n "Initiating backup on " ; date
-exec /opt/homebrew/bin/kopia snapshot create --all
+
+# Keep kopia's own logs small: `info` instead of the `debug` default (~45 MB per run), and prune
+# CLI logs after a week and content logs after a day.
+export KOPIA_LOG_DIR_MAX_AGE=168h
+export KOPIA_CONTENT_LOG_DIR_MAX_AGE=24h
+
+exec /opt/homebrew/bin/kopia --file-log-level=info snapshot create --all --no-progress

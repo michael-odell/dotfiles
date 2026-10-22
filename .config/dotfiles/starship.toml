@@ -7,7 +7,7 @@
 # Left of line 1: dir, git. Right of line 1: duration, terraform, nook, context, time.
 # Line 2: background jobs, exit code, prompt char.
 #
-# Use with `export STARSHIP_CONFIG=~/dotfiles/starship.toml`.
+# Use with `export STARSHIP_CONFIG=~/.config/dotfiles/starship.toml`.
 
 add_newline = true
 
@@ -126,9 +126,17 @@ format = "[$output](bold purple) "
 success_symbol = "[ > ](bold cyan bg:0)"
 error_symbol = "[ > ](bold cyan bg:0)"
 
-# `[$NOOK]` on a background of $NOOK_COLOR (256-color index), like prompt_odell_nook.
+# `[$NOOK]` on a background of $NOOK_COLOR, like prompt_odell_nook.  $NOOK_COLOR is either a 256-color
+# index (`7`) or a basic color name (`green`, see nooks.zsh), so map names to their index.
 [custom.nook]
 when = '[ -n "$NOOK" ] && [ -n "$NOOK_COLOR" ]'
-command = 'printf "\033[30;48;5;%sm[%s]\033[0m" "$NOOK_COLOR" "$NOOK"'
+command = '''
+case "$NOOK_COLOR" in
+    black) c=0 ;; red) c=1 ;; green) c=2 ;; yellow) c=3 ;;
+    blue) c=4 ;; magenta) c=5 ;; cyan) c=6 ;; white) c=7 ;;
+    *) c=$NOOK_COLOR ;;
+esac
+printf "\033[30;48;5;%sm[%s]\033[0m" "$c" "$NOOK"
+'''
 format = "$output[ ](bg:0)"
 shell = ["sh"]
