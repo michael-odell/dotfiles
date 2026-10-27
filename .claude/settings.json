@@ -54,12 +54,14 @@
       "Bash(yq *)"
     ]
   },
+  "model": "sonnet",
   "statusLine": {
     "type": "command",
     "command": "bash \"$HOME/.claude/statusline-command.sh\""
   },
   "enabledPlugins": {
-    "gopls-lsp@claude-plugins-official": false
+    "gopls-lsp@claude-plugins-official": false,
+    "cc-plugin-you-should-know@builtin": true
   },
   "effortLevel": "medium",
   "modelSettings": {
