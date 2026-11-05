@@ -9,6 +9,8 @@ require("lazy-nvim")
 
 vim.cmd('source ~/.config/nvim/oldinit.vim')
 
+require('diff-side').setup()
+
 vim.opt.signcolumn = 'yes'
 
 -- Split big rewritten diff hunks into add/delete/change parts (default is 40 lines).

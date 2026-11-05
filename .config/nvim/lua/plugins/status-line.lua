@@ -34,6 +34,27 @@ return {
                 c = { fg = dark.fg_0, bg = dark.bg_1 },
             },
         }
+        -- Which side of a fugitive diff this window is (see lua/diff-side.lua).
+        -- Shown in the inactive statusline too, since one pane is always inactive.
+        -- lualine renders each window's statusline inside `nvim_win_call`, so the
+        -- current window is the one being drawn (`g:statusline_winid` is never set).
+        local function diff_side_of_window()
+            return require('diff-side').side(vim.api.nvim_get_current_win())
+        end
+        local diff_side = {
+            function()
+                local side = diff_side_of_window()
+                return side and side.label or ''
+            end,
+            cond = function()
+                return require('diff-side').opts.statusline and diff_side_of_window() ~= nil
+            end,
+            color = function()
+                local side = diff_side_of_window()
+                return side and ('DiffSide' .. side.kind) or nil
+            end,
+            padding = { left = 1, right = 1 },
+        }
         return {
             options = {
                 theme = theme,
@@ -46,6 +67,7 @@ return {
             -- ref: :h lualine or https://github.com/nvim-lualine/lualine.nvim
             sections = {
                 lualine_c = {
+                    diff_side,
                     {
                         'filename',
                         path = 1
@@ -54,6 +76,7 @@ return {
             },
             inactive_sections = {
                 lualine_c = {
+                    diff_side,
                     {
                         'filename',
                         path = 1
