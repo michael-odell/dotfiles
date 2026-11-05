@@ -62,6 +62,39 @@ vim.keymap.set('n', '<leader>e', function()
     end
 end, { desc = "Toggle Buffer Diagnostics" })
 
+-- Copy a `path:line` reference to the system clipboard (via `yank`, like `,y`):
+-- the cursor line in normal mode, `path:12-18` for a visual selection.  The path is
+-- from the repo root in a git repo, else from the cwd.  In a fugitive buffer (e.g.
+-- the base side of a diff) it's the path within the commit.
+local function copy_reference(first, last)
+    local name = vim.api.nvim_buf_get_name(0)
+    if name == '' then
+        vim.notify('No file name to reference', vim.log.levels.WARN)
+        return
+    end
+    local path = name:match('^fugitive://.-//%w+/(.*)$')
+    if not path then
+        local root = vim.fs.root(0, '.git')
+        path = root and vim.fs.relpath(root, name) or vim.fn.fnamemodify(name, ':.')
+    end
+    local ref = path .. ':' .. first .. (last ~= first and '-' .. last or '')
+    vim.fn.system('yank', ref)
+    if vim.v.shell_error ~= 0 then
+        vim.notify('yank failed for ' .. ref, vim.log.levels.ERROR)
+    else
+        vim.notify('Copied ' .. ref)
+    end
+end
+vim.keymap.set('n', '<leader>r', function()
+    local line = vim.fn.line('.')
+    copy_reference(line, line)
+end, { desc = "Copy path:line reference to clipboard" })
+vim.keymap.set('x', '<leader>r', function()
+    local a, b = vim.fn.line('v'), vim.fn.line('.')
+    copy_reference(math.min(a, b), math.max(a, b))
+    vim.api.nvim_feedkeys(vim.keycode('<Esc>'), 'n', false)
+end, { desc = "Copy path:first-last reference to clipboard" })
+
 if vim.g.neovide then
     require("neovide")
 end
