@@ -1,0 +1,11 @@
+#!/bin/sh
+# review [BASE]: step through files changed vs BASE (default main) as fugitive diffs.
+# `,n` / `,p` move to the next / previous file. `:qa` ends the review (twice if it warns about unvisited files).
+# The diff behavior lives in `~/.config/nvim/lua/review.lua`.
+REVIEW_BASE=${1:-main}
+export REVIEW_BASE
+files=$(git diff --name-only --diff-filter=d "$REVIEW_BASE") || exit
+[ -n "$files" ] || { echo "no changes vs $REVIEW_BASE"; exit; }
+
+# shellcheck disable=SC2086  # intentional word splitting; breaks on filenames with spaces
+exec nvim $files -c "lua require('review').start()"

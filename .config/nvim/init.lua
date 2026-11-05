@@ -11,6 +11,9 @@ vim.cmd('source ~/.config/nvim/oldinit.vim')
 
 vim.opt.signcolumn = 'yes'
 
+-- Split big rewritten diff hunks into add/delete/change parts (default is 40 lines).
+vim.opt.diffopt:append('linematch:200')
+
 -- Apply format options to all filetypes (replaces per-filetype ForceMyFormatOptions calls)
 vim.api.nvim_create_autocmd("FileType", {
     desc = "Apply standard format options to all filetypes",

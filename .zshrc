@@ -186,4 +186,3 @@ disable r
 
 export STARSHIP_CONFIG=$HOME/.config/dotfiles/starship.toml
 eval "$(starship init zsh)"
-

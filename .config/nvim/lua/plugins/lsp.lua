@@ -124,6 +124,17 @@ return {
                 },
             })
 
+            -- Marksman exits on `didClose` for fugitive:// blobs (the fake path isn't on disk),
+            -- e.g. the base side of `review`.  Don't attach to them.
+            vim.lsp.config('marksman', {
+                root_dir = function(bufnr, on_dir)
+                    if vim.api.nvim_buf_get_name(bufnr):match('^fugitive://') then
+                        return
+                    end
+                    on_dir(vim.fs.root(bufnr, { '.marksman.toml', '.git' }))
+                end,
+            })
+
             -- Cue Language Server (installed separately, not via mason)
             vim.lsp.enable("cue")
         end,
