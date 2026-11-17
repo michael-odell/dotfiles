@@ -42,6 +42,7 @@
 /.zshrc.local
 /.local
 /.zsh_sessions
+/screenshots
 
 
 # Packager-related directories
