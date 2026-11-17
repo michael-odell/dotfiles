@@ -50,7 +50,6 @@ path+=(
 if [[ ! -d ~/.venv && -n ${commands[python3]} && ${DOTFILES_INSTALL:=1} -eq 1 ]] ; then
     echo "Initializing personal python venv..." >&2
     python3 -m venv ~/.venv
-    ~/.venv/bin/pip3 install kubernetes
 fi
 
 if [[ -d ~/.venv && -z ${VIRTUAL_ENV:-} ]] ; then

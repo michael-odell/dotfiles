@@ -185,4 +185,24 @@ fi
 disable r
 
 export STARSHIP_CONFIG=$HOME/.config/dotfiles/starship.toml
+
+# Precompute prompt fragments here so starship reads them via `env_var` instead of forking a shell per
+# `custom` module.  Those forks hit the 500ms timeout after long commands (endpoint security scanning
+# every exec).  Must precede `starship init` so this runs before starship's precmd.
+(( EUID == 0 )) && export STARSHIP_ROOT_CHAR='#'
+_starship_nook() {
+    # $NOOK_COLOR is a 256-color index (`7`) or a basic name (`green`, see nooks.zsh).
+    local c=$NOOK_COLOR
+    case $c in
+        black) c=0 ;; red) c=1 ;; green) c=2 ;; yellow) c=3 ;;
+        blue) c=4 ;; magenta) c=5 ;; cyan) c=6 ;; white) c=7 ;;
+    esac
+    if [[ -n $NOOK && -n $c ]] ; then
+        export STARSHIP_NOOK=$'\e[30;48;5;'$c"m[$NOOK]"$'\e[0m'
+    else
+        unset STARSHIP_NOOK
+    fi
+}
+precmd_functions+=(_starship_nook)
+
 eval "$(starship init zsh)"

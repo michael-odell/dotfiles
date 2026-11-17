@@ -21,14 +21,14 @@ $git_status\
 $fill\
 $cmd_duration\
 $terraform\
-${custom.nook}\
+${env_var.STARSHIP_NOOK}\
 ($username$hostname[ | ](bright-black bg:0))\
 $time\
 [ ](bg:0)\
 $line_break\
 $jobs\
 $status\
-${custom.root_char}\
+${env_var.STARSHIP_ROOT_CHAR}\
 $character"""
 
 [fill]
@@ -116,27 +116,16 @@ format = "[*$number](yellow) "
 disabled = false
 format = "[\\($status\\)](red) "
 
-# `$character` can't detect root, so mirror p10k's magenta `#` separately.
-[custom.root_char]
-when = '[ "$EUID" = 0 ]'
-command = "printf '#'"
-format = "[$output](bold purple) "
+# `$character` can't detect root, so mirror p10k's magenta `#` separately.  Set by ~/.zshrc, which
+# avoids forking a shell per prompt.
+[env_var.STARSHIP_ROOT_CHAR]
+format = "[$env_value](bold purple) "
 
 [character]
 success_symbol = "[ > ](bold cyan bg:0)"
 error_symbol = "[ > ](bold cyan bg:0)"
 
-# `[$NOOK]` on a background of $NOOK_COLOR, like prompt_odell_nook.  $NOOK_COLOR is either a 256-color
-# index (`7`) or a basic color name (`green`, see nooks.zsh), so map names to their index.
-[custom.nook]
-when = '[ -n "$NOOK" ] && [ -n "$NOOK_COLOR" ]'
-command = '''
-case "$NOOK_COLOR" in
-    black) c=0 ;; red) c=1 ;; green) c=2 ;; yellow) c=3 ;;
-    blue) c=4 ;; magenta) c=5 ;; cyan) c=6 ;; white) c=7 ;;
-    *) c=$NOOK_COLOR ;;
-esac
-printf "\033[30;48;5;%sm[%s]\033[0m" "$c" "$NOOK"
-'''
-format = "$output[ ](bg:0)"
-shell = ["sh"]
+# `[$NOOK]` on a background of $NOOK_COLOR, like prompt_odell_nook.  Built, colors included, by
+# `_starship_nook` in ~/.zshrc.
+[env_var.STARSHIP_NOOK]
+format = "$env_value[ ](bg:0)"
