@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- Delete files in ~/screenshots older than 14 days.  Runs daily; a missed run (asleep) fires on wake. -->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>us.theodells.screenshots.cleanup</string>
+
+    <!-- launchd doesn't expand ~ or $HOME in paths, so let sh do it (it also handles the log
+         redirect, since StandardOutPath has the same limitation). -->
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/sh</string>
+        <string>-c</string>
+        <string>mkdir -p "$HOME/log" &amp;&amp; find "$HOME/screenshots" -type f -mtime +14 -print -delete >> "$HOME/log/screenshots-cleanup.log" 2>&amp;1</string>
+    </array>
+
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key>
+        <integer>10</integer>
+        <key>Minute</key>
+        <integer>0</integer>
+    </dict>
+
+    <key>RunAtLoad</key>
+    <true/>
+
+    <key>ProcessType</key>
+    <string>Background</string>
+</dict>
+</plist>
